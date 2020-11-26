@@ -1,4 +1,4 @@
-package sample;
+package gydatainput;
 
 public class Controller {
 
