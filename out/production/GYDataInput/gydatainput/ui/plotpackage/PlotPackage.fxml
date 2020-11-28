@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListCell?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+   <graphic>
+      <HBox fx:id="plotPackage" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+         <children>
+            <Label fx:id="packageName" prefHeight="20.0" prefWidth="334.0" text="Plot Package" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="55.0" prefWidth="32.0" />
+            <Label fx:id="lblDate" alignment="CENTER" prefHeight="20.0" prefWidth="168.0" text="Date">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="55.0" prefWidth="32.0" />
+         </children>
+      </HBox>
+   </graphic>
+</fx:root>
