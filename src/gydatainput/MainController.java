@@ -3,6 +3,7 @@ package gydatainput;
 import gydatainput.database.DatabaseController;
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.plotpackage.PlotPackage;
+import gydatainput.ui.exportplotpackage.ExportPlotPackageController;
 import gydatainput.ui.plotpackage.PlotPackageController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,12 +31,14 @@ import java.util.ResourceBundle;
  * */
 public class MainController implements Initializable {
     @FXML ListView<PlotPackage> listCompleted;
+    @FXML ListView<PlotPackage> listExports;
     @FXML Button btnImportPackage;
     @FXML Button btnDownloadPackage;
     @FXML TextField txtFilterCompleted;
 
     // A list of all plot packages that are currently in the database.
     public ObservableList<PlotPackage> packages = FXCollections.observableArrayList();
+    public ObservableList<PlotPackage> exportPackages = FXCollections.observableArrayList();
 
     // DO NOT REMOVE (This instantiates the database controller on startup and is required, despite not being referenced in this file)
     DatabaseController database = DatabaseController.getInstance();
@@ -70,14 +73,24 @@ public class MainController implements Initializable {
         // Update the list of completed packages.
         listCompleted.setItems(filteredPackages);
 
-        // The cell factory provides each plot package in the completed list a UI.
+        // The cell factory provides each plot package a list item UI element.
         listCompleted.setCellFactory(completedListView -> new PlotPackageController());
+        listExports.setCellFactory(exportListView -> new ExportPlotPackageController());
 
         // This allows us to get the currently selected items from the completed package list.
         listCompleted.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PlotPackage>() {
             @Override
             public void changed(ObservableValue<? extends PlotPackage> observableValue, PlotPackage oldPackage, PlotPackage newPackage) {
-                System.out.println("ListView selection changed from oldValue = "
+                System.out.println("Completed selection changed from oldValue = "
+                        + oldPackage + " to newValue = " + newPackage);
+            }
+        });
+
+        // This allows us to get the currently selected items from the export package list.
+        listExports.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PlotPackage>() {
+            @Override
+            public void changed(ObservableValue<? extends PlotPackage> observableValue, PlotPackage oldPackage, PlotPackage newPackage) {
+                System.out.println("Export selection changed from oldValue = "
                         + oldPackage + " to newValue = " + newPackage);
             }
         });
@@ -132,6 +145,25 @@ public class MainController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Unable to display package data.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    /** Add Plot Package To Export List
+     *      This function adds the selected plot package in the completed list to the
+     *      export list.
+     * @param event The onClick event when the button is clicked.
+     * */
+    void addPackageToExportList(ActionEvent event) {
+        try {
+            PlotPackage selected = listCompleted.getSelectionModel().getSelectedItem();
+            listExports.getItems().add(selected);
+            // TODO: Prevent adding a plot package to the list more than once.
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Unable to add plot package to export list.");
             alert.showAndWait();
         }
     }

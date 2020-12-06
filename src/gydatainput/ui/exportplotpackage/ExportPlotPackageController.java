@@ -1,38 +1,29 @@
-package gydatainput.ui.plotpackage;
+package gydatainput.ui.exportplotpackage;
 
 import gydatainput.models.plotpackage.PlotPackage;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import gydatainput.ui.plotpackage.PlotPackageController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
-public class PlotPackageController extends ListCell<PlotPackage> {
-    @FXML HBox plotPackage;
+public class ExportPlotPackageController extends ListCell<PlotPackage> {
+    @FXML BorderPane plotPackage;
     @FXML Label packageName;
-    @FXML Label lblDate;
-
-    private static PlotPackageController selected; // Keeps track of which plot package is selected.
-    public static void setSelected(PlotPackageController ppc) { selected = ppc; }
-    public static PlotPackageController getSelected() { return selected; }
-    public PlotPackage getPlotPackage() {
-        return pPackage;
-    }
 
     private PlotPackage pPackage; // The list item's plot package.
 
-    public PlotPackageController() {
+    public ExportPlotPackageController() {
         loadFXML();
         updateItem(pPackage, false);
     }
 
     private void loadFXML() {
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PlotPackage.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ExportPlotPackage.fxml"));
             fxmlLoader.setController(this);
             fxmlLoader.setRoot(this);
             fxmlLoader.load();
@@ -51,7 +42,6 @@ public class PlotPackageController extends ListCell<PlotPackage> {
         } else {
             pPackage = item;
             packageName.setText(pPackage.getName());
-            lblDate.setText(pPackage.getDate());
 
             setGraphic(plotPackage);
         }

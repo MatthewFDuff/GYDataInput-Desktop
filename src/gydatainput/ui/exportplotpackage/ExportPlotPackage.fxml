@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListCell?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<fx:root prefHeight="31.0" prefWidth="160.0" type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+   <graphic>
+      <BorderPane fx:id="plotPackage" prefHeight="20.0" prefWidth="160.0">
+         <center>
+            <Label fx:id="packageName" alignment="CENTER" prefHeight="20.0" prefWidth="160.0" text="Plot Package" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </center>
+      </BorderPane>
+   </graphic>
+</fx:root>
