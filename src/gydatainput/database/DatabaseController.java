@@ -22,7 +22,6 @@ public class DatabaseController {
     private static Connection connection = null;
     private static Statement statement = null;
 
-
     /** Database Controller Constructor
      *      When we create a Database Controller, we initialize
      *      a connection to the database.
@@ -30,7 +29,6 @@ public class DatabaseController {
     private DatabaseController() {
         createConnection();
     }
-
 
     /** Get Connection
      *

@@ -156,14 +156,48 @@ public class MainController implements Initializable {
      * @param event The onClick event when the button is clicked.
      * */
     void addPackageToExportList(ActionEvent event) {
+        // Note that the user can only select one plot package at a time
+        // so multiple selections is not a case that needs to be covered.
         try {
+            // Get the selected plot package from the Completed list.
             PlotPackage selected = listCompleted.getSelectionModel().getSelectedItem();
-            listExports.getItems().add(selected);
-            // TODO: Prevent adding a plot package to the list more than once.
+
+            // Check if the plot package is already in the Exports list.
+            if (!listExports.getItems().contains(selected))
+                // If it's not in the list, add it.
+                listExports.getItems().add(selected);
+            else {
+                // Otherwise notify the user that it is already in the Exports list.
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setContentText("This plot package is already in the exports list.");
+                alert.showAndWait();
+            }
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Unable to add plot package to export list.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    /** Remove Plot Package From Export List
+     *      This function removes the selected plot package from the exports list.
+     * @param event The onClick event when the button is clicked.
+     * */
+    void removePackageFromExportList(ActionEvent event) {
+        // Note that the user can only select one plot package at a time
+        // so multiple selections is not a case that needs to be covered.
+        try {
+            // Get the selected plot package from the Exports list.
+            PlotPackage selected = listExports.getSelectionModel().getSelectedItem();
+            // Remove it from the list.
+            listExports.getItems().remove(selected);
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Unable to remove plot package from the export list.");
             alert.showAndWait();
         }
     }
