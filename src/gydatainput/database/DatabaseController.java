@@ -1,6 +1,10 @@
 package gydatainput.database;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 /**
  * The Database Controller class manages the actual connection to the database.
@@ -15,16 +19,6 @@ import java.sql.*;
 public class DatabaseController {
     // The DatabaseController is a singleton, only referenced for initialization.
     private static DatabaseController controller = null;
-
-    // Separate file TODO
-    private static final String connectionString =
-            "jdbc:sqlserver://localhost\\SQLEXPRESS;"
-            + "database=gyPSPPGP;"
-            + "encrypt=false;"
-            + "integratedSecurity=true;" // Automatically uses windows credentials (may require .dll in System32)
-            + "trustServerCertificate=false;"
-            + "loginTimeout=30;";
-
     private static Connection connection = null;
     private static Statement statement = null;
 
@@ -67,12 +61,36 @@ public class DatabaseController {
      * */
     private void createConnection() {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(connectionString);
+            // Setup a FileInputStream to read the properties from the config.properties file and store them in props.
+            Properties props = new Properties();
+            FileInputStream in = new FileInputStream("src/gydatainput/database/config.properties");
+            props.load(in);
+            in.close();
+
+            // Set the driver to SQLServerDriver
+            String driver = props.getProperty("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            if (driver != null) {
+                Class.forName(driver);
+            }
+
+            // Create the database connection string with the settings in config.properties file
+            String url = props.getProperty("jdbc.host")
+                    + ";database=" + props.getProperty("jdbc.database")
+                    + ";encrypt=" + props.getProperty("jdbc.encrypt")
+                    + ";integratedSecurity=" + props.getProperty("jdbc.integratedSecurity")
+                    + ";trustServerCertificate=" + props.getProperty("jdbc.trustServerCertificate")
+                    + ";loginTimeout=" + props.getProperty("jdbc.loginTimeout") + ";";
+
+            connection = DriverManager.getConnection(url);
+
             System.out.println("Connected to Growth & Yield Database");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
