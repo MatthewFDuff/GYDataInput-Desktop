@@ -1,0 +1,366 @@
+{
+  "PlotKey": 1,
+  "SitePermissions": {
+    "SitePermPlot": {
+      "PlotKey": 1,
+      "LandAdminCode": 1,
+      "Obligation": null,
+      "ConsultRequired": false,
+      "SitePermPlotKey": 1,
+      "PermSignature": false,
+      "GrantedPerm": true,
+      "ConsultRequirement": null
+    }
+  },
+  "StartYear": 2007,
+  "Visit": {
+    "Visits": [
+      {
+        "StandInfoHeader": {
+          "PlotUnifCode": 2,
+          "MaturClassCode": "G",
+          "PlotUnifRationale": null,
+          "StandInfoHeaderKey": 8,
+          "MsrDate": "2007-11-13",
+          "VisitKey": 1,
+          "CanopyStructCode": "S ",
+          "MaturClassRationale": null,
+          "MainCanopyOriginCode": 0
+        },
+        "PhotoHeader": {
+          "PhotoFeature": [],
+          "PhotoHeaderKey": 1,
+          "PhotoRequired": [
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 1,
+              "FrameNum": 11,
+              "PhotoRequiredKey": 1
+            },
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 6,
+              "FrameNum": 16,
+              "PhotoRequiredKey": 6
+            },
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 10,
+              "FrameNum": 12,
+              "PhotoRequiredKey": 2
+            },
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 13,
+              "FrameNum": 14,
+              "PhotoRequiredKey": 4
+            },
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 16,
+              "FrameNum": 13,
+              "PhotoRequiredKey": 3
+            },
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 19,
+              "FrameNum": 15,
+              "PhotoRequiredKey": 5
+            },
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 41,
+              "FrameNum": 17,
+              "PhotoRequiredKey": 7
+            },
+            {
+              "PhotoHeaderKey": 1,
+              "PhotoTypeCode": 54,
+              "FrameNum": 18,
+              "PhotoRequiredKey": 8
+            }
+          ],
+          "MsrDate": "2007-11-13",
+          "VisitKey": 1
+        },
+        "VisitTypeCode": 1,
+        "VegetationHeader": {
+          "VegHeaderKey": 8,
+          "MsrDate": "2007-11-13",
+          "VegVType": [
+            {
+              "ELCMethodCode": 1,
+              "GrowthPlotNum": 0,
+              "VegHeaderKey": 8,
+              "VegTypeCode": 24,
+              "VegVTypeKey": 1
+            }
+          ],
+          "VisitKey": 1,
+          "VegPlot": [
+            {
+              "ShrubPlotNum": 0,
+              "Dist": 7.0,
+              "VegSpecPres": [
+                { "SpecCode": 1086, "VegPlotKey": 8, "VegSpecPresKey": 21 }
+              ],
+              "QuadCode": "NA",
+              "LineNum": 0,
+              "Azi": 23,
+              "VegPlotKey": 8,
+              "GrowthPlotNum": 1,
+              "VegHeaderKey": 8,
+              "VegRegen": [
+                {
+                  "SpecCode": 13,
+                  "VegPlotKey": 8,
+                  "RegenTypeCode": 2,
+                  "CoverPct": 0,
+                  "VegRegenKey": 2,
+                  "RegenCount": 1
+                },
+                {
+                  "SpecCode": 25,
+                  "VegPlotKey": 8,
+                  "RegenTypeCode": 3,
+                  "CoverPct": 0,
+                  "VegRegenKey": 39,
+                  "RegenCount": 1
+                },
+                {
+                  "SpecCode": 74,
+                  "VegPlotKey": 8,
+                  "RegenTypeCode": 3,
+                  "CoverPct": 0,
+                  "VegRegenKey": 47,
+                  "RegenCount": 1
+                }
+              ],
+              "VegShrubSpec": [],
+              "RegenPlotNum": 0,
+              "VegPlotNum": 1,
+              "VegCover": [
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 2,
+                  "VegCoverKey": 126,
+                  "CoverPct": 0,
+                  "VegGroupCode": 1
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 0,
+                  "VegCoverKey": 127,
+                  "CoverPct": 0,
+                  "VegGroupCode": 2
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 1,
+                  "VegCoverKey": 129,
+                  "CoverPct": 0,
+                  "VegGroupCode": 5
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 0,
+                  "VegCoverKey": 130,
+                  "CoverPct": 0,
+                  "VegGroupCode": 6
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 2,
+                  "VegCoverKey": 131,
+                  "CoverPct": 0,
+                  "VegGroupCode": 7
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 0,
+                  "VegCoverKey": 132,
+                  "CoverPct": 0,
+                  "VegGroupCode": 8
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 0,
+                  "VegCoverKey": 133,
+                  "CoverPct": 0,
+                  "VegGroupCode": 9
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 2,
+                  "VegCoverKey": 134,
+                  "CoverPct": 0,
+                  "VegGroupCode": 10
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 3,
+                  "VegCoverKey": 135,
+                  "CoverPct": 0,
+                  "VegGroupCode": 11
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 3,
+                  "VegCoverKey": 136,
+                  "CoverPct": 0,
+                  "VegGroupCode": 12
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 1,
+                  "VegCoverKey": 137,
+                  "CoverPct": 0,
+                  "VegGroupCode": 13
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 0,
+                  "VegCoverKey": 138,
+                  "CoverPct": 0,
+                  "VegGroupCode": 14
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 3,
+                  "VegCoverKey": 139,
+                  "CoverPct": 0,
+                  "VegGroupCode": 15
+                },
+                {
+                  "VegPlotKey": 8,
+                  "CoverClass1To5Code": 0,
+                  "CoverClass0To5Code": 3,
+                  "VegCoverKey": 128,
+                  "CoverPct": 0,
+                  "VegGroupCode": 16
+                }
+              ]
+            }
+          ]
+        },
+        "ManualCode": 15,
+        "PackageKey": 1,
+        "VisitKey": 1
+      },
+      {
+        "VisitTypeCode": 2,
+        "TreeHeader": {
+          "TreeGrowthPlot": [
+            {
+              "LocDist": 0.0,
+              "Radius": 11.28,
+              "GrowthPlotNum": 1,
+              "TreeRenumber": false,
+              "Length": 0.0,
+              "TreeGrowthPlotKey": 1,
+              "LocAzi": 0,
+              "TreeMsr": [],
+              "TreeHeaderKey": 8,
+              "Width": 0.0,
+              "CrownClsr": 0
+            }
+          ],
+          "MsrDate": "2007-11-13",
+          "VisitKey": 20,
+          "TreeHeaderKey": 8
+        },
+        "ManualCode": 15,
+        "PackageKey": 1,
+        "VisitKey": 20
+      }
+    ]
+  },
+  "Plot": {
+    "PlotKey": 1,
+    "DatasetCode": 61,
+    "ProtectionNegotiable": false,
+    "AdminRegionCode": "NW",
+    "PlotName": "1232401PIP"
+  },
+  "Note": {
+    "NotePlot": {
+      "PlotKey": 1,
+      "NotePlotKey": 1,
+      "PlotStatusExpln": null,
+      "Declination": "6W ",
+      "PlotStatusCode": "A"
+    },
+    "NoteFixups": [{ "PlotKey": 1, "AccessCode": 10 }],
+    "Notes": [
+      {
+        "PlotKey": 1,
+        "Note": "Good road - able to drive to plot centre.",
+        "NoteTypeCode": 2,
+        "NoteKey": 88
+      }
+    ]
+  },
+  "StandInformation": {
+    "StandInfoCompr": [],
+    "StandInfoPlot": {
+      "PlotKey": 1,
+      "StandInfoPlotKey": 1,
+      "GeneticWorth": 0,
+      "SeedGeneration": 0,
+      "GeneticImproved": false
+    },
+    "StandInfoTreat": [],
+    "StandInfoDistb": []
+  },
+  "PackageKey": 1,
+  "CoOpMethod": false,
+  "ApproachCode": 2,
+  "Location": {
+    "PlotAccess": [
+      {
+        "PostNum": 1,
+        "PlotKey": 1,
+        "CoordTypeCode": 1,
+        "Datum": 83,
+        "Northing": 5496873,
+        "GPSClassCode": "S",
+        "Easting": 511533,
+        "LocCoordKey": 1,
+        "Accurate": false
+      },
+      {
+        "PostNum": 1,
+        "PlotKey": 1,
+        "CoordTypeCode": 3,
+        "Datum": 83,
+        "Northing": 5496871,
+        "GPSClassCode": "S",
+        "Easting": 511534,
+        "LocCoordKey": 18,
+        "Accurate": false
+      }
+    ],
+    "LocPlot": {
+      "LocPlotKey": 1,
+      "SpecCode": 74,
+      "LatestWalkInMapYear": 2007,
+      "PlotKey": 1,
+      "PlotShapeCode": "C",
+      "Zone": 16,
+      "LatestLocatorMapYear": 2007
+    }
+  }
+}

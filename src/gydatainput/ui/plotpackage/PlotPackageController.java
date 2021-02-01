@@ -1,8 +1,6 @@
 package gydatainput.ui.plotpackage;
 
-import gydatainput.models.plotpackage.PlotPackage;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import gydatainput.models.plotpackage.Package;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -11,7 +9,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class PlotPackageController extends ListCell<PlotPackage> {
+public class PlotPackageController extends ListCell<Package> {
     @FXML HBox plotPackage;
     @FXML Label packageName;
     @FXML Label lblDate;
@@ -19,11 +17,11 @@ public class PlotPackageController extends ListCell<PlotPackage> {
     private static PlotPackageController selected; // Keeps track of which plot package is selected.
     public static void setSelected(PlotPackageController ppc) { selected = ppc; }
     public static PlotPackageController getSelected() { return selected; }
-    public PlotPackage getPlotPackage() {
+    public Package getPlotPackage() {
         return pPackage;
     }
 
-    private PlotPackage pPackage; // The list item's plot package.
+    private Package pPackage; // The list item's plot package.
 
     public PlotPackageController() {
         loadFXML();
@@ -42,7 +40,7 @@ public class PlotPackageController extends ListCell<PlotPackage> {
     }
 
     @Override
-    protected void updateItem(PlotPackage item, boolean empty) {
+    protected void updateItem(Package item, boolean empty) {
         super.updateItem(item, empty);
 
         if (empty || item == null) {
@@ -51,7 +49,8 @@ public class PlotPackageController extends ListCell<PlotPackage> {
         } else {
             pPackage = item;
             packageName.setText(pPackage.getName());
-            lblDate.setText(pPackage.getDate());
+//            lblDate.setText(pPackage.getDate());
+            lblDate.setText("");
 
             setGraphic(plotPackage);
         }

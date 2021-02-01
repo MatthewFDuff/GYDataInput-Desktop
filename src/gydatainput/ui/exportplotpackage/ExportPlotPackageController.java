@@ -1,7 +1,6 @@
 package gydatainput.ui.exportplotpackage;
 
-import gydatainput.models.plotpackage.PlotPackage;
-import gydatainput.ui.plotpackage.PlotPackageController;
+import gydatainput.models.plotpackage.Package;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -11,11 +10,11 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
 // 2020-12-05
-public class ExportPlotPackageController extends ListCell<PlotPackage> {
+public class ExportPlotPackageController extends ListCell<Package> {
     @FXML BorderPane plotPackage;
     @FXML Label packageName;
 
-    private PlotPackage pPackage; // The list item's plot package.
+    private Package pPackage; // The list item's plot package.
 
     public ExportPlotPackageController() {
         loadFXML();
@@ -34,7 +33,7 @@ public class ExportPlotPackageController extends ListCell<PlotPackage> {
     }
 
     @Override
-    protected void updateItem(PlotPackage item, boolean empty) {
+    protected void updateItem(Package item, boolean empty) {
         super.updateItem(item, empty);
 
         if (empty || item == null) {
