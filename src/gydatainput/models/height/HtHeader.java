@@ -17,7 +17,12 @@ public class HtHeader {
         this.hts = hts;
     }
 
-    // CONSTRUCTOR
+    /**
+     * HtHeader Constructor
+     * @param htHeaderKey
+     * @param visitKey
+     * @param msrDate
+     */
     public HtHeader(int htHeaderKey, int visitKey, String msrDate) {
         this.htHeaderKey = htHeaderKey;
         this.visitKey = visitKey;

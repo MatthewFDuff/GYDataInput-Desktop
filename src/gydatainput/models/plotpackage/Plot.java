@@ -7,12 +7,15 @@ import gydatainput.models.location.PlotAccess;
 import gydatainput.models.note.Note;
 import gydatainput.models.note.NoteFixup;
 import gydatainput.models.note.NotePlot;
+import gydatainput.models.plotmapping.PlotMapGrowthPlot;
+import gydatainput.models.plotmapping.PlotMapMort;
 import gydatainput.models.sitepermissions.SitePermPlot;
 import gydatainput.models.sitepermissions.SitePermRest;
-import gydatainput.models.standinformation.StandInfoCompr;
-import gydatainput.models.standinformation.StandInfoDistb;
-import gydatainput.models.standinformation.StandInfoPlot;
-import gydatainput.models.standinformation.StandInfoTreat;
+import gydatainput.models.soilsample.SoilSample;
+import gydatainput.models.soilsitemacromesomicro.SoilGrowthPlot;
+import gydatainput.models.soilsitemacromesomicro.SoilPlot;
+import gydatainput.models.specialist.SpecAssoc;
+import gydatainput.models.standinformation.*;
 
 public class Plot {
     private int plotKey;
@@ -49,6 +52,68 @@ public class Plot {
     private StandInfoDistb[] standInfoDistb;
     private StandInfoTreat[] standInfoTreat;
     private StandInfoCompr[] standInfoCompr;
+
+    // Plot Mapping
+    private PlotMapMort plotMapMort;
+    private PlotMapGrowthPlot[] plotMapGrowthPlot;
+
+    // Soil Sample
+    private SoilSample[] soilSamples;
+
+    // Soil Site Macro Meso Micro
+    private SoilPlot soilPlot;
+    private SoilGrowthPlot[] soilGrowthPlots;
+
+    // Specialist
+    private SpecAssoc[] specAssocs;
+
+    public SpecAssoc[] getSpecAssocs() {
+        return specAssocs;
+    }
+
+    public void setSpecAssocs(SpecAssoc[] specAssocs) {
+        this.specAssocs = specAssocs;
+    }
+
+    public SoilPlot getSoilPlot() {
+        return soilPlot;
+    }
+
+    public void setSoilPlot(SoilPlot soilPlot) {
+        this.soilPlot = soilPlot;
+    }
+
+    public SoilGrowthPlot[] getSoilGrowthPlots() {
+        return soilGrowthPlots;
+    }
+
+    public void setSoilGrowthPlots(SoilGrowthPlot[] soilGrowthPlots) {
+        this.soilGrowthPlots = soilGrowthPlots;
+    }
+
+    public SoilSample[] getSoilSamples() {
+        return soilSamples;
+    }
+
+    public void setSoilSamples(SoilSample[] soilSamples) {
+        this.soilSamples = soilSamples;
+    }
+
+    public PlotMapMort getPlotMapMort() {
+        return plotMapMort;
+    }
+
+    public void setPlotMapMort(PlotMapMort plotMapMort) {
+        this.plotMapMort = plotMapMort;
+    }
+
+    public PlotMapGrowthPlot[] getPlotMapGrowthPlot() {
+        return plotMapGrowthPlot;
+    }
+
+    public void setPlotMapGrowthPlot(PlotMapGrowthPlot[] plotMapGrowthPlot) {
+        this.plotMapGrowthPlot = plotMapGrowthPlot;
+    }
 
     public StandInfoPlot getStandInfoPlot() {
         return standInfoPlot;

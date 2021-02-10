@@ -10,6 +10,28 @@ public class Ht {
     private double htLiveBranch;
     private double htMerch;
 
+    /**
+     * Ht Constructor
+     * @param htKey
+     * @param htHeaderKey
+     * @param treeMsrKey
+     * @param offsetDist
+     * @param htTot
+     * @param htLiveFoliage
+     * @param htLiveBranch
+     * @param htMerch
+     */
+    public Ht(int htKey, int htHeaderKey, int treeMsrKey, double offsetDist, double htTot, double htLiveFoliage, double htLiveBranch, double htMerch) {
+        this.htKey = htKey;
+        this.htHeaderKey = htHeaderKey;
+        this.treeMsrKey = treeMsrKey;
+        this.offsetDist = offsetDist;
+        this.htTot = htTot;
+        this.htLiveFoliage = htLiveFoliage;
+        this.htLiveBranch = htLiveBranch;
+        this.htMerch = htMerch;
+    }
+
     public int getHtKey() {
         return htKey;
     }
@@ -71,18 +93,6 @@ public class Ht {
     }
 
     public void setHtMerch(double htMerch) {
-        this.htMerch = htMerch;
-    }
-
-    // CONSTRUCTOR
-    public Ht(int htKey, int htHeaderKey, int treeMsrKey, double offsetDist, double htTot, double htLiveFoliage, double htLiveBranch, double htMerch) {
-        this.htKey = htKey;
-        this.htHeaderKey = htHeaderKey;
-        this.treeMsrKey = treeMsrKey;
-        this.offsetDist = offsetDist;
-        this.htTot = htTot;
-        this.htLiveFoliage = htLiveFoliage;
-        this.htLiveBranch = htLiveBranch;
         this.htMerch = htMerch;
     }
 }

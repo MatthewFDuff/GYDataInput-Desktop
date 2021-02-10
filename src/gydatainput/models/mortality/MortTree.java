@@ -9,8 +9,16 @@ public class MortTree {
     private double dbh;
     private int mortCauseCode;
 
-
-
+    /**
+     * MortTree Constructor
+     * @param mortTreeKey
+     * @param plotMapMortKey
+     * @param section
+     * @param mortTreeNum
+     * @param specCode
+     * @param dbh
+     * @param mortCauseCode
+     */
     public MortTree(int mortTreeKey, int plotMapMortKey, int section, int mortTreeNum, int specCode, double dbh, int mortCauseCode) {
         this.mortTreeKey = mortTreeKey;
         this.plotMapMortKey = plotMapMortKey;

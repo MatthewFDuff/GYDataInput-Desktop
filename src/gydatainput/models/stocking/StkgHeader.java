@@ -5,7 +5,7 @@ public class StkgHeader {
     private int visitKey;
     private String msrDate;
 
-    private StkgLine stkgLine;
+    private StkgLine[] stkgLines;
 
     // StkgHeader Constructor
     public StkgHeader(int stkgHeaderKey, int visitKey, String msrDate) {
@@ -38,11 +38,11 @@ public class StkgHeader {
         this.msrDate = msrDate;
     }
 
-    public StkgLine getStkgLine() {
-        return stkgLine;
+    public StkgLine[] getStkgLines() {
+        return stkgLines;
     }
 
-    public void setStkgLine(StkgLine stkgLine) {
-        this.stkgLine = stkgLine;
+    public void setStkgLines(StkgLine[] stkgLines) {
+        this.stkgLines = stkgLines;
     }
 }

@@ -1,89 +1,28 @@
 package gydatainput.models.plotpackage;
 
 import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import gydatainput.models.specialist.SpecGYHeader;
+import org.json.simple.JSONObject;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-public class Package {
+public class Package extends Table {
     private Plot plot;
-    private Visit[] visits;
+    private ArrayList<Visit> visits;
 
-    private int packageKey;
-    private int plotKey;
-    private int startYear;
-    private int approachCode;
-    private boolean coOpMethod;
+    private SpecGYHeader specGYHeader;
 
-    public Package(int packageKey, int plotKey, int startYear, int approachCode, int coOpMethod) {
-        this.packageKey = packageKey;
-        this.plotKey = plotKey;
-        this.startYear = startYear;
-        this.approachCode = approachCode;
-        this.coOpMethod = (coOpMethod == 1 ? true : false); // Converts bit to boolean
+    public Package(JSONObject fields) {
+        super(fields);
 
-        this.plot = new Plot(plotKey);
-        this.visits = DatabaseHelper.getVisits(packageKey);
-    }
+        int plotKey = (int) this.getFields().get("PlotKey");
+        int packageKey = (int) this.getFields().get("PackageKey");
 
-    public String getName() {
-        return this.plot.getPlotName();
-    }
-
-    public int getPackageKey() {
-        return packageKey;
-    }
-
-    public void setPackageKey(int packageKey) {
-        this.packageKey = packageKey;
-    }
-
-    public int getPlotKey() {
-        return plotKey;
-    }
-
-    public void setPlotKey(int plotKey) {
-        this.plotKey = plotKey;
-    }
-
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public void setStartYear(int startYear) {
-        this.startYear = startYear;
-    }
-
-    public int getApproachCode() {
-        return approachCode;
-    }
-
-    public void setApproachCode(int approachCode) {
-        this.approachCode = approachCode;
-    }
-
-    public boolean isCoOpMethod() {
-        return coOpMethod;
-    }
-
-    public void setCoOpMethod(boolean coOpMethod) {
-        this.coOpMethod = coOpMethod;
-    }
-
-    public Plot getPlot() {
-        return plot;
-    }
-
-    public void setPlot(Plot plot) {
-        this.plot = plot;
-    }
-
-    public Visit[] getVisits() {
-        return visits;
-    }
-
-    public void setVisits(Visit[] visits) {
-        this.visits = visits;
+        this.plot = new Plot(DatabaseHelper.getData(plotKey, "PlotKey", "tblPlot"));
+        this.visits = DatabaseHelper.getObjects(packageKey, "PackageKey", "tblVisit");
     }
 
 }

@@ -2,22 +2,34 @@ package gydatainput;
 
 import gydatainput.database.DatabaseController;
 import gydatainput.database.DatabaseHelper;
+import gydatainput.models.age.AgeHeader;
 import gydatainput.models.cavity.TreeCav;
 import gydatainput.models.deformity.TreeDefm;
+import gydatainput.models.downwoodydebris.DWDHeader;
+import gydatainput.models.downwoodydebris.DWDLine;
+import gydatainput.models.height.HtHeader;
 import gydatainput.models.location.LocCoord;
 import gydatainput.models.location.LocPlot;
 import gydatainput.models.location.PlotAccess;
+import gydatainput.models.mortality.MortHeader;
 import gydatainput.models.note.Note;
 import gydatainput.models.note.NoteFixup;
 import gydatainput.models.note.NotePlot;
 import gydatainput.models.photo.PhotoFeature;
 import gydatainput.models.photo.PhotoHeader;
 import gydatainput.models.photo.PhotoRequired;
+import gydatainput.models.plotmapping.PlotMapGrowthPlot;
+import gydatainput.models.plotmapping.PlotMapHeader;
+import gydatainput.models.plotmapping.PlotMapMort;
 import gydatainput.models.plotpackage.Package;
 import gydatainput.models.plotpackage.Visit;
+import gydatainput.models.selfqa.SelfQAHeader;
 import gydatainput.models.sitepermissions.SitePermPlot;
 import gydatainput.models.sitepermissions.SitePermRest;
+import gydatainput.models.soilsitetemporal.SoilEcositeHeader;
+import gydatainput.models.soilsitetemporal.SoilHeader;
 import gydatainput.models.standinformation.*;
+import gydatainput.models.stocking.StkgHeader;
 import gydatainput.models.tree.*;
 import gydatainput.models.vegetation.*;
 import gydatainput.ui.exportplotpackage.ExportPlotPackageController;
@@ -38,6 +50,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.xml.crypto.Data;
+import java.awt.*;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -61,6 +75,7 @@ public class MainController implements Initializable {
     @FXML Button btnImportPackage;
     @FXML Button btnDownloadPackage;
     @FXML TextField txtFilterCompleted;
+    @FXML Button btnOpenFileExportsFolder;
 
     // A list of all plot packages that are currently in the database.
     public ObservableList<Package> packages = FXCollections.observableArrayList();
@@ -69,6 +84,8 @@ public class MainController implements Initializable {
 
     // DO NOT REMOVE (This instantiates the database controller on startup and is required, despite not being referenced in this file)
     DatabaseController database = DatabaseController.getInstance();
+
+    Path exportPath = Paths.get(System.getProperty("user.dir") + "/exports/");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -125,6 +142,19 @@ public class MainController implements Initializable {
         System.out.println(System.getProperty("user.dir"));
     }
 
+    /**
+     * Opens the file with the System default file explorer.
+     * @param
+     */
+    @FXML
+    public void openExportFileLocation(ActionEvent actionEvent) throws IOException {
+//        Desktop.getDesktop().browseFileDirectory(new File(exportPath.toString()));
+        final String EXPLORER_EXE = "explorer.exe";
+        String command = "explorer.exe /select," + exportPath;
+        Runtime.getRuntime().exec(command);
+
+    }
+
     /** Load Packages
      *      This function requests all plot packages from the database
      *      and adds them to the list of "Completed" packages.
@@ -156,6 +186,7 @@ public class MainController implements Initializable {
         try {
             // TODO: Create a new timestamped folder for the exported packages.
             Path path = Paths.get(System.getProperty("user.dir") + "/exports/" + LocalDate.now() + "-" + System.currentTimeMillis());
+            exportPath = path;
             Files.createDirectory(path);
 
             // Iterate through each package in the exports list.
@@ -165,7 +196,7 @@ public class MainController implements Initializable {
 
                 // TODO: Save the plot package data as a JSON object/file in the new folder.
 
-                // PACKAGE
+                // Package
                 JSONObject pkgJSON = new JSONObject();
                 pkgJSON.put("PackageKey", pkg.getPackageKey());
                 pkgJSON.put("PlotKey", pkg.getPlotKey());
@@ -173,13 +204,37 @@ public class MainController implements Initializable {
                 pkgJSON.put("ApproachCode", pkg.getApproachCode());
                 pkgJSON.put("CoOpMethod", pkg.isCoOpMethod());
 
-                // PLOT
+                // Plot
                 JSONObject plotJSON = new JSONObject();
                 plotJSON.put("PlotKey", pkg.getPlotKey());
                 plotJSON.put("PlotName", pkg.getName());
                 plotJSON.put("DatasetCode", pkg.getPlot().getDatasetCode());
                 plotJSON.put("AdminRegionCode", pkg.getPlot().getAdminRegionCode());
                 plotJSON.put("ProtectionNegotiable", pkg.getPlot().isProtectionNegotiable());
+
+                // Plot Map Mortality
+                JSONObject plotMapMortJSON = new JSONObject();
+                PlotMapMort plotMapMort = pkg.getPlot().getPlotMapMort();
+                if(plotMapMort != null) {
+                    plotMapMortJSON.put("PlotMapMortKey", plotMapMort.getPlotMapMortKey());
+                    plotMapMortJSON.put("PlotKey", pkg.getPlotKey());
+                    plotMapMortJSON.put("NumOfSections", plotMapMort.getNumOfSections());
+                    plotMapMortJSON.put("EqualSections", plotMapMort.isEqualSections());
+                    plotJSON.put("PlotMapMort", plotMapMortJSON);
+                }
+
+                // PlotMapGrowthPlot
+                JSONArray plotMapGrowthPlots = new JSONArray();
+                for (PlotMapGrowthPlot plotMapGrowthPlot: pkg.getPlot().getPlotMapGrowthPlot()) {
+                    JSONObject plotMapGrowthPlotJSON = new JSONObject();
+                    plotMapGrowthPlotJSON.put("PlotMapGrowthPlotKey", plotMapGrowthPlot.getPlotMapGrowthPlotKey());
+                    plotMapGrowthPlotJSON.put("PlotKey", pkg.getPlotKey());
+                    plotMapGrowthPlotJSON.put("GrowthPlotNum", plotMapGrowthPlot.getGrowthPlotNum());
+                    plotMapGrowthPlotJSON.put("NumOfSections", plotMapGrowthPlot.getNumOfSections());
+                    plotMapGrowthPlotJSON.put("EqualSections", plotMapGrowthPlot.isEqualSections());
+
+                    plotMapGrowthPlots.add(plotMapGrowthPlotJSON);
+                }
 
                 pkgJSON.put("Plot", plotJSON);
 
@@ -462,6 +517,72 @@ public class MainController implements Initializable {
                         n.put("TreeHeader", treeHeaderJSON);
                     }
 
+                    // Ht Header
+                    JSONObject htHeaderJSON = new JSONObject();
+                    HtHeader htHeader = visit.getHtHeader();
+                    if (htHeader != null) {
+                        htHeaderJSON.put("HtHeaderKey", htHeader.getHtHeaderKey());
+                        htHeaderJSON.put("VisitKey", visit.getVisitKey());
+                        htHeaderJSON.put("MsrDate", htHeader.getMsrDate());
+                        n.put("HtHeader", htHeaderJSON);
+                    }
+
+                    // DWD Header
+                    JSONObject dwdHeaderJSON = new JSONObject();
+                    DWDHeader dwdHeader = visit.getDWDHeader();
+                    if (dwdHeader != null) {
+                        dwdHeaderJSON.put("DWDHeaderKey", dwdHeader.getDwdHeaderKey());
+                        dwdHeaderJSON.put("VisitKey", visit.getVisitKey());
+                        dwdHeaderJSON.put("MsrDate", dwdHeader.getMsrDate());
+
+                        // DWD Line
+                        JSONArray dwdLines = new JSONArray();
+                        for(DWDLine dwdLine: dwdHeader.getDwdLines()){
+                            JSONObject dwdLineJSON = new JSONObject();
+                            dwdLineJSON.put("DWDLineKey", dwdLine.getDwdLineKey());
+                            dwdLineJSON.put("DWDHeaderKey", dwdHeader.getDwdHeaderKey());
+                            dwdLineJSON.put("LineNum", dwdLine.getLineNum());
+                            dwdLineJSON.put("Azi", dwdLine.getAzi());
+                            dwdLineJSON.put("Length", dwdLine.getLength());
+                            dwdLineJSON.put("StumpPres", dwdLine.isStumpPres());
+                        }
+                        // DWD Stump
+
+                        // DWD Accum
+
+                        // DWD
+
+                        // DWD Intersect
+
+                        n.put("DWDHeader", dwdHeaderJSON);
+                    }
+
+
+
+                    // Plot Map Header
+                    JSONObject plotMapHeaderJSON = new JSONObject();
+                    PlotMapHeader plotMapHeader = visit.getPlotMapHeader();
+                    if (plotMapHeader != null) {
+                        plotMapHeaderJSON.put("PlotMapHeaderKey", plotMapHeader.getPlotMapHeaderKey());
+                        plotMapHeaderJSON.put("VisitKey", visit.getVisitKey());
+                        plotMapHeaderJSON.put("MsrDate", plotMapHeader.getMsrDate());
+                        plotMapHeaderJSON.put("AreaAssessed", plotMapHeader.getAreaAssessed());
+                        n.put("PlotMapHeader", plotMapHeaderJSON);
+                    }
+
+                    // Stocking Header
+
+                    // Mortality Header
+
+                    // Age Header
+
+                    // Soil Ecosite Header
+
+                    // Soil Header
+
+                    // SelfQAHeader
+
+
                     visits.add(n);
                 }
                 visitJSON.put("Visits", visits);
@@ -524,7 +645,6 @@ public class MainController implements Initializable {
                     sitePermissionsJSON.put("SitePermRest", sitePermRestJSON);
                 }
 
-
                 JSONObject sitePermPlotJSON = new JSONObject();
                 SitePermPlot sitePermPlot = pkg.getPlot().getSitePermPlot();
                 if (sitePermPlot != null) {
@@ -556,6 +676,7 @@ public class MainController implements Initializable {
                     locPlotJSON.put("LatestWalkInMapYear", locPlot.getLatestWalkInMapYear());
                     locationJSON.put("LocPlot", locPlotJSON);
                 }
+
                 // Plot Access
                 JSONArray plotAccessList = new JSONArray();
 
@@ -676,8 +797,6 @@ public class MainController implements Initializable {
      * */
     void downloadPlotPackage(Package pkg) {
         try {
-            // TODO: Download all information for the given package.
-
             int plotKey = pkg.getPlotKey();
 
             // Notes
@@ -708,31 +827,43 @@ public class MainController implements Initializable {
             // Visit
             for(Visit visit: pkg.getVisits()) {
                 int visitKey = visit.getVisitKey();
+
                 // Stand Information
                 visit.setStandInfoHeader(DatabaseHelper.getStandInfoHeader(visitKey));
+
                 // Photo Header & Photo Required/Feature Lists
                 visit.setPhotoHeader(DatabaseHelper.getPhotoHeader(visitKey));
+
                 // Vegetation
                 visit.setVegHeader(DatabaseHelper.getVegHeader(visitKey));
+
                 // Tree
                 visit.setTreeHeader(DatabaseHelper.getTreeHeader(visitKey));
+
                 // Height
                 visit.setHtHeader(DatabaseHelper.getHtHeader(visitKey));
 
-                // TODO Plot Mapping
+                // Plot Mapping
+                visit.setPlotMapHeader(DatabaseHelper.getPlotMapHeader(visitKey));
 
                 // Down Woody Debris
                 visit.setDWDHeader(DatabaseHelper.getDWDHeader(visitKey));
 
-                // TODO Stocking
+                // Stocking
+                visit.setStkgHeader(DatabaseHelper.getStkgHeader(visitKey));
 
-                // TODO Mortality
+                // Mortality
+                visit.setMortHeader(DatabaseHelper.getMortHeader(visitKey));
 
-                // TODO Age
+                // Age
+                visit.setAgeHeader(DatabaseHelper.getAgeHeader(visitKey));
 
-                // TODO Soil Site Temporal
+                // Soil
+                visit.setSoilEcositeHeader(DatabaseHelper.getSoilEcositeHeader(visitKey));
+                visit.setSoilHeader(DatabaseHelper.getSoilHeader(visitKey));
 
-                // TODO Self QA
+                // Self QA
+                visit.setSelfQAHeader(DatabaseHelper.getSelfQAHeader(visitKey));
             }
 
             // Stand Information
@@ -741,13 +872,20 @@ public class MainController implements Initializable {
             pkg.getPlot().setStandInfoTreat(DatabaseHelper.getStandInfoTreat(plotKey));
             pkg.getPlot().setStandInfoCompr(DatabaseHelper.getStandInfoCompr(plotKey));
 
-            // TODO Soil Sample -> Soil Horizon
+            // Plot Mapping
+            pkg.getPlot().setPlotMapMort(DatabaseHelper.getPlotMapMort(plotKey));
+            pkg.getPlot().setPlotMapGrowthPlot(DatabaseHelper.getPlotMapGrowthPlot(plotKey));
 
-            // TODO Soil Site Macro Meso Micro
+            // Soil Sample -> Soil Horizon
+            pkg.getPlot().setSoilSamples(DatabaseHelper.getSoilSamples(plotKey));
 
-            // TODO Specialist (Package and Plot)
+            // Soil Site Macro Meso Micro
+            pkg.getPlot().setSoilPlot(DatabaseHelper.getSoilPlot(plotKey));
+            pkg.getPlot().setSoilGrowthPlots(DatabaseHelper.getSoilGrowthPlots(plotKey));
 
-
+            // Specialist (Package and Plot)
+            pkg.setSpecGYHeader(DatabaseHelper.getSpecGYHeader(pkg.getPackageKey()));
+            pkg.getPlot().setSpecAssocs(DatabaseHelper.getSpecAssoc(plotKey));
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
