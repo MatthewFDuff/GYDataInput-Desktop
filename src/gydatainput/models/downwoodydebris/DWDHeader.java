@@ -1,62 +1,54 @@
 package gydatainput.models.downwoodydebris;
 
 import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-public class DWDHeader {
-    private int dwdHeaderKey;
-    private int visitKey;
-    private String msrDate;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    private DWDLine[] dwdLines;
-    private DWD[] dwds;
+public class DWDHeader extends Table {
 
-    public DWDLine[] getDwdLines() {
-        return dwdLines;
+    private ArrayList<DWDLine> dwdLine;
+    private ArrayList<DWD> dwd;
+
+    /**
+     * Construct a table with a JSONObject containing all columns of a database table.
+     *
+     * @param fields each value contained in a column
+     */
+    public DWDHeader() {
+
     }
 
-    public void setDwdLines(DWDLine[] dwdLines) {
-        this.dwdLines = dwdLines;
+    @Override
+    public void fetchData() throws SQLException {
+        this.dwdLine = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWDLine", DWDLine.class);
+        this.dwd = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWD", DWD.class);
     }
 
-    public DWD[] getDwds() {
-        return dwds;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public void setDwds(DWD[] dwds) {
-        this.dwds = dwds;
-    }
+        // DWD Line
+        if (!dwdLine.isEmpty()) {
+            JSONArray dwdLineJSON = new JSONArray();
+            dwdLine.forEach((n) -> {
+                dwdLineJSON.add(n.getJSON());
+            });
+            json.put("DWDLine", dwdLineJSON);
+        }
 
-    // CONSTRUCTOR
-    public DWDHeader(int dwdHeaderKey, int visitKey, String msrDate) {
-        this.dwdHeaderKey = dwdHeaderKey;
-        this.visitKey = visitKey;
-        this.msrDate = msrDate;
+        // DWD
+        if (!dwd.isEmpty()) {
+            JSONArray dwdJSON = new JSONArray();
+            dwd.forEach((n) -> {
+                dwdJSON.add(n.getJSON());
+            });
+            json.put("DWD", dwdJSON);
+        }
 
-        this.dwdLines = DatabaseHelper.getDWDLines(dwdHeaderKey);
-        this.dwds = DatabaseHelper.getDWD(dwdHeaderKey);
-    }
-
-    public int getDwdHeaderKey() {
-        return dwdHeaderKey;
-    }
-
-    public void setDwdHeaderKey(int dwdHeaderKey) {
-        this.dwdHeaderKey = dwdHeaderKey;
-    }
-
-    public int getVisitKey() {
-        return visitKey;
-    }
-
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
+        return json;
     }
 }

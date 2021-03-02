@@ -1,37 +1,36 @@
 package gydatainput.models.tree;
 
-public class TreeHeader {
-    private int treeHeaderKey;
-    private String msrDate;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private TreeGrowthPlot[] treeGrowthPlot;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    public TreeGrowthPlot[] getTreeGrowthPlot() {
-        return treeGrowthPlot;
+public class TreeHeader extends Table {
+
+    private ArrayList<TreeGrowthPlot> treeGrowthPlot;
+
+    public TreeHeader() {
     }
 
-    public void setTreeGrowthPlot(TreeGrowthPlot[] treeGrowthPlot) {
-        this.treeGrowthPlot = treeGrowthPlot;
+    @Override
+    public void fetchData() throws SQLException {
+        this.treeGrowthPlot = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblTreeGrowthPlot", TreeGrowthPlot.class);
     }
 
-    public int getTreeHeaderKey() {
-        return treeHeaderKey;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public void setTreeHeaderKey(int treeHeaderKey) {
-        this.treeHeaderKey = treeHeaderKey;
-    }
+        if (!treeGrowthPlot.isEmpty()) {
+            JSONArray treeGrowthPlotJSON = new JSONArray();
+            treeGrowthPlot.forEach((n) -> {
+                treeGrowthPlotJSON.add(n.getJSON());
+            });
+            json.put("TreeGrowthPlot", treeGrowthPlotJSON);
+        }
 
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
-    }
-
-    public TreeHeader(int treeHeaderKey, String msrDate) {
-        this.treeHeaderKey = treeHeaderKey;
-        this.msrDate = msrDate;
+        return json;
     }
 }

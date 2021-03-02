@@ -1,62 +1,47 @@
 package gydatainput.models.soilsitetemporal;
 
-public class SoilHeader {
-    private int soilHeaderKey;
-    private int visitKey;
-    private String msrDate;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import gydatainput.models.soilsitemacromesomicro.SoilGrowthPlot;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private SoilForestFloor[] soilForestFloors;
-    private SoilGroundCover[] soilGroundCovers;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    /**
-     * SoilHeader Constructor
-     * @param soilHeaderKey
-     * @param visitKey
-     * @param msrDate
-     */
-    public SoilHeader(int soilHeaderKey, int visitKey, String msrDate) {
-        this.soilHeaderKey = soilHeaderKey;
-        this.visitKey = visitKey;
-        this.msrDate = msrDate;
+public class SoilHeader extends Table {
+
+    private ArrayList<SoilForestFloor> soilForestFloor;
+    private ArrayList<SoilGroundCover> soilGroundCover;
+
+    public SoilHeader() {
     }
 
-    public SoilForestFloor[] getSoilForestFloors() {
-        return soilForestFloors;
+    @Override
+    public void fetchData() throws SQLException {
+        this.soilForestFloor = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilForestFloor", SoilForestFloor.class);
+        this.soilGroundCover = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilGroundCover", SoilGroundCover.class);
     }
 
-    public void setSoilForestFloors(SoilForestFloor[] soilForestFloors) {
-        this.soilForestFloors = soilForestFloors;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public SoilGroundCover[] getSoilGroundCovers() {
-        return soilGroundCovers;
-    }
+        if (!soilForestFloor.isEmpty()) {
+            JSONArray soilForestFloorJSON = new JSONArray();
+            soilForestFloor.forEach((n) -> {
+                soilForestFloorJSON.add(n.getFields());
+            });
+            json.put("SoilForestFloor", soilForestFloorJSON);
+        }
 
-    public void setSoilGroundCovers(SoilGroundCover[] soilGroundCovers) {
-        this.soilGroundCovers = soilGroundCovers;
-    }
+        if (!soilGroundCover.isEmpty()) {
+            JSONArray soilGroundCoverJSON = new JSONArray();
+            soilGroundCover.forEach((n) -> {
+                soilGroundCoverJSON.add(n.getFields());
+            });
+            json.put("SoilForestFloor", soilGroundCoverJSON);
+        }
 
-    public int getSoilHeaderKey() {
-        return soilHeaderKey;
-    }
-
-    public void setSoilHeaderKey(int soilHeaderKey) {
-        this.soilHeaderKey = soilHeaderKey;
-    }
-
-    public int getVisitKey() {
-        return visitKey;
-    }
-
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
+        return json;
     }
 }

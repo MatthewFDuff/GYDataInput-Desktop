@@ -1,57 +1,36 @@
 package gydatainput.models.age;
 
-public class AgeHeader {
-    private int ageHeaderKey;
-    private int visitKey;
-    private String msrDate;
-    private boolean residCompnt;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private AgeTree[] ageTrees;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    public AgeHeader(int ageHeaderKey, int visitKey, String msrDate, boolean residCompnt) {
-        this.ageHeaderKey = ageHeaderKey;
-        this.visitKey = visitKey;
-        this.msrDate = msrDate;
-        this.residCompnt = residCompnt;
+public class AgeHeader extends Table {
+    private ArrayList<AgeTree> ageTree;
+
+    public AgeHeader() {
     }
 
-    public AgeTree[] getAgeTrees() {
-        return ageTrees;
+    @Override
+    public void fetchData() throws SQLException {
+        this.ageTree = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblAgeTree", AgeTree.class);
     }
 
-    public void setAgeTrees(AgeTree[] ageTrees) {
-        this.ageTrees = ageTrees;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public int getAgeHeaderKey() {
-        return ageHeaderKey;
-    }
+        // Age Tree
+        if (!ageTree.isEmpty()) {
+            JSONArray ageTreeJSON = new JSONArray();
+            ageTree.forEach((n) -> {
+                ageTreeJSON.add(n.getJSON());
+            });
+            json.put("MortTreeMsr", ageTreeJSON);
+        }
 
-    public void setAgeHeaderKey(int ageHeaderKey) {
-        this.ageHeaderKey = ageHeaderKey;
-    }
-
-    public int getVisitKey() {
-        return visitKey;
-    }
-
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
-    }
-
-    public boolean isResidCompnt() {
-        return residCompnt;
-    }
-
-    public void setResidCompnt(boolean residCompnt) {
-        this.residCompnt = residCompnt;
+        return json;
     }
 }

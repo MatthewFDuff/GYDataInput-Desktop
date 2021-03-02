@@ -1,46 +1,46 @@
 package gydatainput.models.vegetation;
 
-public class VegHeader {
-    private int vegHeaderKey;
-    private String msrDate;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    public int getVegHeaderKey() {
-        return vegHeaderKey;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class VegHeader extends Table {
+    private ArrayList<VegVType> vegVType;
+    private ArrayList<VegPlot> vegPlot;
+
+    public VegHeader() {
+
     }
 
-    public void setVegHeaderKey(int vegHeaderKey) {
-        this.vegHeaderKey = vegHeaderKey;
+    @Override
+    public void fetchData() throws SQLException {
+        this.vegVType = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegVType", VegVType.class);
+        this.vegPlot = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegPlot", VegPlot.class);
     }
 
-    public String getMsrDate() {
-        return msrDate;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
-    }
+        if (!vegVType.isEmpty()) {
+            JSONArray vegVTypeJSON = new JSONArray();
+            vegVType.forEach((n) -> {
+                vegVTypeJSON.add(n.getFields());
+            });
+            json.put("VegVType", vegVTypeJSON);
+        }
 
-    public VegVType[] getVegVTypes() {
-        return vegVTypes;
-    }
+        if (!vegPlot.isEmpty()) {
+            JSONArray vegPlotJSON = new JSONArray();
+            vegPlot.forEach((n) -> {
+                vegPlotJSON.add(n.getJSON());
+            });
+            json.put("VegPlot", vegPlotJSON);
+        }
 
-    public void setVegVTypes(VegVType[] vegVTypes) {
-        this.vegVTypes = vegVTypes;
+        return json;
     }
-
-    public VegPlot[] getVegPlots() {
-        return vegPlots;
-    }
-
-    public void setVegPlots(VegPlot[] vegPlots) {
-        this.vegPlots = vegPlots;
-    }
-
-    public VegHeader(int vegHeaderKey, String msrDate) {
-        this.vegHeaderKey = vegHeaderKey;
-        this.msrDate = msrDate;
-    }
-
-    private VegVType[] vegVTypes;
-    private VegPlot[] vegPlots;
 }

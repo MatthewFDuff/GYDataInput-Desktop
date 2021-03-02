@@ -1,27 +1,10 @@
 package gydatainput.models.cavity;
 
-public class TreeCav {
-    private int treeCavKey;
-    private int cavTypeCode;
+import gydatainput.models.Table;
+import org.json.simple.JSONObject;
 
-    public int getTreeCavKey() {
-        return treeCavKey;
-    }
+public class TreeCav extends Table {
 
-    public void setTreeCavKey(int treeCavKey) {
-        this.treeCavKey = treeCavKey;
-    }
-
-    public int getCavTypeCode() {
-        return cavTypeCode;
-    }
-
-    public void setCavTypeCode(int cavTypeCode) {
-        this.cavTypeCode = cavTypeCode;
-    }
-
-    public TreeCav(int treeCavKey, int cavTypeCode) {
-        this.treeCavKey = treeCavKey;
-        this.cavTypeCode = cavTypeCode;
+    public TreeCav() {
     }
 }

@@ -41,7 +41,7 @@ public class ExportPlotPackageController extends ListCell<Package> {
             setGraphic(null);
         } else {
             pPackage = item;
-            packageName.setText(pPackage.getName());
+            packageName.setText(pPackage.getPlot().getFields().get("PlotName").toString());
 
             setGraphic(plotPackage);
         }

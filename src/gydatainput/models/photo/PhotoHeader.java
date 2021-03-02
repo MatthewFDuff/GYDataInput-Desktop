@@ -1,46 +1,49 @@
 package gydatainput.models.photo;
 
-public class PhotoHeader {
-    private int photoHeaderKey;
-    private String msrDate;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private PhotoRequired[] photoRequireds;
-    private PhotoFeature[] photoFeatures;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    public PhotoRequired[] getPhotoRequireds() {
-        return photoRequireds;
+public class PhotoHeader extends Table {
+
+    private ArrayList<PhotoRequired> photoRequired;
+    private ArrayList<PhotoFeature> photoFeature;
+
+    public PhotoHeader() {
     }
 
-    public void setPhotoRequireds(PhotoRequired[] photoRequireds) {
-        this.photoRequireds = photoRequireds;
+    @Override
+    public void fetchData() throws SQLException {
+        this.photoRequired = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblPhotoRequired", PhotoRequired.class);
+        this.photoFeature = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblPhotoFeature", PhotoFeature.class);
     }
 
-    public PhotoFeature[] getPhotoFeatures() {
-        return photoFeatures;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public void setPhotoFeatures(PhotoFeature[] photoFeatures) {
-        this.photoFeatures = photoFeatures;
-    }
+        // PhotoRequired
+        if (!photoRequired.isEmpty()) {
+            JSONArray photoRequiredJSON = new JSONArray();
+            photoRequired.forEach((n) -> {
+                photoRequiredJSON.add(n.getFields());
+            });
 
-    public int getPhotoHeaderKey() {
-        return photoHeaderKey;
-    }
+            json.put("PhotoRequired", photoRequiredJSON);
+        }
 
-    public void setPhotoHeaderKey(int photoHeaderKey) {
-        this.photoHeaderKey = photoHeaderKey;
-    }
+        // Photo Feature
+        if (!photoFeature.isEmpty()) {
+            JSONArray photoFeatureJSON = new JSONArray();
+            photoFeature.forEach((n) -> {
+                photoFeatureJSON.add(n.getFields());
+            });
+            json.put("PhotoFeature", photoFeatureJSON);
+        }
 
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
-    }
-
-    public PhotoHeader(int photoHeaderKey, String msrDate) {
-        this.photoHeaderKey = photoHeaderKey;
-        this.msrDate = msrDate;
+        return json;
     }
 }

@@ -1,26 +1,26 @@
 package gydatainput.models.plotpackage;
 
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
 import gydatainput.models.age.AgeHeader;
+import gydatainput.models.downwoodydebris.DWD;
 import gydatainput.models.downwoodydebris.DWDHeader;
 import gydatainput.models.height.HtHeader;
 import gydatainput.models.mortality.MortHeader;
 import gydatainput.models.photo.PhotoHeader;
 import gydatainput.models.plotmapping.PlotMapHeader;
 import gydatainput.models.selfqa.SelfQAHeader;
-import gydatainput.models.selfqa.SelfQAHt;
 import gydatainput.models.soilsitetemporal.SoilEcositeHeader;
 import gydatainput.models.soilsitetemporal.SoilHeader;
 import gydatainput.models.standinformation.StandInfoHeader;
 import gydatainput.models.stocking.StkgHeader;
 import gydatainput.models.tree.TreeHeader;
 import gydatainput.models.vegetation.VegHeader;
+import org.json.simple.JSONObject;
 
-public class Visit {
-    private int visitKey;
-    private int visitTypeCode;
-    private int fieldSeasonYear;
-    private int manualCode;
+import java.sql.SQLException;
 
+public class Visit extends Table {
     private StandInfoHeader standInfoHeader;
     private PhotoHeader photoHeader;
     private VegHeader vegHeader;
@@ -35,154 +35,84 @@ public class Visit {
     private SoilHeader soilHeader;
     private SelfQAHeader selfQAHeader;
 
-    public SelfQAHeader getSelfQAHeader() {
-        return selfQAHeader;
+    public Visit() {
     }
 
-    public void setSelfQAHeader(SelfQAHeader selfQAHeader) {
-        this.selfQAHeader = selfQAHeader;
+    public Visit(JSONObject fields) {
+        super(fields);
     }
 
-    public SoilHeader getSoilHeader() {
-        return soilHeader;
+    public void retrieveData() {
+        try {
+            this.standInfoHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblStandInfoHeader", StandInfoHeader.class);
+            this.photoHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblPhotoHeader", PhotoHeader.class);
+            this.vegHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblVegHeader", VegHeader.class);
+            this.treeHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblTreeHeader", TreeHeader.class);
+            this.htHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblHtHeader", HtHeader.class);
+            this.dwdHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblDWDHeader", DWDHeader.class);
+            this.plotMapHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblPlotMapHeader", PlotMapHeader.class);
+            this.stkgHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblStkgHeader", StkgHeader.class);
+            this.mortHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblMortHeader", MortHeader.class);
+            this.ageHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblAgeHeader", AgeHeader.class);
+            this.soilEcositeHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblSoilEcositeHeader", SoilEcositeHeader.class);
+            this.soilHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblSoilHeader", SoilHeader.class);
+            this.selfQAHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblSelfQAHeader", SelfQAHeader.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setSoilHeader(SoilHeader soilHeader) {
-        this.soilHeader = soilHeader;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public SoilEcositeHeader getSoilEcositeHeader() {
-        return soilEcositeHeader;
-    }
+        if (standInfoHeader != null) {
+            json.put("StandInfoHeader", standInfoHeader.getFields());
+        }
+        if (photoHeader != null) {
+            json.put("PhotoHeader", photoHeader.getJSON());
+        }
+        if (vegHeader != null) {
+            json.put("VegHeader", vegHeader.getJSON());
+        }
+        if (treeHeader != null) {
+            json.put("TreeHeader", treeHeader.getJSON());
+        }
+        if (htHeader != null) {
+            json.put("HtHeader", htHeader.getJSON());
+        }
 
-    public void setSoilEcositeHeader(SoilEcositeHeader soilEcositeHeader) {
-        this.soilEcositeHeader = soilEcositeHeader;
-    }
+        if (dwdHeader != null) {
+            json.put("DWDHeader", dwdHeader.getJSON());
+        }
 
-    public AgeHeader getAgeHeader() {
-        return ageHeader;
-    }
+        if (plotMapHeader != null) {
+            json.put("PlotMapHeader", plotMapHeader.getFields());
+        }
 
-    public void setAgeHeader(AgeHeader ageHeader) {
-        this.ageHeader = ageHeader;
-    }
+        if (stkgHeader != null) {
+            json.put("StkgHeader", stkgHeader.getJSON());
+        }
 
-    public MortHeader getMortHeader() {
-        return mortHeader;
-    }
+        if (mortHeader != null) {
+            json.put("MortHeader", mortHeader.getJSON());
+        }
 
-    public void setMortHeader(MortHeader mortHeader) {
-        this.mortHeader = mortHeader;
-    }
+        if (ageHeader != null) {
+            json.put("AgeHeader", ageHeader.getJSON());
+        }
 
-    public StkgHeader getStkgHeader() {
-        return stkgHeader;
-    }
+        if (soilEcositeHeader != null) {
+            json.put("SoilEcositeHeader", soilEcositeHeader.getJSON());
+        }
 
-    public void setStkgHeader(StkgHeader stkgHeader) {
-        this.stkgHeader = stkgHeader;
-    }
+        if (soilHeader != null) {
+            json.put("SoilHeader", soilHeader.getJSON());
+        }
 
-    public DWDHeader getDwdHeader() {
-        return dwdHeader;
-    }
+        if (selfQAHeader != null) {
+            json.put("SelfQAHeader", selfQAHeader.getJSON());
+        }
 
-    public void setDwdHeader(DWDHeader dwdHeader) {
-        this.dwdHeader = dwdHeader;
-    }
-
-    public PlotMapHeader getPlotMapHeader() {
-        return plotMapHeader;
-    }
-
-    public void setPlotMapHeader(PlotMapHeader plotMapHeader) {
-        this.plotMapHeader = plotMapHeader;
-    }
-
-    public DWDHeader getDWDHeader() {
-        return dwdHeader;
-    }
-
-    public void setDWDHeader(DWDHeader dwdHeader) {
-        this.dwdHeader = dwdHeader;
-    }
-
-    public HtHeader getHtHeader() {
-        return htHeader;
-    }
-
-    public void setHtHeader(HtHeader htHeader) {
-        this.htHeader = htHeader;
-    }
-
-    public TreeHeader getTreeHeader() {
-        return treeHeader;
-    }
-
-    public void setTreeHeader(TreeHeader treeHeader) {
-        this.treeHeader = treeHeader;
-    }
-
-    public VegHeader getVegHeader() {
-        return vegHeader;
-    }
-
-    public void setVegHeader(VegHeader vegHeader) {
-        this.vegHeader = vegHeader;
-    }
-
-    public PhotoHeader getPhotoHeader() {
-        return photoHeader;
-    }
-
-    public void setPhotoHeader(PhotoHeader photoHeader) {
-        this.photoHeader = photoHeader;
-    }
-
-    public StandInfoHeader getStandInfoHeader() {
-        return standInfoHeader;
-    }
-
-    public void setStandInfoHeader(StandInfoHeader standInfoHeader) {
-        this.standInfoHeader = standInfoHeader;
-    }
-
-    public Visit(int visitKey, int visitTypeCode, int fieldSeasonYear, int manualCode) {
-        this.visitKey = visitKey;
-        this.visitTypeCode = visitTypeCode;
-        this.fieldSeasonYear = fieldSeasonYear;
-        this.manualCode = manualCode;
-    }
-
-    public int getVisitKey() {
-        return visitKey;
-    }
-
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public int getVisitTypeCode() {
-        return visitTypeCode;
-    }
-
-    public void setVisitTypeCode(int visitTypeCode) {
-        this.visitTypeCode = visitTypeCode;
-    }
-
-    public int getFieldSeasonYear() {
-        return fieldSeasonYear;
-    }
-
-    public void setFieldSeasonYear(int fieldSeasonYear) {
-        this.fieldSeasonYear = fieldSeasonYear;
-    }
-
-    public int getManualCode() {
-        return manualCode;
-    }
-
-    public void setManualCode(int manualCode) {
-        this.manualCode = manualCode;
+        return json;
     }
 }

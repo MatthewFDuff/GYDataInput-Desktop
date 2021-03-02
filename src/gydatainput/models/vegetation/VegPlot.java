@@ -1,134 +1,70 @@
 package gydatainput.models.vegetation;
 
-public class VegPlot {
-    private int vegPlotKey;
-    private int growthPlotNum;
-    private int vegPlotNum;
-    private int shrubPlotNum;
-    private int regenPlotNum;
-    private String quadCode;
-    private int lineNum;
-    private int azi;
-    private double dist;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private VegCover[] vegCovers;
-    private VegRegen[] vegRegens;
-    private VegSpecPres[] vegSpecPres;
-    private VegShrubSpec[] vegShrubSpecs;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    public VegCover[] getVegCovers() {
-        return vegCovers;
+public class VegPlot extends Table {
+
+    private ArrayList<VegCover> vegCover;
+    private ArrayList<VegRegen> vegRegen;
+    private ArrayList<VegSpecPres> vegSpecPres;
+    private ArrayList<VegShrubSpec> vegShrubSpec;
+
+    public VegPlot() {
     }
 
-    public void setVegCovers(VegCover[] vegCovers) {
-        this.vegCovers = vegCovers;
+    @Override
+    public void fetchData() throws SQLException {
+        this.vegCover = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegCover", VegCover.class);
+        this.vegRegen = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegRegen", VegRegen.class);
+        this.vegSpecPres = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegSpecPres", VegSpecPres.class);
+        this.vegShrubSpec = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegShrubSpec", VegShrubSpec.class);
     }
 
-    public VegRegen[] getVegRegens() {
-        return vegRegens;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public void setVegRegens(VegRegen[] vegRegens) {
-        this.vegRegens = vegRegens;
-    }
+        // Veg Cover
+        if (!vegCover.isEmpty()) {
+            JSONArray vegCoverJSON = new JSONArray();
+            vegCover.forEach((n) -> {
+                vegCoverJSON.add(n.getFields());
+            });
+            json.put("VegCover", vegCoverJSON);
+        }
 
-    public VegSpecPres[] getVegSpecPres() {
-        return vegSpecPres;
-    }
+        // Veg Regen
+        if (!vegRegen.isEmpty()) {
+            JSONArray vegRegenJSON = new JSONArray();
+            vegRegen.forEach((n) -> {
+                vegRegenJSON.add(n.getFields());
+            });
+            json.put("VegRegen", vegRegenJSON);
+        }
 
-    public void setVegSpecPres(VegSpecPres[] vegSpecPres) {
-        this.vegSpecPres = vegSpecPres;
-    }
+        // Veg Spec Pres
+        if (!vegSpecPres.isEmpty()) {
+            JSONArray vegSpecPresJSON = new JSONArray();
+            vegSpecPres.forEach((n) -> {
+                vegSpecPresJSON.add(n.getFields());
+            });
+            json.put("VegSpecPres", vegSpecPresJSON);
+        }
 
-    public VegShrubSpec[] getVegShrubSpecs() {
-        return vegShrubSpecs;
-    }
+        // Veg Shrub Spec
+        if (!vegShrubSpec.isEmpty()) {
+            JSONArray vegShrubSpecJSON = new JSONArray();
+            vegShrubSpec.forEach((n) -> {
+                vegShrubSpecJSON.add(n.getFields());
+            });
+            json.put("VegShrubSpec", vegShrubSpecJSON);
+        }
 
-    public void setVegShrubSpecs(VegShrubSpec[] vegShrubSpecs) {
-        this.vegShrubSpecs = vegShrubSpecs;
-    }
-
-    public int getVegPlotKey() {
-        return vegPlotKey;
-    }
-
-    public void setVegPlotKey(int vegPlotKey) {
-        this.vegPlotKey = vegPlotKey;
-    }
-
-    public int getGrowthPlotNum() {
-        return growthPlotNum;
-    }
-
-    public void setGrowthPlotNum(int growthPlotNum) {
-        this.growthPlotNum = growthPlotNum;
-    }
-
-    public int getVegPlotNum() {
-        return vegPlotNum;
-    }
-
-    public void setVegPlotNum(int vegPlotNum) {
-        this.vegPlotNum = vegPlotNum;
-    }
-
-    public int getShrubPlotNum() {
-        return shrubPlotNum;
-    }
-
-    public void setShrubPlotNum(int shrubPlotNum) {
-        this.shrubPlotNum = shrubPlotNum;
-    }
-
-    public int getRegenPlotNum() {
-        return regenPlotNum;
-    }
-
-    public void setRegenPlotNum(int regenPlotNum) {
-        this.regenPlotNum = regenPlotNum;
-    }
-
-    public String getQuadCode() {
-        return quadCode;
-    }
-
-    public void setQuadCode(String quadCode) {
-        this.quadCode = quadCode;
-    }
-
-    public int getLineNum() {
-        return lineNum;
-    }
-
-    public void setLineNum(int lineNum) {
-        this.lineNum = lineNum;
-    }
-
-    public int getAzi() {
-        return azi;
-    }
-
-    public void setAzi(int azi) {
-        this.azi = azi;
-    }
-
-    public double getDist() {
-        return dist;
-    }
-
-    public void setDist(double dist) {
-        this.dist = dist;
-    }
-
-    public VegPlot(int vegPlotKey, int growthPlotNum, int vegPlotNum, int shrubPlotNum, int regenPlotNum, String quadCode, int lineNum, int azi, double dist) {
-        this.vegPlotKey = vegPlotKey;
-        this.growthPlotNum = growthPlotNum;
-        this.vegPlotNum = vegPlotNum;
-        this.shrubPlotNum = shrubPlotNum;
-        this.regenPlotNum = regenPlotNum;
-        this.quadCode = quadCode;
-        this.lineNum = lineNum;
-        this.azi = azi;
-        this.dist = dist;
+        return json;
     }
 }

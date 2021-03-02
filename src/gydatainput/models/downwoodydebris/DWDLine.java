@@ -1,102 +1,58 @@
 package gydatainput.models.downwoodydebris;
 
 import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-public class DWDLine {
-    private int dwdLineKey;
-    private int dwdHeaderKey;
-    private int lineNum;
-    private int azi;
-    private double length;
-    private boolean stumpPres;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    private DWDIntersect[] dwdIntersections;
-    private DWDStump[] dwdStumps;
-    private DWDAccum[] dwdAccums;
+public class DWDLine extends Table {
+    private ArrayList<DWDIntersect> dwdIntersect;
+    private ArrayList<DWDStump> dwdStump;
+    private ArrayList<DWDAccum> dwdAccum;
 
-    public DWDIntersect[] getDwdIntersections() {
-        return dwdIntersections;
+    public DWDLine() {
     }
 
-    public void setDwdIntersections(DWDIntersect[] dwdIntersections) {
-        this.dwdIntersections = dwdIntersections;
+    @Override
+    public void fetchData() throws SQLException {
+        this.dwdIntersect = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWDIntersect", DWDIntersect.class);
+        this.dwdStump = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWDStump", DWDStump.class);
+        this.dwdAccum = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWDAccum", DWDAccum.class);
     }
 
-    public DWDStump[] getDwdStumps() {
-        return dwdStumps;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public void setDwdStumps(DWDStump[] dwdStumps) {
-        this.dwdStumps = dwdStumps;
-    }
+        // DWD Intersect
+        if (!dwdIntersect.isEmpty()) {
+            JSONArray dwdIntersectJSON = new JSONArray();
+            dwdIntersect.forEach((n) -> {
+                dwdIntersectJSON.add(n.getFields());
+            });
+            json.put("DWDIntersect", dwdIntersectJSON);
+        }
 
-    public DWDAccum[] getDwdAccums() {
-        return dwdAccums;
-    }
+        // DWD Stump
+        if (!dwdStump.isEmpty()) {
+            JSONArray dwdStumpJSON = new JSONArray();
+            dwdStump.forEach((n) -> {
+                dwdStumpJSON.add(n.getFields());
+            });
+            json.put("DWDStump", dwdStumpJSON);
+        }
 
-    public void setDwdAccums(DWDAccum[] dwdAccums) {
-        this.dwdAccums = dwdAccums;
-    }
+        // DWD Accum
+        if (!dwdAccum.isEmpty()) {
+            JSONArray dwdAccumJSON = new JSONArray();
+            dwdAccum.forEach((n) -> {
+                dwdAccumJSON.add(n.getFields());
+            });
+            json.put("DWDAccum", dwdAccumJSON);
+        }
 
-    public int getDwdLineKey() {
-        return dwdLineKey;
-    }
-
-    public void setDwdLineKey(int dwdLineKey) {
-        this.dwdLineKey = dwdLineKey;
-    }
-
-    public int getDwdHeaderKey() {
-        return dwdHeaderKey;
-    }
-
-    public void setDwdHeaderKey(int dwdHeaderKey) {
-        this.dwdHeaderKey = dwdHeaderKey;
-    }
-
-    public int getLineNum() {
-        return lineNum;
-    }
-
-    public void setLineNum(int lineNum) {
-        this.lineNum = lineNum;
-    }
-
-    public int getAzi() {
-        return azi;
-    }
-
-    public void setAzi(int azi) {
-        this.azi = azi;
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public void setLength(double length) {
-        this.length = length;
-    }
-
-    public boolean isStumpPres() {
-        return stumpPres;
-    }
-
-    public void setStumpPres(boolean stumpPres) {
-        this.stumpPres = stumpPres;
-    }
-
-    // CONSTRUCTOR
-    public DWDLine(int dwdLineKey, int dwdHeaderKey, int lineNum, int azi, double length, boolean stumpPres) {
-        this.dwdLineKey = dwdLineKey;
-        this.dwdHeaderKey = dwdHeaderKey;
-        this.lineNum = lineNum;
-        this.azi = azi;
-        this.length = length;
-        this.stumpPres = stumpPres;
-
-        this.dwdIntersections = DatabaseHelper.getDWDIntersections(dwdLineKey);
-        this.dwdAccums = DatabaseHelper.getDWDAccum(dwdLineKey);
-        this.dwdStumps = DatabaseHelper.getDWDStumps(dwdLineKey);
+        return json;
     }
 }

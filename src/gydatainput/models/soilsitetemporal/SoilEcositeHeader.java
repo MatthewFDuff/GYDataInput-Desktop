@@ -1,53 +1,37 @@
 package gydatainput.models.soilsitetemporal;
 
-public class SoilEcositeHeader {
-    private int soilEcositeHeaderKey;
-    private int visitKey;
-    private String msrDate;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private SoilEcosite[] soilEcosites;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    /**
-     * SoilEcositeHeader Constructor
-     * @param soilEcositeHeaderKey
-     * @param visitKey
-     * @param msrDate
-     */
-    public SoilEcositeHeader(int soilEcositeHeaderKey, int visitKey, String msrDate) {
-        this.soilEcositeHeaderKey = soilEcositeHeaderKey;
-        this.visitKey = visitKey;
-        this.msrDate = msrDate;
+public class SoilEcositeHeader extends Table {
+
+    private ArrayList<SoilEcosite> soilEcosite;
+
+    public SoilEcositeHeader(){
     }
 
-    public SoilEcosite[] getSoilEcosites() {
-        return soilEcosites;
+    @Override
+    public void fetchData() throws SQLException {
+        this.soilEcosite = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilEcosite", SoilEcosite.class);
     }
 
-    public void setSoilEcosites(SoilEcosite[] soilEcosites) {
-        this.soilEcosites = soilEcosites;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public int getSoilEcositeHeaderKey() {
-        return soilEcositeHeaderKey;
-    }
+        // Soil Ecosite
+        if (!soilEcosite.isEmpty()) {
+            JSONArray soilEcositeJSON = new JSONArray();
+            soilEcosite.forEach((n) -> {
+                soilEcositeJSON.add(n.getFields());
+            });
+            json.put("SoilEcosite", soilEcositeJSON);
+        }
 
-    public void setSoilEcositeHeaderKey(int soilEcositeHeaderKey) {
-        this.soilEcositeHeaderKey = soilEcositeHeaderKey;
-    }
-
-    public int getVisitKey() {
-        return visitKey;
-    }
-
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
+        return json;
     }
 }

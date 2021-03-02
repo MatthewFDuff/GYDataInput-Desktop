@@ -1,17 +1,10 @@
 package gydatainput.models.location;
 
-public class PlotAccess {
-    private int accessCode;
+import gydatainput.models.Table;
+import org.json.simple.JSONObject;
 
-    public PlotAccess(int accessCode) {
-        this.accessCode = accessCode;
-    }
+public class PlotAccess extends Table {
 
-    public int getAccessCode() {
-        return accessCode;
-    }
-
-    public void setAccessCode(int accessCode) {
-        this.accessCode = accessCode;
+    public PlotAccess() {
     }
 }

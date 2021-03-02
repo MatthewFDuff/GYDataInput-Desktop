@@ -1,48 +1,36 @@
 package gydatainput.models.stocking;
 
-public class StkgHeader {
-    private int stkgHeaderKey;
-    private int visitKey;
-    private String msrDate;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private StkgLine[] stkgLines;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    // StkgHeader Constructor
-    public StkgHeader(int stkgHeaderKey, int visitKey, String msrDate) {
-        this.stkgHeaderKey = stkgHeaderKey;
-        this.visitKey = visitKey;
-        this.msrDate = msrDate;
+public class StkgHeader extends Table {
+
+    private ArrayList<StkgLine> stkgLine;
+
+    public StkgHeader()  {
     }
 
-    public int getStkgHeaderKey() {
-        return stkgHeaderKey;
+    @Override
+    public void fetchData() throws SQLException {
+        this.stkgLine = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblStkgLine", StkgLine.class);
     }
 
-    public void setStkgHeaderKey(int stkgHeaderKey) {
-        this.stkgHeaderKey = stkgHeaderKey;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public int getVisitKey() {
-        return visitKey;
-    }
+        if (!stkgLine.isEmpty()) {
+            JSONArray stkgLineJSON = new JSONArray();
+            stkgLine.forEach((n) -> {
+                stkgLineJSON.add(n.getJSON());
+            });
+            json.put("StkgLine", stkgLineJSON);
+        }
 
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
-    }
-
-    public StkgLine[] getStkgLines() {
-        return stkgLines;
-    }
-
-    public void setStkgLines(StkgLine[] stkgLines) {
-        this.stkgLines = stkgLines;
+        return json;
     }
 }

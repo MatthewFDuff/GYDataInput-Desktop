@@ -16,6 +16,9 @@ public class Manual {
     private double mortMinDBH;
     private double mortMinLength;
 
+    public Manual() {
+    }
+
     /**
      * Manual Constructor
      * @param manualCode

@@ -1,107 +1,36 @@
 package gydatainput.models.tree;
 
-public class TreeGrowthPlot {
-    private int treeGrowthPlotKey;
-    private int growthPlotNum;
-    private int crownClsr;
-    private int locAzi;
-    private double locDist;
-    private double radius;
-    private double width;
-    private double length;
-    boolean treeRenumber;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private TreeMsr[] treeMsrs;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    public TreeMsr[] getTreeMsrs() {
-        return treeMsrs;
+public class TreeGrowthPlot extends Table {
+
+    private ArrayList<TreeMsr> treeMsr;
+
+    public TreeGrowthPlot(){
     }
 
-    public void setTreeMsrs(TreeMsr[] treeMsrs) {
-        this.treeMsrs = treeMsrs;
+    @Override
+    public void fetchData() throws SQLException {
+        this.treeMsr = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblTreeMsr", TreeMsr.class);
     }
 
-    public int getTreeGrowthPlotKey() {
-        return treeGrowthPlotKey;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public void setTreeGrowthPlotKey(int treeGrowthPlotKey) {
-        this.treeGrowthPlotKey = treeGrowthPlotKey;
-    }
+        if (!treeMsr.isEmpty()) {
+            JSONArray treeMsrJSON = new JSONArray();
+            treeMsr.forEach((n) -> {
+                treeMsrJSON.add(n.getJSON());
+            });
+            json.put("TreeMsr", treeMsrJSON);
+        }
 
-    public int getGrowthPlotNum() {
-        return growthPlotNum;
-    }
-
-    public void setGrowthPlotNum(int growthPlotNum) {
-        this.growthPlotNum = growthPlotNum;
-    }
-
-    public int getCrownClsr() {
-        return crownClsr;
-    }
-
-    public void setCrownClsr(int crownClsr) {
-        this.crownClsr = crownClsr;
-    }
-
-    public int getLocAzi() {
-        return locAzi;
-    }
-
-    public void setLocAzi(int locAzi) {
-        this.locAzi = locAzi;
-    }
-
-    public double getLocDist() {
-        return locDist;
-    }
-
-    public void setLocDist(double locDist) {
-        this.locDist = locDist;
-    }
-
-    public double getRadius() {
-        return radius;
-    }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public void setLength(double length) {
-        this.length = length;
-    }
-
-    public boolean isTreeRenumber() {
-        return treeRenumber;
-    }
-
-    public void setTreeRenumber(boolean treeRenumber) {
-        this.treeRenumber = treeRenumber;
-    }
-
-    public TreeGrowthPlot(int treeGrowthPlotKey, int growthPlotNum, int crownClsr, int locAzi, double locDist, double radius, double width, double length, boolean treeRenumber) {
-        this.treeGrowthPlotKey = treeGrowthPlotKey;
-        this.growthPlotNum = growthPlotNum;
-        this.crownClsr = crownClsr;
-        this.locAzi = locAzi;
-        this.locDist = locDist;
-        this.radius = radius;
-        this.width = width;
-        this.length = length;
-        this.treeRenumber = treeRenumber;
+        return json;
     }
 }

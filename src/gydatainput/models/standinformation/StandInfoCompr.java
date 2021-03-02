@@ -1,37 +1,11 @@
 package gydatainput.models.standinformation;
 
-public class StandInfoCompr {
-    private int standInfoComprKey;
-    private int comprTypeCode;
-    private int comprYear;
+import gydatainput.models.Table;
+import org.json.simple.JSONObject;
 
-    public int getStandInfoComprKey() {
-        return standInfoComprKey;
+public class StandInfoCompr extends Table {
+
+    public StandInfoCompr() {
     }
 
-    public void setStandInfoComprKey(int standInfoComprKey) {
-        this.standInfoComprKey = standInfoComprKey;
-    }
-
-    public int getComprTypeCode() {
-        return comprTypeCode;
-    }
-
-    public void setComprTypeCode(int comprTypeCode) {
-        this.comprTypeCode = comprTypeCode;
-    }
-
-    public int getComprYear() {
-        return comprYear;
-    }
-
-    public void setComprYear(int comprYear) {
-        this.comprYear = comprYear;
-    }
-
-    public StandInfoCompr(int standInfoComprKey, int comprTypeCode, int comprYear) {
-        this.standInfoComprKey = standInfoComprKey;
-        this.comprTypeCode = comprTypeCode;
-        this.comprYear = comprYear;
-    }
 }

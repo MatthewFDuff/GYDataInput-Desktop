@@ -1,69 +1,37 @@
 package gydatainput.models.stocking;
 
-public class StkgLine {
-    private int stkgLineKey;
-    private int stkgHeaderKey;
-    private int lineNum;
-    private int azi;
-    private int stkgPlotCount;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private Stkg[] stkgs;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    // StkgLine Constructor
-    public StkgLine(int stkgLineKey, int stkgHeaderKey, int lineNum, int azi, int stkgPlotCount) {
-        this.stkgLineKey = stkgLineKey;
-        this.stkgHeaderKey = stkgHeaderKey;
-        this.lineNum = lineNum;
-        this.azi = azi;
-        this.stkgPlotCount = stkgPlotCount;
+public class StkgLine extends Table {
+
+    private ArrayList<Stkg> stkg;
+
+    public StkgLine() {
     }
 
-    public int getStkgLineKey() {
-        return stkgLineKey;
+    @Override
+    public void fetchData() throws SQLException {
+        this.stkg = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblStkg", Stkg.class);
     }
 
-    public void setStkgLineKey(int stkgLineKey) {
-        this.stkgLineKey = stkgLineKey;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public int getStkgHeaderKey() {
-        return stkgHeaderKey;
-    }
+        // Stkg
+        if (!stkg.isEmpty()) {
+            JSONArray stkgJSON = new JSONArray();
+            stkg.forEach((n) -> {
+                stkgJSON.add(n.getFields());
+            });
+            json.put("Stkg", stkgJSON);
+        }
 
-    public void setStkgHeaderKey(int stkgHeaderKey) {
-        this.stkgHeaderKey = stkgHeaderKey;
+        return json;
     }
-
-    public int getLineNum() {
-        return lineNum;
-    }
-
-    public void setLineNum(int lineNum) {
-        this.lineNum = lineNum;
-    }
-
-    public int getAzi() {
-        return azi;
-    }
-
-    public void setAzi(int azi) {
-        this.azi = azi;
-    }
-
-    public int getStkgPlotCount() {
-        return stkgPlotCount;
-    }
-
-    public void setStkgPlotCount(int stkgPlotCount) {
-        this.stkgPlotCount = stkgPlotCount;
-    }
-
-    public Stkg[] getStkgs() {
-        return stkgs;
-    }
-
-    public void setStkgs(Stkg[] stkgs) {
-        this.stkgs = stkgs;
-    }
-
 }

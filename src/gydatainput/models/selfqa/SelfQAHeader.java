@@ -1,62 +1,46 @@
 package gydatainput.models.selfqa;
 
-public class SelfQAHeader {
-    private int selfQAHeaderKey;
-    private int visitKey;
-    private String msrDate;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    private SelfQAHt[] selfQAHts;
-    private SelfQATree[] selfQATrees;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    /**
-     * SelfQAHeader Constructor
-     * @param selfQAHeaderKey
-     * @param visitKey
-     * @param msrDate
-     */
-    public SelfQAHeader(int selfQAHeaderKey, int visitKey, String msrDate) {
-        this.selfQAHeaderKey = selfQAHeaderKey;
-        this.visitKey = visitKey;
-        this.msrDate = msrDate;
+public class SelfQAHeader extends Table {
+
+    private ArrayList<SelfQAHt> selfQAHt;
+    private ArrayList<SelfQATree> selfQATree;
+
+    public SelfQAHeader(){
     }
 
-    public SelfQAHt[] getSelfQAHts() {
-        return selfQAHts;
+    @Override
+    public void fetchData() throws SQLException {
+        this.selfQAHt = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSelfQAHt", SelfQAHt.class);
+        this.selfQATree = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSelfQATree", SelfQATree.class);
     }
 
-    public void setSelfQAHts(SelfQAHt[] selfQAHts) {
-        this.selfQAHts = selfQAHts;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public SelfQATree[] getSelfQATrees() {
-        return selfQATrees;
-    }
+        if (!selfQAHt.isEmpty()) {
+            JSONArray selfQAHtJSON = new JSONArray();
+            selfQAHt.forEach((n) -> {
+                selfQAHtJSON.add(n.getFields());
+            });
+            json.put("SelfQAHt", selfQAHtJSON);
+        }
 
-    public void setSelfQATrees(SelfQATree[] selfQATrees) {
-        this.selfQATrees = selfQATrees;
-    }
+        if (!selfQATree.isEmpty()) {
+            JSONArray selfQATreeJSON = new JSONArray();
+            selfQATree.forEach((n) -> {
+                selfQATreeJSON.add(n.getJSON());
+            });
+            json.put("SelfQATree", selfQATreeJSON);
+        }
 
-    public int getSelfQAHeaderKey() {
-        return selfQAHeaderKey;
-    }
-
-    public void setSelfQAHeaderKey(int selfQAHeaderKey) {
-        this.selfQAHeaderKey = selfQAHeaderKey;
-    }
-
-    public int getVisitKey() {
-        return visitKey;
-    }
-
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
+        return json;
     }
 }

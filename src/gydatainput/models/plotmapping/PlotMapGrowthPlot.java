@@ -1,65 +1,35 @@
 package gydatainput.models.plotmapping;
 
-public class PlotMapGrowthPlot {
-    private int plotMapGrowthPlotKey;
-    private int plotKey;
-    private int growthPlotNum;
-    private int numOfSections;
-    private boolean equalSections;
+import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import gydatainput.models.tree.Tree;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    /**
-     * PlotMapGrowthPlot Constructor
-     * @param plotMapGrowthPlotKey
-     * @param plotKey
-     * @param growthPlotNum
-     * @param numOfSections
-     * @param equalSections
-     */
-    public PlotMapGrowthPlot(int plotMapGrowthPlotKey, int plotKey, int growthPlotNum, int numOfSections, boolean equalSections) {
-        this.plotMapGrowthPlotKey = plotMapGrowthPlotKey;
-        this.plotKey = plotKey;
-        this.growthPlotNum = growthPlotNum;
-        this.numOfSections = numOfSections;
-        this.equalSections = equalSections;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class PlotMapGrowthPlot extends Table {
+    private ArrayList<Tree> tree;
+    public PlotMapGrowthPlot() {
     }
 
-    public int getPlotMapGrowthPlotKey() {
-        return plotMapGrowthPlotKey;
+    @Override
+    public void fetchData() throws SQLException {
+        this.tree = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblTree", Tree.class);
     }
 
-    public void setPlotMapGrowthPlotKey(int plotMapGrowthPlotKey) {
-        this.plotMapGrowthPlotKey = plotMapGrowthPlotKey;
-    }
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-    public int getPlotKey() {
-        return plotKey;
-    }
+        if (!tree.isEmpty()) {
+            JSONArray treeJSON = new JSONArray();
+            tree.forEach((n) -> {
+                treeJSON.add(n.getFields());
+            });
+            json.put("Tree", treeJSON);
+        }
 
-    public void setPlotKey(int plotKey) {
-        this.plotKey = plotKey;
-    }
-
-    public int getGrowthPlotNum() {
-        return growthPlotNum;
-    }
-
-    public void setGrowthPlotNum(int growthPlotNum) {
-        this.growthPlotNum = growthPlotNum;
-    }
-
-    public int getNumOfSections() {
-        return numOfSections;
-    }
-
-    public void setNumOfSections(int numOfSections) {
-        this.numOfSections = numOfSections;
-    }
-
-    public boolean isEqualSections() {
-        return equalSections;
-    }
-
-    public void setEqualSections(boolean equalSections) {
-        this.equalSections = equalSections;
+        return json;
     }
 }

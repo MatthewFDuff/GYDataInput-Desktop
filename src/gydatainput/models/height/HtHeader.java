@@ -1,57 +1,37 @@
 package gydatainput.models.height;
 
 import gydatainput.database.DatabaseHelper;
+import gydatainput.models.Table;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-public class HtHeader {
-    private int htHeaderKey;
-    private int visitKey;
-    private String msrDate;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    private Ht[] hts;
+public class HtHeader extends Table {
+    private ArrayList<Ht> ht;
 
-    public Ht[] getHts() {
-        return hts;
+    public HtHeader() {
     }
 
-    public void setHts(Ht[] hts) {
-        this.hts = hts;
+    @Override
+    public void fetchData() throws SQLException {
+        this.ht = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblHt", Ht.class);
+
     }
 
-    /**
-     * HtHeader Constructor
-     * @param htHeaderKey
-     * @param visitKey
-     * @param msrDate
-     */
-    public HtHeader(int htHeaderKey, int visitKey, String msrDate) {
-        this.htHeaderKey = htHeaderKey;
-        this.visitKey = visitKey;
-        this.msrDate = msrDate;
+    public JSONObject getJSON() {
+        JSONObject json = this.getFields();
 
-        // TODO get heights as an array in here? They're already being pulled for each tree msr. Or we can link each height to the header.
-    }
+        // Ht TODO This may not be necessary? Ht is already in TreeMsr.
+        if (!ht.isEmpty()) {
+            JSONArray htJSON = new JSONArray();
+            ht.forEach((n) -> {
+                htJSON.add(n.getFields());
+            });
+            json.put("Ht", htJSON);
+        }
 
-    public int getHtHeaderKey() {
-        return htHeaderKey;
-    }
-
-    public void setHtHeaderKey(int htHeaderKey) {
-        this.htHeaderKey = htHeaderKey;
-    }
-
-    public int getVisitKey() {
-        return visitKey;
-    }
-
-    public void setVisitKey(int visitKey) {
-        this.visitKey = visitKey;
-    }
-
-    public String getMsrDate() {
-        return msrDate;
-    }
-
-    public void setMsrDate(String msrDate) {
-        this.msrDate = msrDate;
+        return json;
     }
 }

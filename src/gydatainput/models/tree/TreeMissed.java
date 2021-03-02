@@ -1,27 +1,11 @@
 package gydatainput.models.tree;
 
-public class TreeMissed {
-    private int treeMissedKey;
-    private boolean missed;
+import gydatainput.models.Table;
+import org.json.simple.JSONObject;
 
-    public int getTreeMissedKey() {
-        return treeMissedKey;
+public class TreeMissed extends Table {
+
+    public TreeMissed() {
     }
 
-    public void setTreeMissedKey(int treeMissedKey) {
-        this.treeMissedKey = treeMissedKey;
-    }
-
-    public boolean isMissed() {
-        return missed;
-    }
-
-    public void setMissed(boolean missed) {
-        this.missed = missed;
-    }
-
-    public TreeMissed(int treeMissedKey, boolean missed) {
-        this.treeMissedKey = treeMissedKey;
-        this.missed = missed;
-    }
 }

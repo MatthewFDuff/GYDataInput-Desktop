@@ -48,7 +48,7 @@ public class PlotPackageController extends ListCell<Package> {
             setGraphic(null);
         } else {
             pPackage = item;
-            packageName.setText(pPackage.getName());
+            packageName.setText(pPackage.getPlot().getFields().get("PlotName").toString());
 //            lblDate.setText(pPackage.getDate());
             lblDate.setText("");
 

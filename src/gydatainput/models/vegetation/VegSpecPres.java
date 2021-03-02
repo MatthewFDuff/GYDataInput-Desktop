@@ -1,27 +1,11 @@
 package gydatainput.models.vegetation;
 
-public class VegSpecPres {
-    private int vegSpecPresKey;
-    private int specCode;
+import gydatainput.models.Table;
+import org.json.simple.JSONObject;
 
-    public int getVegSpecPresKey() {
-        return vegSpecPresKey;
+public class VegSpecPres extends Table {
+
+    public VegSpecPres() {
     }
 
-    public void setVegSpecPresKey(int vegSpecPresKey) {
-        this.vegSpecPresKey = vegSpecPresKey;
-    }
-
-    public int getSpecCode() {
-        return specCode;
-    }
-
-    public void setSpecCode(int specCode) {
-        this.specCode = specCode;
-    }
-
-    public VegSpecPres(int vegSpecPresKey, int specCode) {
-        this.vegSpecPresKey = vegSpecPresKey;
-        this.specCode = specCode;
-    }
 }
