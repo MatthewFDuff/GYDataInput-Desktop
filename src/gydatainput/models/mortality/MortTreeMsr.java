@@ -11,7 +11,7 @@ public class MortTreeMsr extends Table {
 
     private MortTree mortTree;
 
-    public MortTreeMsr() throws SQLException {
+    public MortTreeMsr() {
     }
 
     @Override
@@ -20,7 +20,8 @@ public class MortTreeMsr extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // Mort Tree
         if (mortTree != null) {

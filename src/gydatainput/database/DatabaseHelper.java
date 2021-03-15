@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The Database Helper class provides the application with all database query functions.
@@ -38,14 +39,10 @@ public class DatabaseHelper {
                 JSONObject fields = new JSONObject();
 
                 for (int column = 1; column <= columnCount; column++) {
-                    //System.out.println(meta.getColumnClassName(column) + ": " + result.getObject(column));
                     fields.put(meta.getColumnName(column), result.getObject(column));
                 }
 
-//                System.out.println(fields);
-
                 Package pkg = new Package(fields);
-
                 packageList.add(pkg);
             }
 
@@ -68,8 +65,8 @@ public class DatabaseHelper {
      */
     public static <T extends Table> T getData(int key, String keyName, String tableName, Class<T> classType) throws SQLException {
         String query = "SELECT * FROM dbo." + tableName + " WHERE " + keyName + " = " + key;
-        ResultSet results = DatabaseController.executeQuery(query);
         System.out.println(query);
+        ResultSet results = DatabaseController.executeQuery(query);
 
         final ResultSetMetaData meta = results.getMetaData();
         final int columnCount = meta.getColumnCount();
@@ -95,7 +92,7 @@ public class DatabaseHelper {
             try {
                 obj = classType.newInstance();
                 obj.setFields(fields);
-                System.out.println("Obj Key: " + newKeyName + ": " + (int) fields.get(newKeyName));
+
                 // Important to set the keyname and key so future queries work.
                 if (newKeyName != "") {
                     // The first key in the results is the primary key for the table.
@@ -104,7 +101,6 @@ public class DatabaseHelper {
                     obj.setKey((int) fields.get(newKeyName));
                     obj.fetchData();
                 }
-//                    System.out.println(obj.getClass() + ": " + getKeyName() + ": " + getKey());
 
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -138,9 +134,8 @@ public class DatabaseHelper {
 
         // Get the actual results from the query.
         query = "SELECT * FROM dbo." + tableName + " WHERE " + keyName + " = " + key;
-        results = DatabaseController.executeQuery(query);
-        //System.out.println(results.toString());
         System.out.println(query);
+        results = DatabaseController.executeQuery(query);
 
         // Get the number of columns from the query.
         final ResultSetMetaData meta = results.getMetaData();
@@ -172,7 +167,6 @@ public class DatabaseHelper {
                     obj.setKey((int) fields.get(newKeyName));
                     obj.fetchData();
                 }
-//                    System.out.println(obj.getClass() + ": " + getKeyName() + ": " + getKey());
 
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -185,5 +179,51 @@ public class DatabaseHelper {
         }
 
         return models;
+    }
+
+    public static boolean uploadTableData(String tableName, JSONObject fields) {
+        // Build the first section of the query with the table name.
+        String query = "INSERT INTO dbo." + tableName;
+
+        // Build the second section of the query, where the column names are used [e.g. (TableID, TableKey, TableField1, TableField2)]
+        // AND
+        // Build the third section of the query, with the actual values, in the form of: VALUES (1, A, "FieldData", true)
+        query += " (";
+
+        Iterator<String> keys = fields.keySet().iterator();
+        String fieldNames = ""; // e.g. (TableID, TableKey, TableField1, TableField2)
+        String values = ""; // e.g. (1, A, "FieldData", true)
+        while(keys.hasNext()) {
+            String key = (String) keys.next();
+
+            // Add the key to the list of fields (column titles in the database).
+            fieldNames += key + ", ";
+
+            // Quotations need to be placed around string.
+            if (fields.get(key) != null && fields.get(key).getClass().getName().equals("String")) {
+                values += "\"+";
+            }
+
+            // Add the value to the values string.
+            values += fields.get(key);
+
+            // Quotations need to be placed around string.
+            if (fields.get(key) != null && fields.get(key).getClass().getName().equals("String")) {
+                values += "\"";
+            }
+
+            // Don't forget the trailing comma.
+            values += ", ";
+        }
+
+        // Trim the last ", " from the strings
+        fieldNames = fieldNames.substring(0, fieldNames.length() - 2);
+        values = values.substring(0, values.length() - 2);
+
+        // Put it all together to form the query
+        query += fieldNames + ") VALUES (" + values + ")";
+        System.out.println(query);
+
+        return true;
     }
 }

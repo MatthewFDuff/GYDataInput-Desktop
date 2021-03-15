@@ -38,10 +38,6 @@ public class Visit extends Table {
     public Visit() {
     }
 
-    public Visit(JSONObject fields) {
-        super(fields);
-    }
-
     public void retrieveData() {
         try {
             this.standInfoHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblStandInfoHeader", StandInfoHeader.class);
@@ -63,7 +59,8 @@ public class Visit extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         if (standInfoHeader != null) {
             json.put("StandInfoHeader", standInfoHeader.getFields());

@@ -24,7 +24,8 @@ public class SoilHeader extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         if (!soilForestFloor.isEmpty()) {
             JSONArray soilForestFloorJSON = new JSONArray();

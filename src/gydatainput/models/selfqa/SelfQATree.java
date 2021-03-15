@@ -20,7 +20,8 @@ public class SelfQATree extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         if (!selfQADeform.isEmpty()) {
             JSONArray selfQADeformJSON = new JSONArray();

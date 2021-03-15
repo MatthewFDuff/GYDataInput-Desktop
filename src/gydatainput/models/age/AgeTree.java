@@ -25,7 +25,8 @@ public class AgeTree extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // Age Sample
         if (!ageSample.isEmpty()) {

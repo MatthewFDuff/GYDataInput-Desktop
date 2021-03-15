@@ -13,14 +13,7 @@ public class DWDHeader extends Table {
     private ArrayList<DWDLine> dwdLine;
     private ArrayList<DWD> dwd;
 
-    /**
-     * Construct a table with a JSONObject containing all columns of a database table.
-     *
-     * @param fields each value contained in a column
-     */
-    public DWDHeader() {
-
-    }
+    public DWDHeader() {}
 
     @Override
     public void fetchData() throws SQLException {
@@ -29,7 +22,8 @@ public class DWDHeader extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // DWD Line
         if (!dwdLine.isEmpty()) {

@@ -15,23 +15,7 @@ import java.sql.SQLException;
  * @since 2020-12-01
  * */
 public class Tree extends Table {
-//    private PlotMapGrowthPlot plotMapGrowthPlot;
 
     public Tree() {
     }
-//
-//    @Override
-//    public void fetchData() throws SQLException {
-//        this.plotMapGrowthPlot = DatabaseHelper.getData(getKey(), getKeyName(), "tblPlotMapGrowthPlot", PlotMapGrowthPlot.class);
-//    }
-//
-//    public JSONObject getJSON() {
-//        JSONObject json = this.getFields();
-//
-//        if (plotMapGrowthPlot != null) {
-//            json.put("PlotMapGrowthPlot", plotMapGrowthPlot.getFields());
-//        }
-//
-//        return json;
-//    }
 }

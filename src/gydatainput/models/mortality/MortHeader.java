@@ -9,11 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MortHeader extends Table {
-
     private ArrayList<MortTreeMsr> mortTreeMsr;
 
-
-    public MortHeader() throws SQLException {
+    public MortHeader() {
     }
 
     @Override
@@ -22,7 +20,8 @@ public class MortHeader extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // Mort Tree Msr
         if (!mortTreeMsr.isEmpty()) {

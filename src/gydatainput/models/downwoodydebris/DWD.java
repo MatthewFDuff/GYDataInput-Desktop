@@ -12,11 +12,6 @@ public class DWD extends Table {
 
     private ArrayList<DWDIntersect> dwdIntersect;
 
-    /**
-     * Construct a table with a JSONObject containing all columns of a database table.
-     *
-     * @param fields each value contained in a column
-     */
     public DWD() {
     }
 
@@ -26,7 +21,8 @@ public class DWD extends Table {
     }
 
     public Object getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // DWD Intersect
         if (!dwdIntersect.isEmpty()) {

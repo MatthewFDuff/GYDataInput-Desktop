@@ -70,15 +70,15 @@
                                             <bottom>
                                                 <AnchorPane fx:id="actionsPending" prefHeight="71.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                                     <children>
-                                                        <Button fx:id="btnImportPackage" layoutX="37.0" layoutY="5.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Import Package" />
-                                                        <Button fx:id="btnUploadSelected" layoutX="37.0" layoutY="41.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Upload Selected" />
+                                                        <Button fx:id="btnImportPackage" onAction="#loadImportedPackages" layoutX="37.0" layoutY="5.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Refresh List" />
+                                                        <Button fx:id="btnUploadSelected" onAction="#uploadPlotPackage"  layoutX="37.0" layoutY="41.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Upload Selected" />
                                                     </children>
                                                 </AnchorPane>
                                             </bottom>
                                         </BorderPane>
                                     </left>
                                     <center>
-                                        <ListView fx:id="listPending" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                        <ListView fx:id="listImports" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                                     </center>
                                 </BorderPane>
                             </content>

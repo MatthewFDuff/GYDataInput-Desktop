@@ -36,7 +36,7 @@ public class Table {
             // Use the first key in the set to get the value of the key.
             this.key = (int) fields.get(this.keyName);
 
-            System.out.println(this.getClass() + ": " + getKeyName() + ": " + getKey());
+//            System.out.println(this.getClass() + ": " + getKeyName() + ": " + getKey());
         }
     }
     public void fetchData() throws SQLException {

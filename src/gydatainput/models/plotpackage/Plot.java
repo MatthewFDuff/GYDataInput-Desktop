@@ -62,9 +62,6 @@ public class Plot extends Table {
     public Plot() {
     }
 
-    public Plot(JSONObject fields) {
-        super(fields);
-    }
 
     public void retrieveData() throws SQLException {
         this.note = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblNote", Note.class);
@@ -88,7 +85,8 @@ public class Plot extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // Note
         if (!note.isEmpty()) {

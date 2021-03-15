@@ -21,7 +21,8 @@ public class HtHeader extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // Ht TODO This may not be necessary? Ht is already in TreeMsr.
         if (!ht.isEmpty()) {

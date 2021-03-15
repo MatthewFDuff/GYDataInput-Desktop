@@ -13,7 +13,7 @@ public class SelfQAHeader extends Table {
     private ArrayList<SelfQAHt> selfQAHt;
     private ArrayList<SelfQATree> selfQATree;
 
-    public SelfQAHeader(){
+    public SelfQAHeader() {
     }
 
     @Override
@@ -23,7 +23,8 @@ public class SelfQAHeader extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         if (!selfQAHt.isEmpty()) {
             JSONArray selfQAHtJSON = new JSONArray();

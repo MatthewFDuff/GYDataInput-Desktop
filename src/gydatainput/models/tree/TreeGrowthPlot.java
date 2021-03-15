@@ -21,7 +21,8 @@ public class TreeGrowthPlot extends Table {
     }
 
     public JSONObject getJSON() {
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         if (!treeMsr.isEmpty()) {
             JSONArray treeMsrJSON = new JSONArray();

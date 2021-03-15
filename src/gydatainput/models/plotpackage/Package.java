@@ -14,8 +14,30 @@ import java.util.ArrayList;
 public class Package extends Table {
     private Plot plot;
     private ArrayList<Visit> visit;
+    private JSONObject importJSON;
 
     private SpecGYHeader specGYHeader;
+
+    // TODO: Remove when all uploading code is placed in database helper
+    public JSONObject getImportJSON() {
+        return importJSON;
+    }
+
+    public Package() {
+    }
+
+    public Package(JSONObject json, boolean isImport) {
+        this.importJSON = json;
+        JSONObject fields = (JSONObject) json.get("fields");
+        this.setFields(fields);
+
+        JSONObject plot = (JSONObject) json.get("Plot");
+        JSONObject plotFields = (JSONObject) plot.get("fields");
+        System.out.println(plot);
+        System.out.println(plotFields);
+        this.plot = new Plot();
+        this.plot.setFields(plotFields);
+    }
 
     public Package(JSONObject fields) {
         super(fields);
@@ -50,7 +72,8 @@ public class Package extends Table {
 
     public JSONObject getJSON() {
         // Create a new JSON object to hold all Package data.
-        JSONObject json = this.getFields();
+        JSONObject json = new JSONObject();
+        json.put("fields", this.getFields());
 
         // Add the Plot to the Package JSON
         json.put("Plot", plot.getJSON());
