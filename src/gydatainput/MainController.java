@@ -458,8 +458,16 @@ public class MainController implements Initializable {
                         }
                     }
 
-                    // HtHeader TODO
-                    handleUpload("HtHeader", key);
+                    // HtHeader
+                    JSONObject htHeaderJSON = (JSONObject) key.get("HtHeader");
+                    if (htHeaderJSON != null && htHeaderJSON.size() > 0) {
+                        // PlotMapHeader fields
+                        JSONObject fields = (JSONObject) htHeaderJSON.get("fields");
+                        DatabaseHelper.uploadTableData("tblHtHeader", fields);
+
+                        // Ht
+                        handleArrayUpload("Ht", htHeaderJSON);
+                    }
 
                     // DWDHeader
                     JSONObject dwdHeaderJSON = (JSONObject) key.get("DWDHeader");
@@ -506,15 +514,7 @@ public class MainController implements Initializable {
                     }
 
                     // PlotMapHeader
-                    JSONObject plotMapHeaderJSON = (JSONObject) key.get("PlotMapHeader");
-                    if (plotMapHeaderJSON != null && plotMapHeaderJSON.size() > 0) {
-                        // PlotMapHeader fields
-                        JSONObject fields = (JSONObject) plotMapHeaderJSON.get("fields");
-                        DatabaseHelper.uploadTableData("tblPlotMapHeader", fields);
-
-                        // Ht
-                        handleArrayUpload("Ht", plotMapHeaderJSON);
-                    }
+                    handleUpload("PlotMapHeader", key);
 
                     // StkgHeader
                     JSONObject stkgHeaderJSON = (JSONObject) key.get("StkgHeader");
@@ -720,6 +720,12 @@ public class MainController implements Initializable {
                 file.write(pkgJSON.toJSONString());
                 file.close();
             }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("All Plot Packages exported successfully.");
+            alert.showAndWait();
+
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
