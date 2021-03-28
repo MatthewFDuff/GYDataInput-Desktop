@@ -32,28 +32,26 @@ public class TreeMsr extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
+        // TreeMissed
         if (treeMissed != null) {
-            json.put("TreeMissed", treeMissed.getFields());
+            json.put("tblTreeMissed", treeMissed.getJSON());
         }
 
-        if (!treeDefm.isEmpty()) {
-            JSONArray treeDefmJSON = new JSONArray();
-            treeDefm.forEach((n) -> {
-                treeDefmJSON.add(n.getFields());
-            });
-            json.put("TreeDefm", treeDefmJSON);
+        // TreeDefm
+        JSONArray treeDefmJSON = getChildFieldArray(treeDefm);
+        if(treeDefmJSON != null) {
+            json.put("tblTreeDefm", treeDefmJSON);
         }
 
-        if (!treeCav.isEmpty()) {
-            JSONArray treeCavJSON = new JSONArray();
-            treeCav.forEach((n) -> {
-                treeCavJSON.add(n.getFields());
-            });
-            json.put("TreeCav", treeCavJSON);
+        // TreeCav
+        JSONArray treeCavJSON = getChildFieldArray(treeCav);
+        if(treeCavJSON != null) {
+            json.put("tblTreeCav", treeCavJSON);
         }
 
+        // Ht
         if (ht != null) {
-            json.put("Ht", ht.getFields());
+            json.put("tblHt", ht.getJSON());
         }
 
         return json;

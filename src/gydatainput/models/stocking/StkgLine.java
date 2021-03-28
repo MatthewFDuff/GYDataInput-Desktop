@@ -25,12 +25,9 @@ public class StkgLine extends Table {
         json.put("fields", this.getFields());
 
         // Stkg
-        if (!stkg.isEmpty()) {
-            JSONArray stkgJSON = new JSONArray();
-            stkg.forEach((n) -> {
-                stkgJSON.add(n.getFields());
-            });
-            json.put("Stkg", stkgJSON);
+        JSONArray stkgJSON = getChildFieldArray(stkg);
+        if(stkgJSON != null) {
+            json.put("tblStkg", stkgJSON);
         }
 
         return json;

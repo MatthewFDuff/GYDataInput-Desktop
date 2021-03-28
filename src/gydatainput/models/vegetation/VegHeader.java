@@ -26,20 +26,16 @@ public class VegHeader extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!vegVType.isEmpty()) {
-            JSONArray vegVTypeJSON = new JSONArray();
-            vegVType.forEach((n) -> {
-                vegVTypeJSON.add(n.getFields());
-            });
-            json.put("VegVType", vegVTypeJSON);
+        // VegVType
+        JSONArray vegVTypeJSON = getChildFieldArray(vegVType);
+        if(vegVTypeJSON != null) {
+            json.put("tblVegVType", vegVTypeJSON);
         }
 
-        if (!vegPlot.isEmpty()) {
-            JSONArray vegPlotJSON = new JSONArray();
-            vegPlot.forEach((n) -> {
-                vegPlotJSON.add(n.getJSON());
-            });
-            json.put("VegPlot", vegPlotJSON);
+        // VegPlot
+        JSONArray vegPlotJSON = getChildFieldArrayWithJSON(vegPlot);
+        if(vegPlotJSON != null) {
+            json.put("tblVegPlot", vegPlotJSON);
         }
 
         return json;

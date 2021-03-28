@@ -23,12 +23,10 @@ public class SelfQATree extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!selfQADeform.isEmpty()) {
-            JSONArray selfQADeformJSON = new JSONArray();
-            selfQADeform.forEach((n) -> {
-                selfQADeformJSON.add(n.getFields());
-            });
-            json.put("SelfQADeform", selfQADeformJSON);
+        // SelfQADeform
+        JSONArray selfQADeformJSON = getChildFieldArray(selfQADeform);
+        if(selfQADeformJSON != null) {
+            json.put("tblSelfQADeform", selfQADeformJSON);
         }
 
         return json;

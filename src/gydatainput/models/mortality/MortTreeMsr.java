@@ -25,7 +25,7 @@ public class MortTreeMsr extends Table {
 
         // Mort Tree
         if (mortTree != null) {
-            json.put("MortTree", mortTree.getFields());
+            json.put("tblMortTree", mortTree.getJSON());
         }
 
         return json;

@@ -27,22 +27,15 @@ public class PhotoHeader extends Table {
         json.put("fields", this.getFields());
 
         // PhotoRequired
-        if (!photoRequired.isEmpty()) {
-            JSONArray photoRequiredJSON = new JSONArray();
-            photoRequired.forEach((n) -> {
-                photoRequiredJSON.add(n.getFields());
-            });
-
-            json.put("PhotoRequired", photoRequiredJSON);
+        JSONArray photoRequiredJSON = getChildFieldArray(photoRequired);
+        if (photoRequiredJSON != null) {
+            json.put("tblPhotoRequired", photoRequiredJSON);
         }
 
         // Photo Feature
-        if (!photoFeature.isEmpty()) {
-            JSONArray photoFeatureJSON = new JSONArray();
-            photoFeature.forEach((n) -> {
-                photoFeatureJSON.add(n.getFields());
-            });
-            json.put("PhotoFeature", photoFeatureJSON);
+        JSONArray photoFeatureJSON = getChildFieldArray(photoFeature);
+        if (photoFeatureJSON != null) {
+            json.put("tblPhotoFeature", photoFeatureJSON);
         }
 
         return json;

@@ -24,12 +24,9 @@ public class AgeHeader extends Table {
         json.put("fields", this.getFields());
 
         // Age Tree
-        if (!ageTree.isEmpty()) {
-            JSONArray ageTreeJSON = new JSONArray();
-            ageTree.forEach((n) -> {
-                ageTreeJSON.add(n.getJSON());
-            });
-            json.put("MortTreeMsr", ageTreeJSON);
+        JSONArray ageTreeJSON = getChildFieldArrayWithJSON(ageTree);
+        if (ageTree != null) {
+            json.put("tblAgeTree", ageTreeJSON);
         }
 
         return json;

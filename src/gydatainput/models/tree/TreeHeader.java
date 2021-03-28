@@ -24,12 +24,10 @@ public class TreeHeader extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!treeGrowthPlot.isEmpty()) {
-            JSONArray treeGrowthPlotJSON = new JSONArray();
-            treeGrowthPlot.forEach((n) -> {
-                treeGrowthPlotJSON.add(n.getJSON());
-            });
-            json.put("TreeGrowthPlot", treeGrowthPlotJSON);
+        // TreeGrowthPlot
+        JSONArray treeGrowthPlotJSON = getChildFieldArrayWithJSON(treeGrowthPlot);
+        if(treeGrowthPlotJSON != null) {
+            json.put("tblTreeGrowthPlot", treeGrowthPlotJSON);
         }
 
         return json;

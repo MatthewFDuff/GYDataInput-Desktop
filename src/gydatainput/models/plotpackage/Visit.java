@@ -63,51 +63,55 @@ public class Visit extends Table {
         json.put("fields", this.getFields());
 
         if (standInfoHeader != null) {
-            json.put("StandInfoHeader", standInfoHeader.getFields());
+            json.put("tblStandInfoHeader", standInfoHeader.getJSON());
         }
+
         if (photoHeader != null) {
-            json.put("PhotoHeader", photoHeader.getJSON());
+            json.put("tblPhotoHeader", photoHeader.getJSON());
         }
+
         if (vegHeader != null) {
-            json.put("VegHeader", vegHeader.getJSON());
+            json.put("tblVegHeader", vegHeader.getJSON());
         }
+
         if (treeHeader != null) {
-            json.put("TreeHeader", treeHeader.getJSON());
+            json.put("tblTreeHeader", treeHeader.getJSON());
         }
+
         if (htHeader != null) {
-            json.put("HtHeader", htHeader.getJSON());
+            json.put("tblHtHeader", htHeader.getJSON());
         }
 
         if (dwdHeader != null) {
-            json.put("DWDHeader", dwdHeader.getJSON());
+            json.put("tblDWDHeader", dwdHeader.getJSON());
         }
 
         if (plotMapHeader != null) {
-            json.put("PlotMapHeader", plotMapHeader.getFields());
+            json.put("tblPlotMapHeader", plotMapHeader.getJSON());
         }
 
         if (stkgHeader != null) {
-            json.put("StkgHeader", stkgHeader.getJSON());
+            json.put("tblStkgHeader", stkgHeader.getJSON());
         }
 
         if (mortHeader != null) {
-            json.put("MortHeader", mortHeader.getJSON());
+            json.put("tblMortHeader", mortHeader.getJSON());
         }
 
         if (ageHeader != null) {
-            json.put("AgeHeader", ageHeader.getJSON());
+            json.put("tblAgeHeader", ageHeader.getJSON());
         }
 
         if (soilEcositeHeader != null) {
-            json.put("SoilEcositeHeader", soilEcositeHeader.getJSON());
+            json.put("tblSoilEcositeHeader", soilEcositeHeader.getJSON());
         }
 
         if (soilHeader != null) {
-            json.put("SoilHeader", soilHeader.getJSON());
+            json.put("tblSoilHeader", soilHeader.getJSON());
         }
 
         if (selfQAHeader != null) {
-            json.put("SelfQAHeader", selfQAHeader.getJSON());
+            json.put("tblSelfQAHeader", selfQAHeader.getJSON());
         }
 
         return json;

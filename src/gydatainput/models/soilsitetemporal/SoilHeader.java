@@ -27,20 +27,16 @@ public class SoilHeader extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!soilForestFloor.isEmpty()) {
-            JSONArray soilForestFloorJSON = new JSONArray();
-            soilForestFloor.forEach((n) -> {
-                soilForestFloorJSON.add(n.getFields());
-            });
-            json.put("SoilForestFloor", soilForestFloorJSON);
+        // SoilForestFloor
+        JSONArray soilForestFloorJSON = getChildFieldArray(soilForestFloor);
+        if(soilForestFloorJSON != null) {
+            json.put("tblSoilForestFloor", soilForestFloorJSON);
         }
 
-        if (!soilGroundCover.isEmpty()) {
-            JSONArray soilGroundCoverJSON = new JSONArray();
-            soilGroundCover.forEach((n) -> {
-                soilGroundCoverJSON.add(n.getFields());
-            });
-            json.put("SoilForestFloor", soilGroundCoverJSON);
+        // SoilGroundCover
+        JSONArray soilGroundCoverJSON = getChildFieldArray(soilGroundCover);
+        if(soilGroundCoverJSON != null) {
+            json.put("tblSoilForestFloor", soilGroundCoverJSON);
         }
 
         return json;

@@ -25,12 +25,10 @@ public class DWD extends Table {
         json.put("fields", this.getFields());
 
         // DWD Intersect
-        if (!dwdIntersect.isEmpty()) {
-            JSONArray dwdIntersectJSON = new JSONArray();
-            dwdIntersect.forEach((n) -> {
-                dwdIntersectJSON.add(n.getFields());
-            });
-            json.put("DWDIntersect", dwdIntersectJSON);
+        JSONArray dwdIntersectJSON = getChildFieldArray(dwdIntersect);
+
+        if(dwdIntersectJSON != null) {
+            json.put("tblDWDIntersect", dwdIntersectJSON);
         }
 
         return json;

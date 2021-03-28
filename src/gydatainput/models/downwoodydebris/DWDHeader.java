@@ -26,21 +26,15 @@ public class DWDHeader extends Table {
         json.put("fields", this.getFields());
 
         // DWD Line
-        if (!dwdLine.isEmpty()) {
-            JSONArray dwdLineJSON = new JSONArray();
-            dwdLine.forEach((n) -> {
-                dwdLineJSON.add(n.getJSON());
-            });
-            json.put("DWDLine", dwdLineJSON);
+        JSONArray dwdLineJSON = getChildFieldArrayWithJSON(dwdLine);
+        if(dwdLineJSON != null) {
+            json.put("tblDWDLine", dwdLineJSON);
         }
 
         // DWD
-        if (!dwd.isEmpty()) {
-            JSONArray dwdJSON = new JSONArray();
-            dwd.forEach((n) -> {
-                dwdJSON.add(n.getJSON());
-            });
-            json.put("DWD", dwdJSON);
+        JSONArray dwdJSON = getChildFieldArrayWithJSON(dwd);
+        if(dwdJSON != null) {
+            json.put("tblDWD", dwdJSON);
         }
 
         return json;

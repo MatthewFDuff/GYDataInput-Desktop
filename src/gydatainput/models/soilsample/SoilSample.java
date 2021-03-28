@@ -28,28 +28,22 @@ public class SoilSample extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (soilDepMode != null && !soilDepMode.isEmpty()) {
-            JSONArray soilDepModeJSON = new JSONArray();
-            soilDepMode.forEach((n) -> {
-                soilDepModeJSON.add(n.getFields());
-            });
-            json.put("SoilDepMode", soilDepModeJSON);
+        // SoilDepMode
+        JSONArray soilDepModeJSON = getChildFieldArray(soilDepMode);
+        if(soilDepModeJSON != null) {
+            json.put("tblSoilDepMode", soilDepModeJSON);
         }
 
-        if (soilPhoto != null && !soilPhoto.isEmpty()) {
-            JSONArray soilPhotoJSON = new JSONArray();
-            soilPhoto.forEach((n) -> {
-                soilPhotoJSON.add(n.getFields());
-            });
-            json.put("SoilPhoto", soilPhotoJSON);
+        // SoilPhoto
+        JSONArray soilPhotoJSON = getChildFieldArray(soilPhoto);
+        if(soilPhotoJSON != null) {
+            json.put("tblSoilPhoto", soilPhotoJSON);
         }
 
-        if (soilHor != null && !soilHor.isEmpty()) {
-            JSONArray soilHorJSON = new JSONArray();
-            soilHor.forEach((n) -> {
-                soilHorJSON.add(n.getFields());
-            });
-            json.put("SoilHor", soilHorJSON);
+        // SoilHor
+        JSONArray soilHorJSON = getChildFieldArray(soilHor);
+        if(soilHorJSON != null) {
+            json.put("tblSoilHor", soilHorJSON);
         }
 
         return json;

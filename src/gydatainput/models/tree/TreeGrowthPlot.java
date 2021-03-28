@@ -24,12 +24,10 @@ public class TreeGrowthPlot extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!treeMsr.isEmpty()) {
-            JSONArray treeMsrJSON = new JSONArray();
-            treeMsr.forEach((n) -> {
-                treeMsrJSON.add(n.getJSON());
-            });
-            json.put("TreeMsr", treeMsrJSON);
+        // TreeMsr
+        JSONArray treeMsrJSON = getChildFieldArrayWithJSON(treeMsr);
+        if(treeMsrJSON != null) {
+            json.put("tblTreeMsr", treeMsrJSON);
         }
 
         return json;

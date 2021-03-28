@@ -43,7 +43,7 @@ public class ImportPlotPackageController extends ListCell<Package> {
         } else {
             pPackage = item;
             if (pPackage != null) {
-                packageName.setText(pPackage.getPlot().getFields().get("PlotName").toString());
+                packageName.setText(pPackage.getPlot().getFromFields("PlotName").toString());
             } else {
                 System.out.println("Unable to display package information: Plot Package is null");
             }

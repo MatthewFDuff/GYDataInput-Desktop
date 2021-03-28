@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Package extends Table {
     private Plot plot;
@@ -28,22 +29,24 @@ public class Package extends Table {
 
     public Package(JSONObject json, boolean isImport) {
         this.importJSON = json;
-        JSONObject fields = (JSONObject) json.get("fields");
+        JSONArray fields = (JSONArray) json.get("fields");
         this.setFields(fields);
 
-        JSONObject plot = (JSONObject) json.get("Plot");
-        JSONObject plotFields = (JSONObject) plot.get("fields");
-        System.out.println(plot);
-        System.out.println(plotFields);
-        this.plot = new Plot();
-        this.plot.setFields(plotFields);
+        // Get the plot from the plot package JSON
+        JSONObject plot = (JSONObject) json.get("tblPlot");
+        // Get the plot fields from the plot package JSON
+        JSONArray plotFields = (JSONArray) plot.get("fields");
+//        System.out.println(plot);
+//        System.out.println(plotFields);
+        this.plot = new Plot(); // Create the new Plot instance
+        this.plot.setFields(plotFields); // Set the Plot fields variable.
     }
 
-    public Package(JSONObject fields) {
+    public Package(JSONArray fields) {
         super(fields);
 
-        int plotKey = (int) this.getFields().get("PlotKey");
-        setKey((int) this.getFields().get("PackageKey"));
+        int plotKey = (int) this.getFromFields("PlotKey");
+        setKey((int) this.getFromFields("PackageKey"));
         setKeyName("PackageKey");
 
         try {
@@ -53,6 +56,7 @@ public class Package extends Table {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Gets all plot package data from the database for the plot package.
@@ -76,7 +80,7 @@ public class Package extends Table {
         json.put("fields", this.getFields());
 
         // Add the Plot to the Package JSON
-        json.put("Plot", plot.getJSON());
+        json.put("tblPlot", plot.getJSON());
 
         // Create a JSON array to hold all Visit data.
         JSONArray visitJSON = new JSONArray();
@@ -87,7 +91,7 @@ public class Package extends Table {
         });
 
         // Add the Visit array to the Package JSON
-        json.put("Visit", visitJSON);
+        json.put("tblVisit", visitJSON);
 
         return json;
     }

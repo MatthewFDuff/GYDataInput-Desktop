@@ -25,12 +25,9 @@ public class SoilEcositeHeader extends Table {
         json.put("fields", this.getFields());
 
         // Soil Ecosite
-        if (!soilEcosite.isEmpty()) {
-            JSONArray soilEcositeJSON = new JSONArray();
-            soilEcosite.forEach((n) -> {
-                soilEcositeJSON.add(n.getFields());
-            });
-            json.put("SoilEcosite", soilEcositeJSON);
+        JSONArray soilEcositeJSON = getChildFieldArray(soilEcosite);
+        if(soilEcositeJSON != null) {
+            json.put("tblSoilEcosite", soilEcositeJSON);
         }
 
         return json;

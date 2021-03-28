@@ -89,137 +89,104 @@ public class Plot extends Table {
         json.put("fields", this.getFields());
 
         // Note
-        if (!note.isEmpty()) {
-            JSONArray noteJSON = new JSONArray();
-            note.forEach((n) -> {
-                noteJSON.add(n.getFields());
-            });
-            json.put("Note", noteJSON);
+        JSONArray noteJSON = getChildFieldArray(note);
+        if(noteJSON != null) {
+            json.put("tblNote", noteJSON);
         }
 
         // NoteFixup
-        if (!noteFixup.isEmpty()) {
-            JSONArray noteFixupJSON = new JSONArray();
-            note.forEach((n) -> {
-                noteFixupJSON.add(n.getFields());
-            });
-            json.put("NoteFixup", noteFixupJSON);
+        JSONArray noteFixupJSON = getChildFieldArray(noteFixup);
+        if(noteFixupJSON != null) {
+            json.put("tblNoteFixup", noteFixupJSON);
         }
 
         // Note Plot
         if (notePlot != null) {
-            json.put("NotePlot", notePlot.getFields());
+            json.put("tblNotePlot", notePlot.getJSON());
         }
 
         // Site Perm Rest
         if (sitePermRest != null) {
-            json.put("SitePermRest", sitePermRest.getFields());
+            json.put("tblSitePermRest", sitePermRest.getJSON());
         }
 
         // Site Perm Plot
         if (sitePermPlot != null) {
-            json.put("SitePermPlot", sitePermPlot.getFields());
+            json.put("tblSitePermPlot", sitePermPlot.getJSON());
         }
 
         // Loc Plot
         if (locPlot != null) {
-            json.put("LocPlot", locPlot.getFields());
+            json.put("tblLocPlot", locPlot.getJSON());
         }
 
         // Plot Access
-        if (!plotAccess.isEmpty()) {
-            JSONArray plotAccessJSON = new JSONArray();
-            note.forEach((n) -> {
-                plotAccessJSON.add(n.getFields());
-            });
-            json.put("PlotAccess", plotAccessJSON);
+        JSONArray plotAccessJSON = getChildFieldArray(plotAccess);
+        if(plotAccessJSON != null) {
+            json.put("tblPlotAccess", plotAccessJSON);
         }
 
         // Loc Coord
-        if (!locCoord.isEmpty()) {
-            JSONArray locCoordJSON = new JSONArray();
-            locCoord.forEach((n) -> {
-                locCoordJSON.add(n.getFields());
-            });
-            json.put("LocCoord", locCoordJSON);
+        JSONArray locCoordJSON = getChildFieldArray(locCoord);
+        if(locCoordJSON != null) {
+            json.put("tblLocCoord", locCoordJSON);
         }
 
         // Stand Info Plot
         if (standInfoPlot != null) {
-            json.put("StandInfoPlot", standInfoPlot.getFields());
+            json.put("tblStandInfoPlot", standInfoPlot.getJSON());
         }
 
         // Stand Info Distb
-        if (!standInfoDistb.isEmpty()) {
-            JSONArray standInfoDistbJSON = new JSONArray();
-            standInfoDistb.forEach((n) -> {
-                standInfoDistbJSON.add(n.getFields());
-            });
-            json.put("StandInfoDistb", standInfoDistbJSON);
+        JSONArray standInfoDistbJSON = getChildFieldArray(standInfoDistb);
+        if(standInfoDistbJSON != null) {
+            json.put("tblStandInfoDistb", standInfoDistbJSON);
         }
 
         // Stand Info Treat
-        if (!standInfoTreat.isEmpty()) {
-            JSONArray standInfoTreatJSON = new JSONArray();
-            standInfoTreat.forEach((n) -> {
-                standInfoTreatJSON.add(n.getFields());
-            });
-            json.put("StandInfoTreat", standInfoTreatJSON);
+        JSONArray standInfoTreatJSON = getChildFieldArray(standInfoTreat);
+        if(standInfoTreatJSON != null) {
+            json.put("tblStandInfoTreat", standInfoTreatJSON);
         }
 
         // Stand Info Compr
-        if (!standInfoCompr.isEmpty()) {
-            JSONArray standInfoComprJSON = new JSONArray();
-            standInfoCompr.forEach((n) -> {
-                standInfoComprJSON.add(n.getFields());
-            });
-            json.put("StandInfoCompr", standInfoComprJSON);
+        JSONArray standInfoComprJSON = getChildFieldArray(standInfoCompr);
+        if(standInfoComprJSON != null) {
+            json.put("tblStandInfoCompr", standInfoComprJSON);
         }
 
         // Plot Map Mort
         if (plotMapMort != null) {
-            json.put("PlotMapMort", plotMapMort.getFields());
+            json.put("tblPlotMapMort", plotMapMort.getJSON());
         }
 
         // Plot Map Growth Plot
-        if (!plotMapGrowthPlot.isEmpty()) {
-            JSONArray plotMapGrowthPlotJSON = new JSONArray();
-            plotMapGrowthPlot.forEach((n) -> {
-                plotMapGrowthPlotJSON.add(n.getJSON());
-            });
-            json.put("PlotMapGrowthPlot", plotMapGrowthPlotJSON);
+        JSONArray plotMapGrowthPlotJSON = getChildFieldArrayWithJSON(plotMapGrowthPlot);
+        if(plotMapGrowthPlotJSON != null) {
+            json.put("tblPlotMapGrowthPlot", plotMapGrowthPlotJSON);
         }
 
         // Soil Sample
-        if (!soilSample.isEmpty()) {
-            JSONArray soilSampleJSON = new JSONArray();
-            soilSample.forEach((n) -> {
-                soilSampleJSON.add(n.getJSON());
-            });
-            json.put("SoilSample", soilSampleJSON);
+        JSONArray soilSampleJSON = getChildFieldArrayWithJSON(soilSample);
+        if(soilSampleJSON != null) {
+            json.put("tblSoilSample", soilSampleJSON);
         }
 
         // Soil Plot
         if (soilPlot != null) {
-            json.put("SoilPlot", soilPlot.getFields());
+            json.put("tblSoilPlot", soilPlot.getJSON());
         }
 
         // Soil Growth Plot
-        if (!soilGrowthPlot.isEmpty()) {
-            JSONArray soilGrowthPlotJSON = new JSONArray();
-            soilGrowthPlot.forEach((n) -> {
-                soilGrowthPlotJSON.add(n.getFields());
-            });
-            json.put("SoilGrowthPlot", soilGrowthPlotJSON);
+        JSONArray soilGrowthPlotJSON = getChildFieldArray(soilGrowthPlot);
+        if(soilGrowthPlotJSON != null) {
+            json.put("tblSoilGrowthPlot", soilGrowthPlotJSON);
         }
 
         // Spec Assoc
-        if (!specAssoc.isEmpty()) {
-            JSONArray specAssocJSON = new JSONArray();
-            specAssoc.forEach((n) -> {
-                specAssocJSON.add(n.getFields());
-            });
-            json.put("SpecAssoc", specAssocJSON);
+        JSONArray specAssocJSON = getChildFieldArray(specAssoc);
+        if(specAssocJSON != null) {
+            json.put("tblSpecAssoc", specAssocJSON);
         }
 
         return json;

@@ -26,20 +26,16 @@ public class SelfQAHeader extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!selfQAHt.isEmpty()) {
-            JSONArray selfQAHtJSON = new JSONArray();
-            selfQAHt.forEach((n) -> {
-                selfQAHtJSON.add(n.getFields());
-            });
-            json.put("SelfQAHt", selfQAHtJSON);
+        // SelfQAHt
+        JSONArray selfQAHtJSON = getChildFieldArray(selfQAHt);
+        if(selfQAHtJSON != null) {
+            json.put("tblSelfQAHt", selfQAHtJSON);
         }
 
-        if (!selfQATree.isEmpty()) {
-            JSONArray selfQATreeJSON = new JSONArray();
-            selfQATree.forEach((n) -> {
-                selfQATreeJSON.add(n.getJSON());
-            });
-            json.put("SelfQATree", selfQATreeJSON);
+        // SelfQATree
+        JSONArray selfQATreeJSON = getChildFieldArrayWithJSON(selfQATree);
+        if(selfQATreeJSON != null) {
+            json.put("tblSelfQATree", selfQATreeJSON);
         }
 
         return json;

@@ -28,30 +28,21 @@ public class DWDLine extends Table {
         json.put("fields", this.getFields());
 
         // DWD Intersect
-        if (!dwdIntersect.isEmpty()) {
-            JSONArray dwdIntersectJSON = new JSONArray();
-            dwdIntersect.forEach((n) -> {
-                dwdIntersectJSON.add(n.getFields());
-            });
-            json.put("DWDIntersect", dwdIntersectJSON);
+        JSONArray dwdIntersectJSON = getChildFieldArray(dwdIntersect);
+        if(dwdIntersectJSON != null) {
+            json.put("tblDWDIntersect", dwdIntersectJSON);
         }
 
         // DWD Stump
-        if (!dwdStump.isEmpty()) {
-            JSONArray dwdStumpJSON = new JSONArray();
-            dwdStump.forEach((n) -> {
-                dwdStumpJSON.add(n.getFields());
-            });
-            json.put("DWDStump", dwdStumpJSON);
+        JSONArray dwdStumpJSON = getChildFieldArray(dwdStump);
+        if(dwdStumpJSON != null) {
+            json.put("tblDWDStump", dwdStumpJSON);
         }
 
         // DWD Accum
-        if (!dwdAccum.isEmpty()) {
-            JSONArray dwdAccumJSON = new JSONArray();
-            dwdAccum.forEach((n) -> {
-                dwdAccumJSON.add(n.getFields());
-            });
-            json.put("DWDAccum", dwdAccumJSON);
+        JSONArray dwdAccumJSON = getChildFieldArray(dwdAccum);
+        if(dwdAccumJSON != null) {
+            json.put("tblDWDAccum", dwdAccumJSON);
         }
 
         return json;

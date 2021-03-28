@@ -24,12 +24,9 @@ public class MortHeader extends Table {
         json.put("fields", this.getFields());
 
         // Mort Tree Msr
-        if (!mortTreeMsr.isEmpty()) {
-            JSONArray mortTreeMsrJSON = new JSONArray();
-            mortTreeMsr.forEach((n) -> {
-                mortTreeMsrJSON.add(n.getJSON());
-            });
-            json.put("MortTreeMsr", mortTreeMsrJSON);
+        JSONArray mortTreeMsrJSON = getChildFieldArrayWithJSON(mortTreeMsr);
+        if(mortTreeMsrJSON != null) {
+            json.put("tblMortTreeMsr", mortTreeMsrJSON);
         }
 
         return json;

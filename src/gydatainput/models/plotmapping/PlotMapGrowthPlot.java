@@ -23,12 +23,10 @@ public class PlotMapGrowthPlot extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!tree.isEmpty()) {
-            JSONArray treeJSON = new JSONArray();
-            tree.forEach((n) -> {
-                treeJSON.add(n.getFields());
-            });
-            json.put("Tree", treeJSON);
+        // Tree
+        JSONArray treeJSON = getChildFieldArray(tree);
+        if(treeJSON != null) {
+            json.put("tblTree", treeJSON);
         }
 
         return json;

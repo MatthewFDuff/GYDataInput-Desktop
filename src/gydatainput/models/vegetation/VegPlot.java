@@ -31,39 +31,27 @@ public class VegPlot extends Table {
         json.put("fields", this.getFields());
 
         // Veg Cover
-        if (!vegCover.isEmpty()) {
-            JSONArray vegCoverJSON = new JSONArray();
-            vegCover.forEach((n) -> {
-                vegCoverJSON.add(n.getFields());
-            });
-            json.put("VegCover", vegCoverJSON);
+        JSONArray vegCoverJSON = getChildFieldArray(vegCover);
+        if(vegCoverJSON != null) {
+            json.put("tblVegCover", vegCoverJSON);
         }
 
         // Veg Regen
-        if (!vegRegen.isEmpty()) {
-            JSONArray vegRegenJSON = new JSONArray();
-            vegRegen.forEach((n) -> {
-                vegRegenJSON.add(n.getFields());
-            });
-            json.put("VegRegen", vegRegenJSON);
+        JSONArray vegRegenJSON = getChildFieldArray(vegRegen);
+        if(vegRegenJSON != null) {
+            json.put("tblVegRegen", vegRegenJSON);
         }
 
         // Veg Spec Pres
-        if (!vegSpecPres.isEmpty()) {
-            JSONArray vegSpecPresJSON = new JSONArray();
-            vegSpecPres.forEach((n) -> {
-                vegSpecPresJSON.add(n.getFields());
-            });
-            json.put("VegSpecPres", vegSpecPresJSON);
+        JSONArray vegSpecPresJSON = getChildFieldArray(vegSpecPres);
+        if(vegSpecPresJSON != null) {
+            json.put("tblVegSpecPres", vegSpecPresJSON);
         }
 
         // Veg Shrub Spec
-        if (!vegShrubSpec.isEmpty()) {
-            JSONArray vegShrubSpecJSON = new JSONArray();
-            vegShrubSpec.forEach((n) -> {
-                vegShrubSpecJSON.add(n.getFields());
-            });
-            json.put("VegShrubSpec", vegShrubSpecJSON);
+        JSONArray vegShrubSpecJSON = getChildFieldArray(vegShrubSpec);
+        if(vegShrubSpecJSON != null) {
+            json.put("tblVegShrubSpec", vegShrubSpecJSON);
         }
 
         return json;

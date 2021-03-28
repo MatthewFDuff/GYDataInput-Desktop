@@ -2,36 +2,7 @@ package gydatainput;
 
 import gydatainput.database.DatabaseController;
 import gydatainput.database.DatabaseHelper;
-import gydatainput.models.age.AgeHeader;
-import gydatainput.models.cavity.TreeCav;
-import gydatainput.models.deformity.TreeDefm;
-import gydatainput.models.downwoodydebris.DWDHeader;
-import gydatainput.models.downwoodydebris.DWDLine;
-import gydatainput.models.height.HtHeader;
-import gydatainput.models.location.LocCoord;
-import gydatainput.models.location.LocPlot;
-import gydatainput.models.location.PlotAccess;
-import gydatainput.models.mortality.MortHeader;
-import gydatainput.models.note.Note;
-import gydatainput.models.note.NoteFixup;
-import gydatainput.models.note.NotePlot;
-import gydatainput.models.photo.PhotoFeature;
-import gydatainput.models.photo.PhotoHeader;
-import gydatainput.models.photo.PhotoRequired;
-import gydatainput.models.plotmapping.PlotMapGrowthPlot;
-import gydatainput.models.plotmapping.PlotMapHeader;
-import gydatainput.models.plotmapping.PlotMapMort;
 import gydatainput.models.plotpackage.Package;
-import gydatainput.models.plotpackage.Visit;
-import gydatainput.models.selfqa.SelfQAHeader;
-import gydatainput.models.sitepermissions.SitePermPlot;
-import gydatainput.models.sitepermissions.SitePermRest;
-import gydatainput.models.soilsitetemporal.SoilEcositeHeader;
-import gydatainput.models.soilsitetemporal.SoilHeader;
-import gydatainput.models.standinformation.*;
-import gydatainput.models.stocking.StkgHeader;
-import gydatainput.models.tree.*;
-import gydatainput.models.vegetation.*;
 import gydatainput.ui.exportplotpackage.ExportPlotPackageController;
 import gydatainput.ui.importplotpackage.ImportPlotPackageController;
 import gydatainput.ui.plotpackage.PlotPackageController;
@@ -52,18 +23,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.xml.crypto.Data;
-import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 /**
  *  The main controller class controls the main UI functionality and
@@ -121,7 +88,8 @@ public class MainController implements Initializable {
 
                 // Compare the filter with the name of the plot package (both lowercase).
                 String lowerCaseFilter = newValue.toLowerCase();
-                if(plotPackage.getPlot().getFields().get("PlotName").toString().toLowerCase().contains(lowerCaseFilter)) {
+
+                if(plotPackage.getPlot().getFromFields("PlotName").toString().toLowerCase().contains(lowerCaseFilter)) {
                     return true; // This item will appear in the list.
                 }
 
@@ -208,7 +176,7 @@ public class MainController implements Initializable {
         // Upload each table
         if (json.size() > 0) {
             // Package
-            JSONObject packageFields = (JSONObject) json.get("fields");
+            JSONArray packageFields = (JSONArray) json.get("fields");
             if (packageFields.size() > 0) {
                 DatabaseHelper.uploadTableData("tblPackage", packageFields);
             }
@@ -216,7 +184,7 @@ public class MainController implements Initializable {
             // Plot
             JSONObject plotJSON = (JSONObject) json.get("Plot");
             if (plotJSON != null && plotJSON.size() > 0 ) {
-                JSONObject plotFields = (JSONObject) plotJSON.get("fields");
+                JSONArray plotFields = (JSONArray) plotJSON.get("fields");
                 DatabaseHelper.uploadTableData("tblPlot", plotFields);
 
                 // Note
@@ -225,8 +193,9 @@ public class MainController implements Initializable {
                     Iterator<JSONObject> noteKeys = notes.iterator();
                     while(noteKeys.hasNext()) {
                         JSONObject noteKey = (JSONObject) noteKeys.next();
+                        JSONArray noteKeyFields = (JSONArray) noteKey.get("fields");
                         // TODO Note does not have fields
-                        DatabaseHelper.uploadTableData("tblNote", noteKey);
+                        DatabaseHelper.uploadTableData("tblNote", noteKeyFields);
                     }
                 }
 
@@ -236,7 +205,7 @@ public class MainController implements Initializable {
                     Iterator<JSONObject> noteFixupKeys = noteFixups.iterator();
                     while(noteFixupKeys.hasNext()) {
                         JSONObject noteFixupKey = (JSONObject) noteFixupKeys.next();
-                        JSONObject noteFixupFields = (JSONObject) noteFixupKey.get("fields");
+                        JSONArray noteFixupFields = (JSONArray) noteFixupKey.get("fields");
                         DatabaseHelper.uploadTableData("tblNoteFixup", noteFixupFields);
                     }
                 }
@@ -244,33 +213,33 @@ public class MainController implements Initializable {
                 // NotePlot
                 JSONObject notePlot = (JSONObject) plotJSON.get("NotePlot");
                 if (notePlot != null && notePlot.size() > 0) {
-                    JSONObject notePlotFields = (JSONObject) notePlot.get("fields");
+                    JSONArray notePlotFields = (JSONArray) notePlot.get("fields");
                     // TODO Note Plot does not have fields
-                    DatabaseHelper.uploadTableData("tblNotePlot", notePlot);
+                    DatabaseHelper.uploadTableData("tblNotePlot", notePlotFields);
                 }
 
                 // Site Perm Rest
                 JSONObject sitePermRest = (JSONObject) plotJSON.get("SitePermRest");
                 if (sitePermRest != null && sitePermRest.size() > 0) {
-                    JSONObject sitePermRestFields = (JSONObject) sitePermRest.get("fields");
+                    JSONArray sitePermRestFields = (JSONArray) sitePermRest.get("fields");
                     // TODO SitePermRest does not have fields
-                    DatabaseHelper.uploadTableData("tblNotePlot", sitePermRest);
+                    DatabaseHelper.uploadTableData("tblNotePlot", sitePermRestFields);
                 }
 
                 // Site Perm Plot
                 JSONObject sitePermPlot = (JSONObject) plotJSON.get("SitePermPlot");
                 if (sitePermPlot != null && sitePermPlot.size() > 0) {
-                    JSONObject sitePermPlotFields = (JSONObject) sitePermPlot.get("fields");
+                    JSONArray sitePermPlotFields = (JSONArray) sitePermPlot.get("fields");
                     // TODO SitePermPlot does not have fields.
-                    DatabaseHelper.uploadTableData("tblSitePermPlot", sitePermPlot);
+                    DatabaseHelper.uploadTableData("tblSitePermPlot", sitePermPlotFields);
                 }
 
                 // Loc Plot
                 JSONObject locPlot = (JSONObject) plotJSON.get("LocPlot");
                 if (locPlot != null && locPlot.size() > 0) {
-                    JSONObject locPlotFields = (JSONObject) locPlot.get("fields");
+                    JSONArray locPlotFields = (JSONArray) locPlot.get("fields");
                     // TODO LocPlot does not have fields.
-                    DatabaseHelper.uploadTableData("tblLocPlot", locPlot);
+                    DatabaseHelper.uploadTableData("tblLocPlot", locPlotFields);
                 }
 
                 // Plot Access
@@ -279,9 +248,9 @@ public class MainController implements Initializable {
                     Iterator<JSONObject> plotAccessKeys = plotAccess.iterator();
                     while(plotAccessKeys.hasNext()) {
                         JSONObject plotAccessKey = (JSONObject) plotAccessKeys.next();
-                        JSONObject plotAccessFields = (JSONObject) plotAccessKey.get("fields");
+                        JSONArray plotAccessFields = (JSONArray) plotAccessKey.get("fields");
                         // TODO PlotAccess does not have fields
-                        DatabaseHelper.uploadTableData("tblPlotAccess", plotAccessKey);
+                        DatabaseHelper.uploadTableData("tblPlotAccess", plotAccessFields);
                     }
                 }
 
@@ -290,10 +259,10 @@ public class MainController implements Initializable {
                 if (locCoord != null && !locCoord.isEmpty()) {
                     Iterator<JSONObject> locCoordKeys = locCoord.iterator();
                     while(locCoordKeys.hasNext()) {
+
                         JSONObject locCoordKey = (JSONObject) locCoordKeys.next();
-                        JSONObject plotAccessFields = (JSONObject) locCoordKey.get("fields");
-                        // TODO LocCoord does not have fields
-                        DatabaseHelper.uploadTableData("tblLocCoord", locCoordKey);
+                        JSONArray plotAccessFields = (JSONArray) locCoordKey.get("fields");
+                        DatabaseHelper.uploadTableData("tblLocCoord", plotAccessFields);
                     }
                 }
 
@@ -319,7 +288,7 @@ public class MainController implements Initializable {
                     while(plotMapGrowthPlotKeys.hasNext()) {
                         // Plot Map Growth Plot fields
                         JSONObject plotMapGrowthPlotKey = (JSONObject) plotMapGrowthPlotKeys.next();
-                        JSONObject plotMapGrowthPlotFields = (JSONObject) plotMapGrowthPlotKey.get("fields");
+                        JSONArray plotMapGrowthPlotFields = (JSONArray) plotMapGrowthPlotKey.get("fields");
                         DatabaseHelper.uploadTableData("tblPlotMapGrowthPlot", plotMapGrowthPlotFields);
 
                         handleArrayUpload("Tree", plotMapGrowthPlotKey);
@@ -333,7 +302,7 @@ public class MainController implements Initializable {
                     while(soilSampleKeys.hasNext()) {
                         // Soil Sample fields
                         JSONObject soilSampleKey = (JSONObject) soilSampleKeys.next();
-                        JSONObject soilSampleFields = (JSONObject) soilSampleKey.get("fields");
+                        JSONArray soilSampleFields = (JSONArray) soilSampleKey.get("fields");
                         DatabaseHelper.uploadTableData("tblLocCoord", soilSampleFields);
 
                         // SoilDepMode
@@ -354,22 +323,22 @@ public class MainController implements Initializable {
             }
 
             // Visits
-            JSONArray visits = (JSONArray) json.get("Visit");
+            JSONArray visits = (JSONArray) json.get("tblVisit");
             if (!visits.isEmpty()) {
                 Iterator<JSONObject> visitKeys = visits.iterator();
                 while(visitKeys.hasNext()) {
                     // Visit
                     JSONObject key = (JSONObject) visitKeys.next();
-                    JSONObject visitFields = (JSONObject) key.get("fields");
+                    JSONArray visitFields = (JSONArray) key.get("fields");
                     DatabaseHelper.uploadTableData("tblVisit", visitFields);
 
                     // StandInfoHeader
                     handleUpload("StandInfoHeader", key);
                     // PhotoHeader
-                    JSONObject photoHeaderJSON = (JSONObject) key.get("PhotoHeader");
+                    JSONObject photoHeaderJSON = (JSONObject) key.get("tblPhotoHeader");
                     if (photoHeaderJSON != null && photoHeaderJSON.size() > 0) {
                         // PhotoHeader fields
-                        JSONObject fields = (JSONObject) photoHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) photoHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblPhotoHeader", fields);
 
                         // PhotoRequired
@@ -380,23 +349,23 @@ public class MainController implements Initializable {
                     }
 
                     // VegHeader
-                    JSONObject vegHeaderJSON = (JSONObject) key.get("VegHeader");
+                    JSONObject vegHeaderJSON = (JSONObject) key.get("tblVegHeader");
                     if (vegHeaderJSON != null && vegHeaderJSON.size() > 0) {
                         // VegHeader fields
-                        JSONObject fields = (JSONObject) vegHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) vegHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblVegHeader", fields);
 
                         // VegVType
                         handleArrayUpload("VegVType", vegHeaderJSON);
 
                         // VegPlot
-                        JSONArray vegPlot = (JSONArray) vegHeaderJSON.get("VegPlot");
+                        JSONArray vegPlot = (JSONArray) vegHeaderJSON.get("tblVegPlot");
                         if (vegPlot != null && !vegPlot.isEmpty()) {
                             Iterator<JSONObject> vegPlotKeys = vegPlot.iterator();
                             while(vegPlotKeys.hasNext()) {
                                 // VegPlot fields
                                 JSONObject vegPlotKey = (JSONObject) vegPlotKeys.next();
-                                JSONObject vegPlotFields = (JSONObject) vegPlotKey.get("fields");
+                                JSONArray vegPlotFields = (JSONArray) vegPlotKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblVegPlot", vegPlotFields);
 
                                 // VegCover
@@ -415,30 +384,30 @@ public class MainController implements Initializable {
                     }
 
                     // TreeHeader
-                    JSONObject treeHeaderJSON = (JSONObject) key.get("TreeHeader");
+                    JSONObject treeHeaderJSON = (JSONObject) key.get("tblTreeHeader");
                     if (treeHeaderJSON != null && treeHeaderJSON.size() > 0) {
                         // PhotoHeader fields
-                        JSONObject fields = (JSONObject) treeHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) treeHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblTreeHeader", fields);
 
                         // TreeGrowthPlot
-                        JSONArray treeGrowthPlot = (JSONArray) treeHeaderJSON.get("TreeGrowthPlot");
+                        JSONArray treeGrowthPlot = (JSONArray) treeHeaderJSON.get("tblTreeGrowthPlot");
                         if (treeGrowthPlot != null && !treeGrowthPlot.isEmpty()) {
                             Iterator<JSONObject> treeGrowthPlotKeys = treeGrowthPlot.iterator();
                             while(treeGrowthPlotKeys.hasNext()) {
                                 // TreeGrowthPlot fields
                                 JSONObject treeGrowthPlotKey = (JSONObject) treeGrowthPlotKeys.next();
-                                JSONObject treeGrowthPlotFields = (JSONObject) treeGrowthPlotKey.get("fields");
+                                JSONArray treeGrowthPlotFields = (JSONArray) treeGrowthPlotKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblTreeGrowthPlot", treeGrowthPlotFields);
 
                                 // TreeMsr
-                                JSONArray treeMsr = (JSONArray) treeHeaderJSON.get("TreeMsr");
+                                JSONArray treeMsr = (JSONArray) treeHeaderJSON.get("tblTreeMsr");
                                 if (treeMsr != null && !treeMsr.isEmpty()) {
                                     Iterator<JSONObject> treeMsrKeys = treeMsr.iterator();
                                     while(treeMsrKeys.hasNext()) {
                                         // TreeMsr fields
                                         JSONObject treeMsrKey = (JSONObject) treeMsrKeys.next();
-                                        JSONObject treeMsrFields = (JSONObject) treeMsrKey.get("fields");
+                                        JSONArray treeMsrFields = (JSONArray) treeMsrKey.get("fields");
                                         DatabaseHelper.uploadTableData("tblTreeMsr", treeMsrFields);
 
                                         // TreeMissed
@@ -459,10 +428,10 @@ public class MainController implements Initializable {
                     }
 
                     // HtHeader
-                    JSONObject htHeaderJSON = (JSONObject) key.get("HtHeader");
+                    JSONObject htHeaderJSON = (JSONObject) key.get("tblHtHeader");
                     if (htHeaderJSON != null && htHeaderJSON.size() > 0) {
                         // PlotMapHeader fields
-                        JSONObject fields = (JSONObject) htHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) htHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblHtHeader", fields);
 
                         // Ht
@@ -470,20 +439,20 @@ public class MainController implements Initializable {
                     }
 
                     // DWDHeader
-                    JSONObject dwdHeaderJSON = (JSONObject) key.get("DWDHeader");
+                    JSONObject dwdHeaderJSON = (JSONObject) key.get("tblDWDHeader");
                     if (dwdHeaderJSON != null && dwdHeaderJSON.size() > 0) {
                         // DWDHeader fields
-                        JSONObject fields = (JSONObject) dwdHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) dwdHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblDWDHeader", fields);
 
                         // DWDLine
-                        JSONArray dwdLine = (JSONArray) dwdHeaderJSON.get("DWDLine");
+                        JSONArray dwdLine = (JSONArray) dwdHeaderJSON.get("tblDWDLine");
                         if (dwdLine != null && !dwdLine.isEmpty()) {
                             Iterator<JSONObject> dwdLineKeys = dwdLine.iterator();
                             while(dwdLineKeys.hasNext()) {
                                 // DWDLine fields
                                 JSONObject dwdLineKey = (JSONObject) dwdLineKeys.next();
-                                JSONObject dwdLineFields = (JSONObject) dwdLineKey.get("fields");
+                                JSONArray dwdLineFields = (JSONArray) dwdLineKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblDWDLine", dwdLineFields);
 
                                 // DWDIntersect
@@ -498,13 +467,13 @@ public class MainController implements Initializable {
                         }
 
                         // DWD
-                        JSONArray dwd = (JSONArray) treeHeaderJSON.get("DWD");
+                        JSONArray dwd = (JSONArray) treeHeaderJSON.get("tblDWD");
                         if (dwd != null && !dwd.isEmpty()) {
                             Iterator<JSONObject> dwdKeys = dwd.iterator();
                             while(dwdKeys.hasNext()) {
                                 // DWD fields
                                 JSONObject dwdKey = (JSONObject) dwdKeys.next();
-                                JSONObject dwdFields = (JSONObject) dwdKey.get("fields");
+                                JSONArray dwdFields = (JSONArray) dwdKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblDWD", dwdFields);
 
                                 // DWDIntersect
@@ -517,20 +486,20 @@ public class MainController implements Initializable {
                     handleUpload("PlotMapHeader", key);
 
                     // StkgHeader
-                    JSONObject stkgHeaderJSON = (JSONObject) key.get("StkgHeader");
+                    JSONObject stkgHeaderJSON = (JSONObject) key.get("tblStkgHeader");
                     if (stkgHeaderJSON != null && stkgHeaderJSON.size() > 0) {
                         // StkgHeader fields
-                        JSONObject fields = (JSONObject) stkgHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) stkgHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblStkgHeader", fields);
 
                         // StkgLine
-                        JSONArray stkgLine = (JSONArray) treeHeaderJSON.get("StkgLine");
+                        JSONArray stkgLine = (JSONArray) treeHeaderJSON.get("tblStkgLine");
                         if (stkgLine != null && !stkgLine.isEmpty()) {
                             Iterator<JSONObject> stkgLineKeys = stkgLine.iterator();
                             while(stkgLineKeys.hasNext()) {
                                 // StkgLine fields
                                 JSONObject stkgLineKey = (JSONObject) stkgLineKeys.next();
-                                JSONObject stkgLineFields = (JSONObject) stkgLineKey.get("fields");
+                                JSONArray stkgLineFields = (JSONArray) stkgLineKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblStkgLine", stkgLineFields);
 
                                 // Stkg
@@ -540,20 +509,20 @@ public class MainController implements Initializable {
                     }
 
                     // MortHeader
-                    JSONObject mortHeaderJSON = (JSONObject) key.get("MortHeader");
+                    JSONObject mortHeaderJSON = (JSONObject) key.get("tblMortHeader");
                     if (mortHeaderJSON != null && mortHeaderJSON.size() > 0) {
                         // MortHeader fields
-                        JSONObject fields = (JSONObject) mortHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) mortHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblMortHeader", fields);
 
                         // MortTreeMsr
-                        JSONArray mortTreeMsr = (JSONArray) mortHeaderJSON.get("MortTreeMsr");
+                        JSONArray mortTreeMsr = (JSONArray) mortHeaderJSON.get("tblMortTreeMsr");
                         if (mortTreeMsr != null && !mortTreeMsr.isEmpty()) {
                             Iterator<JSONObject> mortTreeMsrKeys = mortTreeMsr.iterator();
                             while(mortTreeMsrKeys.hasNext()) {
                                 // MortTreeMsr fields
                                 JSONObject mortTreeMsrKey = (JSONObject) mortTreeMsrKeys.next();
-                                JSONObject mortTreeMsrFields = (JSONObject) mortTreeMsrKey.get("fields");
+                                JSONArray mortTreeMsrFields = (JSONArray) mortTreeMsrKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblMortTreeMsr", mortTreeMsrFields);
 
                                 // MortTree
@@ -563,20 +532,20 @@ public class MainController implements Initializable {
                     }
 
                     // AgeHeader
-                    JSONObject ageHeaderJSON = (JSONObject) key.get("AgeHeader");
+                    JSONObject ageHeaderJSON = (JSONObject) key.get("tblAgeHeader");
                     if (ageHeaderJSON != null && ageHeaderJSON.size() > 0) {
                         // AgeHeader fields
-                        JSONObject fields = (JSONObject) ageHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) ageHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblAgeHeader", fields);
 
                         // AgeTree
-                        JSONArray ageTree = (JSONArray) ageHeaderJSON.get("AgeTree");
+                        JSONArray ageTree = (JSONArray) ageHeaderJSON.get("tblAgeTree");
                         if (ageTree != null && !ageTree.isEmpty()) {
                             Iterator<JSONObject> ageTreeKeys = ageTree.iterator();
                             while(ageTreeKeys.hasNext()) {
                                 // AgeTree fields
                                 JSONObject ageTreeKey = (JSONObject) ageTreeKeys.next();
-                                JSONObject ageTreeFields = (JSONObject) ageTreeKey.get("fields");
+                                JSONArray ageTreeFields = (JSONArray) ageTreeKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblAgeTree", ageTreeFields);
 
                                 // AgeSample
@@ -586,10 +555,10 @@ public class MainController implements Initializable {
                     }
 
                     // SoilEcositeHeader
-                    JSONObject soilEcositeHeaderJSON = (JSONObject) key.get("SoilEcositeHeader");
+                    JSONObject soilEcositeHeaderJSON = (JSONObject) key.get("tblSoilEcositeHeader");
                     if (soilEcositeHeaderJSON != null && soilEcositeHeaderJSON.size() > 0) {
                         // SoilEcositeHeader fields
-                        JSONObject fields = (JSONObject) soilEcositeHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) soilEcositeHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblSoilEcositeHeader", fields);
 
                         // SoilEcosite
@@ -597,10 +566,10 @@ public class MainController implements Initializable {
                     }
 
                     // SoilHeader
-                    JSONObject soilHeaderJSON = (JSONObject) key.get("SoilHeader");
+                    JSONObject soilHeaderJSON = (JSONObject) key.get("tblSoilHeader");
                     if (soilHeaderJSON != null && soilHeaderJSON.size() > 0) {
                         // SoilHeader fields
-                        JSONObject fields = (JSONObject) soilHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) soilHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblSoilHeader", fields);
 
                         // SoilForestFloor
@@ -611,23 +580,23 @@ public class MainController implements Initializable {
                     }
 
                     // SelfQAHeader
-                    JSONObject selfQAHeaderJSON = (JSONObject) key.get("SelfQAHeader");
+                    JSONObject selfQAHeaderJSON = (JSONObject) key.get("tblSelfQAHeader");
                     if (selfQAHeaderJSON != null && selfQAHeaderJSON.size() > 0) {
                         // SelfQAHeader fields
-                        JSONObject fields = (JSONObject) selfQAHeaderJSON.get("fields");
+                        JSONArray fields = (JSONArray) selfQAHeaderJSON.get("fields");
                         DatabaseHelper.uploadTableData("tblSelfQAHeader", fields);
 
                         // SelfQAHt
                         handleArrayUpload("SelfQAHt", selfQAHeaderJSON);
 
                         // SelfQATree
-                        JSONArray selfQATree = (JSONArray) ageHeaderJSON.get("SelfQATree");
+                        JSONArray selfQATree = (JSONArray) ageHeaderJSON.get("tblSelfQATree");
                         if (selfQATree != null && !selfQATree.isEmpty()) {
                             Iterator<JSONObject> selfQATreeKeys = selfQATree.iterator();
                             while(selfQATreeKeys.hasNext()) {
                                 // AgeTree fields
                                 JSONObject selfQATreeKey = (JSONObject) selfQATreeKeys.next();
-                                JSONObject selfQATreeFields = (JSONObject) selfQATreeKey.get("fields");
+                                JSONArray selfQATreeFields = (JSONArray) selfQATreeKey.get("fields");
                                 DatabaseHelper.uploadTableData("tblSelfQATree", selfQATreeFields);
 
                                 // SelfQADeform
@@ -639,37 +608,36 @@ public class MainController implements Initializable {
             }
 
             // SpecGYHeader
-            JSONObject specGYHeaderJSON = (JSONObject) json.get("SpecGYHeader");
+            JSONObject specGYHeaderJSON = (JSONObject) json.get("tblSpecGYHeader");
             if (specGYHeaderJSON != null && specGYHeaderJSON.size() > 0) {
-                JSONObject specGYHeaderFields = (JSONObject) specGYHeaderJSON.get("fields");
+                JSONArray specGYHeaderFields = (JSONArray) specGYHeaderJSON.get("fields");
                 DatabaseHelper.uploadTableData("tblSpecGYHeader", specGYHeaderFields);
             }
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setContentText("Plot Package (" + selected.getPlot().getFields().get("PlotName") + ") Uploaded Successfully");
+        alert.setContentText("Plot Package ( PLOT PACKAGE NAME ) Uploaded Successfully");
         alert.showAndWait();
     }
 
     public void handleUpload(String name, JSONObject refJSON) {
-        JSONObject json = (JSONObject) refJSON.get(name);
+        JSONObject json = (JSONObject) refJSON.get("tbl" + name);
         if (json != null && json.size() > 0) {
-            JSONObject fields = (JSONObject) json.get("fields");
-            DatabaseHelper.uploadTableData("tbl" + name, json);
+            JSONArray fields = (JSONArray) json.get("fields");
+            DatabaseHelper.uploadTableData("tbl" + name, fields);
         }
     }
 
     public void handleArrayUpload(String name, JSONObject refJSON) {
-        JSONArray json = (JSONArray) refJSON.get(name);
+        JSONArray json = (JSONArray) refJSON.get("tbl" + name);
         if (json != null && !json.isEmpty()) {
             Iterator<JSONObject> keys = json.iterator();
             while(keys.hasNext()) {
                 JSONObject key = (JSONObject) keys.next();
-                JSONObject fields = (JSONObject) key.get("fields");
-                // If fields is not null, then the object has children.
+                JSONArray fields = (JSONArray) key.get("fields");
 
-                DatabaseHelper.uploadTableData("tbl"+ name, key);
+                DatabaseHelper.uploadTableData("tbl"+ name, fields);
             }
         }
     }
@@ -716,7 +684,7 @@ public class MainController implements Initializable {
                 JSONObject pkgJSON = pkg.getJSON();
 
                 // Create JSON file
-                FileWriter file = new FileWriter(path + "/" + pkg.getPlot().getFields().get("PlotName") + ".json");
+                FileWriter file = new FileWriter(path + "/" + pkg.getPlot().getFromFields("PlotName") + ".json");
                 file.write(pkgJSON.toJSONString());
                 file.close();
             }
@@ -737,29 +705,6 @@ public class MainController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("An unexpected error has occurred. Unable to export plot packages.\n\n"+e.getMessage());
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    /** Download Plot Package
-     *      This function downloads the provided plot package as a JSON
-     *      object, which can then be sent to the field crew to be used
-     *      in validation and flagging.
-     * @param pkg The plot package which will be downloaded.
-     * */
-    void downloadPlotPackage(Package pkg) {
-        try {
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Updating info for package " + pkg.getPlot().getFields().get("PlotName"));
-            alert.showAndWait();
-
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Unable to display package data.");
             alert.showAndWait();
         }
     }

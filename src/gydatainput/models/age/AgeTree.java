@@ -14,7 +14,6 @@ public class AgeTree extends Table {
     /**
      *
      *
-     * @param fields each value contained in a column
      */
     public AgeTree() {
     }
@@ -29,12 +28,9 @@ public class AgeTree extends Table {
         json.put("fields", this.getFields());
 
         // Age Sample
-        if (!ageSample.isEmpty()) {
-            JSONArray ageSampleJSON = new JSONArray();
-            ageSample.forEach((n) -> {
-                ageSampleJSON.add(n.getFields());
-            });
-            json.put("MortTreeMsr", ageSampleJSON);
+        JSONArray ageSampleJSON = getChildFieldArray(ageSample);
+        if (ageSampleJSON != null) {
+            json.put("tblAgeSample", ageSampleJSON);
         }
 
         return json;

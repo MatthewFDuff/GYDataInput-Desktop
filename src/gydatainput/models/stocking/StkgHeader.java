@@ -24,12 +24,10 @@ public class StkgHeader extends Table {
         JSONObject json = new JSONObject();
         json.put("fields", this.getFields());
 
-        if (!stkgLine.isEmpty()) {
-            JSONArray stkgLineJSON = new JSONArray();
-            stkgLine.forEach((n) -> {
-                stkgLineJSON.add(n.getJSON());
-            });
-            json.put("StkgLine", stkgLineJSON);
+        // StkgLine
+        JSONArray stkgLineJSON = getChildFieldArrayWithJSON(stkgLine);
+        if(stkgLineJSON != null) {
+            json.put("tblStkgLine", stkgLineJSON);
         }
 
         return json;
