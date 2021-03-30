@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListCell?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+   <graphic>
+      <VBox fx:id="plotPackage">
+         <children>
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="900.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="titlePlotKey" alignment="CENTER" prefHeight="22.0" prefWidth="233.0" text="Plot Key" textAlignment="CENTER" textFill="#a4a4a4" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="lblPlotKey" alignment="CENTER" prefHeight="20.0" prefWidth="100.0" text="PlotKey" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="55.0" prefWidth="32.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="titlePlotKey1" alignment="CENTER" prefHeight="22.0" prefWidth="453.0" text="Plot Name" textAlignment="CENTER" textFill="#a4a4a4" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="lblPlotName" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="200.0" text="Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="55.0" prefWidth="32.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="titlePlotKey2" alignment="CENTER" prefHeight="22.0" prefWidth="141.0" text="Approach" textAlignment="CENTER" textFill="#a4a4a4" />
+                        <Label fx:id="lblApproachCode" alignment="CENTER" prefHeight="20.0" prefWidth="168.0" text="Approach">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="55.0" prefWidth="32.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="titlePlotKey4" alignment="CENTER" prefHeight="22.0" prefWidth="185.0" text="CoOp Method" textAlignment="CENTER" textFill="#a4a4a4" />
+                        <Label fx:id="lblCoOpMethod" alignment="CENTER" prefHeight="20.0" prefWidth="168.0" text="CoOp">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator orientation="VERTICAL" prefHeight="55.0" prefWidth="32.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="titlePlotKey3" alignment="CENTER" prefHeight="22.0" prefWidth="150.0" text="Start Year" textAlignment="CENTER" textFill="#a4a4a4" />
+                        <Label fx:id="lblStartYear" alignment="CENTER" prefHeight="20.0" prefWidth="168.0" text="StartYear">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <VBox fx:id="listVisit" prefHeight="0.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+            <Accordion>
+              <panes>
+                <TitledPane fx:id="paneVisits" animated="false" text="Visits">
+                     <content>
+                        <ListView fx:id="listVisits" prefHeight="100.0" prefWidth="900.0" style="-fx-background-insets: 0;" styleClass=".list-cell:empty" />
+                     </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+         </children>
+      </VBox>
+   </graphic>
+</fx:root>
