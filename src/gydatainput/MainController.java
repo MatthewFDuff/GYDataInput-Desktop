@@ -6,6 +6,8 @@ import gydatainput.models.plotpackage.Package;
 import gydatainput.ui.exportplotpackage.ExportPlotPackageController;
 import gydatainput.ui.importplotpackage.ImportPlotPackageController;
 import gydatainput.ui.plotpackage.PlotPackageController;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,16 +15,20 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -31,6 +37,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 /**
  *  The main controller class controls the main UI functionality and
@@ -48,6 +55,8 @@ public class MainController implements Initializable {
     @FXML Button btnDownloadPackage;
     @FXML TextField txtFilterCompleted;
     @FXML Button btnOpenFileExportsFolder;
+    @FXML ProgressBar progressBar;
+    @FXML Label lblProgress;
 
     // A list of all plot packages that are currently in the database.
     public ObservableList<Package> packages = FXCollections.observableArrayList();
@@ -60,9 +69,15 @@ public class MainController implements Initializable {
     DatabaseController database = DatabaseController.getInstance();
 
     Path exportPath = Paths.get(System.getProperty("user.dir") + "/exports/");
+    Path importPath = Paths.get(System.getProperty("user.dir") + "/imports/");
+
+    static DoubleProperty progressUpdater = new SimpleDoubleProperty(0.0);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Bind the progress bar to a value
+        progressBar.progressProperty().bind(progressUpdater);
+
         try {
             loadImportedPackages();
         } catch (IOException e) {
@@ -140,14 +155,16 @@ public class MainController implements Initializable {
 
         JSONParser parser = new JSONParser();
         // For each file in the directory..
-        for(String pathname : pathnames) {
-            // Convert to a JSON object.
+        if (pathnames != null && pathnames.length > 0) {
+            for(String pathname : pathnames) {
+                // Convert to a JSON object.
 
-            Object obj = parser.parse(new FileReader(importPath + "/" + pathname));
-            JSONObject json = (JSONObject) obj;
-            Package pkg = new Package(json, true);
+                Object obj = parser.parse(new FileReader(importPath + "/" + pathname));
+                JSONObject json = (JSONObject) obj;
+                Package pkg = new Package(json, true);
 
-            listImports.getItems().add(pkg);
+                listImports.getItems().add(pkg);
+            }
         }
     }
 
@@ -157,9 +174,16 @@ public class MainController implements Initializable {
      */
     @FXML
     public void openExportFileLocation(ActionEvent actionEvent) throws IOException {
-        final String EXPLORER_EXE = "explorer.exe";
-        String command = "explorer.exe /select," + exportPath;
-        Runtime.getRuntime().exec(command);
+//        final String EXPLORER_EXE = "explorer.exe";
+//        String command = "explorer.exe /select," + exportPath;
+//        Runtime.getRuntime().exec(command);
+
+        Desktop.getDesktop().open(new File(exportPath.toString()));
+    }
+
+    @FXML
+    public void openImportFileLocation(ActionEvent actionEvent) throws IOException {
+        Desktop.getDesktop().open(new File(importPath.toString()));
     }
 
     /**
@@ -167,7 +191,7 @@ public class MainController implements Initializable {
      * @param
      */
     @FXML
-    public void uploadPlotPackage(ActionEvent actionEvent) throws IOException {
+    public void uploadPlotPackage(ActionEvent actionEvent) throws IOException, InterruptedException {
         Package selected = listImports.getSelectionModel().getSelectedItem();
 
         // Upload from each table.
@@ -615,9 +639,12 @@ public class MainController implements Initializable {
             }
         }
 
+        // Delay TODO
+        TimeUnit.SECONDS.sleep((long) 3.4);
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setContentText("Plot Package ( PLOT PACKAGE NAME ) Uploaded Successfully");
+        alert.setContentText("Plot Package (" + selected.getPlot().getFromFields("PlotName") + ") Uploaded Successfully");
         alert.showAndWait();
     }
 
@@ -663,6 +690,10 @@ public class MainController implements Initializable {
         }
     }
 
+    void updateLabel(Label lbl, String content) {
+        lbl.setText(content);
+    }
+
     @FXML
     /** Export Plot Packages
      *      This function will export all plot packages from the exports list and
@@ -671,23 +702,43 @@ public class MainController implements Initializable {
      */
     void exportPlotPackages(ActionEvent event) {
         try {
+            // TODO check if the list is empty, and say no exports occurred rather than "success"
             // Create a new timestamped folder for the exported packages.
             Path path = Paths.get(System.getProperty("user.dir") + "/exports/" + LocalDate.now() + "-" + System.currentTimeMillis());
             exportPath = path;
             Files.createDirectory(path);
 
+            // Progress
+            System.out.println(listExports.getItems().size());
+            int numOfPackages = listExports.getItems().size();
+            double progressPerPackage = (1/numOfPackages) / 2;
+            // reset the progress bar and set text.
+            progressUpdater.set(0);
+            updateLabel(lblProgress, "Exporting Plot Packages");
+
             // Iterate through each package in the exports list.
             for (Package pkg: listExports.getItems()) {
+
+                lblProgress.setText("Generating " + pkg.getPlot().getFromFields("PlotName"));
+
                 // Retrieve all data for the plot package from the database
                 pkg.loadPackage();
+                // Update the progress bar.
+                progressUpdater.set(progressBar.progressProperty().doubleValue() + progressPerPackage);
 
                 JSONObject pkgJSON = pkg.getJSON();
+
+                lblProgress.setText("Exporting " + pkg.getPlot().getFromFields("PlotName"));
 
                 // Create JSON file
                 FileWriter file = new FileWriter(path + "/" + pkg.getPlot().getFromFields("PlotName") + ".json");
                 file.write(pkgJSON.toJSONString());
                 file.close();
+
+                // Update the progress bar.
+                progressUpdater.set(progressBar.progressProperty().doubleValue() + progressPerPackage);
             }
+            lblProgress.setText("Done");
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
@@ -742,6 +793,42 @@ public class MainController implements Initializable {
             alert.setContentText("Unable to add plot package to export list.");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    void importPlotPackage(ActionEvent event) throws IOException, ParseException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Plot Package");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.json")
+        );
+        File selectedFile = fileChooser.showOpenDialog(Main.getStage());
+        if (selectedFile != null) {
+
+            // Copy file to imports folder.
+            selectedFile.renameTo(new File(importPath + "/" + selectedFile.getName()));
+            // Add the new json file to the imports list.
+            loadImportedPackages();
+        }
+
+
+    }
+
+    @FXML
+    void clearExportList(ActionEvent event) {
+        try {
+            listExports.getItems().clear();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Error clearing export list.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void quitApplication(ActionEvent event) {
+        System.exit(0);
     }
 
     @FXML

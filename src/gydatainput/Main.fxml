@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -15,75 +16,74 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="400.0" minWidth="640.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="gydatainput.MainController">
+<VBox fx:id="main" minHeight="400.0" minWidth="640.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="gydatainput.MainController">
     <children>
+          <MenuBar fx:id="menu">
+              <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                      <items>
+                          <MenuItem mnemonicParsing="false" onAction="#importPlotPackage" text="Import Plot Package" />
+                          <MenuItem fx:id="menuRefreshImports" mnemonicParsing="false" onAction="#loadImportedPackages" text="Refresh Imported Package List" />
+                          <MenuItem fx:id="openImportFileLocation" mnemonicParsing="false" onAction="#openImportFileLocation" text="Open Imports in Explorer" />
+
+                          <SeparatorMenuItem mnemonicParsing="false" />
+
+                          <MenuItem mnemonicParsing="false" onAction="#clearExportList" text="Clear Export List" />
+                          <MenuItem fx:id="menuExportExplorer" mnemonicParsing="false" onAction="#openExportFileLocation" text="Open Exports in Explorer" />
+
+                          <SeparatorMenuItem mnemonicParsing="false" />
+
+                          <MenuItem mnemonicParsing="false" text="Settings" />
+
+                          <SeparatorMenuItem mnemonicParsing="false" />
+
+                          <MenuItem mnemonicParsing="false" onAction="#quitApplication" text="Quit" />
+                      </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Help">
+                      <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" text="Documentation" />
+                      </items>
+                  </Menu>
+              </menus>
+          </MenuBar>
         <BorderPane prefHeight="400.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
-            <top>
-                <MenuBar fx:id="menu" BorderPane.alignment="CENTER">
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="New" />
-                                <MenuItem mnemonicParsing="false" text="Open…" />
-                                <Menu mnemonicParsing="false" text="Open Recent" />
-                                <SeparatorMenuItem mnemonicParsing="false" />
-                                <MenuItem mnemonicParsing="false" text="Close" />
-                                <MenuItem mnemonicParsing="false" text="Save" />
-                                <MenuItem mnemonicParsing="false" text="Save As…" />
-                                <MenuItem mnemonicParsing="false" text="Revert" />
-                                <SeparatorMenuItem mnemonicParsing="false" />
-                                <MenuItem mnemonicParsing="false" text="Preferences…" />
-                                <SeparatorMenuItem mnemonicParsing="false" />
-                                <MenuItem mnemonicParsing="false" text="Quit" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Undo" />
-                                <MenuItem mnemonicParsing="false" text="Redo" />
-                                <SeparatorMenuItem mnemonicParsing="false" />
-                                <MenuItem mnemonicParsing="false" text="Cut" />
-                                <MenuItem mnemonicParsing="false" text="Copy" />
-                                <MenuItem mnemonicParsing="false" text="Paste" />
-                                <MenuItem mnemonicParsing="false" text="Delete" />
-                                <SeparatorMenuItem mnemonicParsing="false" />
-                                <MenuItem mnemonicParsing="false" text="Select All" />
-                                <MenuItem mnemonicParsing="false" text="Unselect All" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-            </top>
             <center>
                 <TabPane fx:id="tabs" prefHeight="379.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                     <tabs>
-                        <Tab fx:id="tabPending" closable="false" text="Pending">
-                            <content>
-                                <BorderPane fx:id="panePending">
-                                    <left>
-                                        <BorderPane fx:id="sidePending" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                            <bottom>
-                                                <AnchorPane fx:id="actionsPending" prefHeight="71.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                                    <children>
-                                                        <Button fx:id="btnImportPackage" onAction="#loadImportedPackages" layoutX="37.0" layoutY="5.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Refresh List" />
-                                                        <Button fx:id="btnUploadSelected" onAction="#uploadPlotPackage"  layoutX="37.0" layoutY="41.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Upload Selected" />
-                                                    </children>
-                                                </AnchorPane>
-                                            </bottom>
-                                        </BorderPane>
-                                    </left>
-                                    <center>
-                                        <ListView fx:id="listImports" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-                                    </center>
-                                </BorderPane>
-                            </content>
+                        <Tab fx:id="tabPending" closable="false" text="Incoming">
+                     <content>
+                        <BorderPane fx:id="sideCompleted1" prefHeight="259.0" prefWidth="640.0">
+                           <bottom>
+                              <AnchorPane fx:id="actionsPending" prefHeight="53.0" prefWidth="640.0" BorderPane.alignment="CENTER">
+                                  <children>
+                                    <Button fx:id="btnUploadSelected" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#uploadPlotPackage" prefHeight="25.0" prefWidth="177.0" text="Upload Selected Plot Package" AnchorPane.leftAnchor="15.0" />
+                                    <ProgressBar fx:id="progressBar1" layoutX="469.0" layoutY="15.0" prefHeight="25.0" prefWidth="157.0" progress="0.0" AnchorPane.rightAnchor="15.0" />
+                                    <Label fx:id="lblProgress1" alignment="CENTER_RIGHT" layoutX="242.0" layoutY="19.0" prefHeight="17.0" prefWidth="218.0" text="Nothing in progress..." textAlignment="RIGHT" AnchorPane.rightAnchor="175.0" />
+                                  </children>
+                              </AnchorPane>
+                           </bottom>
+                           <top>
+                              <AnchorPane prefHeight="41.0" prefWidth="440.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TextField fx:id="txtFilterCompleted1" layoutX="458.0" layoutY="8.0" prefHeight="25.0" prefWidth="157.0" AnchorPane.rightAnchor="15.0" />
+                                    <Label alignment="CENTER" layoutX="411.0" layoutY="5.0" prefHeight="31.0" prefWidth="47.0" text="Search" AnchorPane.rightAnchor="175.0" />
+                                    <Label fx:id="lblExports1" alignment="CENTER" layoutX="14.0" layoutY="12.0" prefHeight="31.0" prefWidth="131.0" text="Imported Packages" textAlignment="CENTER" />
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                           <center>
+                            <ListView fx:id="listImports" prefHeight="252.0" prefWidth="606.0" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="15.0" right="15.0" />
+                                 </BorderPane.margin>
+                              </ListView>
+                           </center>
+                        </BorderPane>
+                     </content>
                         </Tab>
-                        <Tab fx:id="tabCompleted" closable="false" text="Completed">
+                        <Tab fx:id="tabCompleted" closable="false" text="Outgoing">
                             <content>
                                 <BorderPane fx:id="paneCompleted">
                                     <left>
@@ -91,8 +91,7 @@
                                             <bottom>
                                                 <AnchorPane fx:id="actionsCompleted" prefHeight="53.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                                     <children>
-                                                        <Button fx:id="btnDownloadPackage" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#exportPlotPackages" prefHeight="25.0" prefWidth="73.0" text="Download" />
-                                                        <Button fx:id="btnOpenFileExportsFolder" onAction="#openExportFileLocation" layoutX="96.0" layoutY="14.0" mnemonicParsing="false" text="Open Explorer" />
+                                                        <Button fx:id="btnDownloadPackage" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#exportPlotPackages" prefHeight="25.0" prefWidth="180.0" text="Download Plot Packages" AnchorPane.leftAnchor="15.0" />
                                                     </children>
                                                 </AnchorPane>
                                             </bottom>
@@ -106,7 +105,7 @@
                                             <left>
                                                 <ListView fx:id="listExports" prefHeight="262.0" prefWidth="180.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
-                                                        <Insets left="10.0" />
+                                                        <Insets left="15.0" />
                                                     </BorderPane.margin>
                                                 </ListView>
                                             </left>
@@ -116,7 +115,7 @@
                                                         <AnchorPane prefHeight="53.0" prefWidth="39.0">
                                                             <children>
                                                                 <Button fx:id="btnAddPackageToExport" alignment="CENTER" layoutX="4.0" mnemonicParsing="false" onAction="#addPackageToExportList" prefHeight="25.0" prefWidth="31.0" text="&lt;" />
-                                                                <Button fx:id="btnRemovePackageFromExport" alignment="CENTER" layoutX="4.0" layoutY="34.0" mnemonicParsing="false" onAction="#removePackageFromExportList" prefHeight="25.0" prefWidth="31.0" text="&gt;" />
+                                                                <Button fx:id="btnRemovePackageFromExport" alignment="CENTER" layoutX="4.0" layoutY="32.0" mnemonicParsing="false" onAction="#removePackageFromExportList" prefHeight="25.0" prefWidth="31.0" text="&gt;" />
                                                             </children>
 
                                                         </AnchorPane>
@@ -131,24 +130,32 @@
                                     <center>
                                         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                             <center>
-                                                <ListView fx:id="listCompleted" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                <ListView fx:id="listCompleted" prefHeight="200.0" prefWidth="395.0" BorderPane.alignment="CENTER">
                                                     <padding>
                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                     </padding>
                                                     <BorderPane.margin>
-                                                        <Insets bottom="10.0" right="10.0" />
+                                                        <Insets left="5.0" right="15.0" />
                                                     </BorderPane.margin>
                                                 </ListView>
                                             </center>
                                             <top>
                                                 <AnchorPane prefHeight="41.0" prefWidth="440.0" BorderPane.alignment="CENTER">
                                                     <children>
-                                                        <TextField fx:id="txtFilterCompleted" layoutX="229.0" layoutY="9.0" prefHeight="25.0" prefWidth="168.0" />
+                                                        <TextField fx:id="txtFilterCompleted" layoutX="218.0" layoutY="9.0" prefHeight="25.0" prefWidth="157.0" AnchorPane.rightAnchor="15.0" />
                                                         <Label alignment="CENTER" layoutY="11.0" prefHeight="31.0" prefWidth="91.0" text="All Packages" />
-                                                        <Label alignment="CENTER" layoutX="182.0" layoutY="6.0" prefHeight="31.0" prefWidth="47.0" text="Search" />
+                                                        <Label alignment="CENTER" layoutX="171.0" layoutY="6.0" prefHeight="31.0" prefWidth="47.0" text="Search" AnchorPane.rightAnchor="175.0" />
                                                     </children>
                                                 </AnchorPane>
                                             </top>
+                                            <bottom>
+                                                <AnchorPane fx:id="actionsCompleted1" prefHeight="53.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <ProgressBar fx:id="progressBar" layoutX="234.0" layoutY="15.0" prefHeight="25.0" prefWidth="157.0" progress="0.0" AnchorPane.rightAnchor="15.0" />
+                                                      <Label fx:id="lblProgress" alignment="CENTER_RIGHT" layoutX="8.0" layoutY="19.0" prefHeight="17.0" prefWidth="218.0" text="Nothing in progress..." textAlignment="RIGHT" AnchorPane.rightAnchor="175.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                            </bottom>
                                         </BorderPane>
                                     </center>
                                 </BorderPane>

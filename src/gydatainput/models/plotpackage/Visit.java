@@ -38,6 +38,10 @@ public class Visit extends Table {
     public Visit() {
     }
 
+    public Visit(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
+
     public void retrieveData() {
         try {
             this.standInfoHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblStandInfoHeader", StandInfoHeader.class);

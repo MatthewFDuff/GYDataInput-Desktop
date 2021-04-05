@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     static MainController controller; // Manages the main functionality of the application.
+    static Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -21,12 +22,15 @@ public class Main extends Application {
         primaryStage.setTitle("Growth & Yield Desktop Application");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
+        stage = primaryStage;
     }
 
     // Allows other controller classes to communicate with the main controller.
     public static MainController getMainController() {
         return controller;
     }
+
+    public static Stage getStage() { return stage; }
 
     public static void main(String[] args) {
         launch(args);

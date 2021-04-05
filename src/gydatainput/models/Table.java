@@ -42,6 +42,12 @@ public class Table {
         }
     }
 
+    // Constructor that is used when importing a plot package. TODO Merge this constructor with the other one.
+    public Table(JSONObject json, boolean isImport) {
+        JSONArray fields = (JSONArray) json.get("fields");
+        this.setFields(fields);
+    }
+
     // Supply the name of a field and this will grab it from the JSONArray of fields if it exists.
     public Object getFromFields(String field) {
         try {
@@ -82,8 +88,6 @@ public class Table {
 
             return childrenJSON;
         }
-        // TODO Remove in prod.
-        System.out.println("getChildFieldArray error, returned null");
         return null;
     }
 
@@ -96,8 +100,6 @@ public class Table {
 
             return childrenJSON;
         }
-        // TODO Remove in prod.
-        System.out.println("getChildFieldArray error, returned null");
         return null;
     }
 

@@ -61,6 +61,7 @@ public class DatabaseController {
         try {
             // Setup a FileInputStream to read the properties from the config.properties file and store them in props.
             Properties props = new Properties();
+            // TODO src/gydatainput/database/ needs to be removed for production
             FileInputStream in = new FileInputStream("src/gydatainput/database/config.properties");
             props.load(in);
             in.close();

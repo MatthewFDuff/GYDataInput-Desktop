@@ -306,7 +306,7 @@ public class DatabaseHelper {
 
         // Put it all together to form the query
         query += fieldNames + ") VALUES (" + values + ")";
-        System.out.println(query);
+        //System.out.println(query);
 
         return true;
     }

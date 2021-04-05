@@ -18,7 +18,7 @@ public class VisitController extends ListCell<Visit> {
 
     private Visit vst; // The list item's visit.
 
-    VisitController() {
+    public VisitController() {
         loadFXML();
         updateItem(vst, false);
     }
@@ -46,7 +46,18 @@ public class VisitController extends ListCell<Visit> {
 
             lblVisitKey.setText(vst.getFromFields("VisitKey").toString());
 
-            short visitTypeCode = (short) vst.getFromFields("VisitTypeCode");
+            int visitTypeCode;
+            switch (vst.getFromFields("VisitTypeCode").getClass().getName()) {
+                case "java.lang.Long":
+                    visitTypeCode = Math.toIntExact((long) vst.getFromFields("VisitTypeCode"));
+                    break;
+                case "java.lang.Short":
+                    visitTypeCode = Math.toIntExact((short) vst.getFromFields("VisitTypeCode"));
+                    break;
+                default:
+                    visitTypeCode = Math.toIntExact((int) vst.getFromFields("VisitTypeCode"));
+            }
+
             switch (visitTypeCode) {
                 case 1:
                     lblVisitType.setText(visitTypeCode + " - Locate");

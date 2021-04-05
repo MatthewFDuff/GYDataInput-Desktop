@@ -62,6 +62,12 @@ public class Plot extends Table {
     public Plot() {
     }
 
+    public Plot(JSONObject json, boolean isImport) {
+        JSONArray fields = (JSONArray) json.get("fields");
+        this.setFields(fields);
+
+        // TODO  Sub plot information here
+    }
 
     public void retrieveData() throws SQLException {
         this.note = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblNote", Note.class);
