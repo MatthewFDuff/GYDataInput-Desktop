@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class Package extends Table {
     private Plot plot;
     private ArrayList<Visit> visit;
-    private JSONObject importJSON;
+    private JSONObject importJSON; // Only gets used for imported files.
 
     private SpecGYHeader specGYHeader;
 
