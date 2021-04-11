@@ -7,4 +7,8 @@ public class TreeDefm extends Table {
 
     public TreeDefm() {
     }
+
+    public TreeDefm(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

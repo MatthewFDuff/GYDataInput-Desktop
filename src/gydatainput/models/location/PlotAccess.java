@@ -7,4 +7,8 @@ public class PlotAccess extends Table {
 
     public PlotAccess() {
     }
+
+    public PlotAccess(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

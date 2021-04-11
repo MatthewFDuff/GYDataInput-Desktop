@@ -8,4 +8,7 @@ public class PhotoFeature extends Table {
     public PhotoFeature() {
     }
 
+    public PhotoFeature(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

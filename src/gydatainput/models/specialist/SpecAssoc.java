@@ -8,4 +8,7 @@ public class SpecAssoc extends Table {
     public SpecAssoc() {
     }
 
+    public SpecAssoc(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

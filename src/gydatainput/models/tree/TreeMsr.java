@@ -5,6 +5,7 @@ import gydatainput.models.Table;
 import gydatainput.models.cavity.TreeCav;
 import gydatainput.models.deformity.TreeDefm;
 import gydatainput.models.height.Ht;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -18,6 +19,22 @@ public class TreeMsr extends Table {
     private Ht ht;
 
     public TreeMsr() {
+    }
+
+    public TreeMsr(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // TreeMissed
+        this.treeMissed = getObjectFromJSON(json, "tblTreeMissed", TreeMissed.class);
+
+        // TreeDefm
+        this.treeDefm = getArrayFromJSON(json, "tblTreeDefm", TreeDefm.class);
+
+        // TreeCav
+        this.treeCav = getArrayFromJSON(json, "tblTreeCav", TreeCav.class);
+
+        // Ht
+        this.ht = getObjectFromJSON(json, "tblHt", Ht.class);
     }
 
     @Override

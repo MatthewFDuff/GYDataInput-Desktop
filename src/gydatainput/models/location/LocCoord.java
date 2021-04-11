@@ -7,4 +7,8 @@ public class LocCoord extends Table {
 
     public LocCoord() {
     }
+
+    public LocCoord(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

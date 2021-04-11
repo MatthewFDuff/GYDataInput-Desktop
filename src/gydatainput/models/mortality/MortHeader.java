@@ -2,6 +2,7 @@ package gydatainput.models.mortality;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -12,6 +13,13 @@ public class MortHeader extends Table {
     private ArrayList<MortTreeMsr> mortTreeMsr;
 
     public MortHeader() {
+    }
+
+    public MortHeader(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // MortTreeMsr
+        this.mortTreeMsr = getArrayFromJSON(json, "tblMortTreeMsr", MortTreeMsr.class);
     }
 
     @Override

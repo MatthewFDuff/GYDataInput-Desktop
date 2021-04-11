@@ -2,6 +2,7 @@ package gydatainput.models.soilsample;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import gydatainput.models.soilhorizon.SoilHor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,6 +16,19 @@ public class SoilSample extends Table {
     private ArrayList<SoilHor> soilHor;
 
     public SoilSample(){
+    }
+
+    public SoilSample(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // SoilDepMode
+        this.soilDepMode = getArrayFromJSON(json, "tblSoilDepMode", SoilDepMode.class);
+
+        // SoilPhoto
+        this.soilPhoto = getArrayFromJSON(json, "tblSoilPhoto", SoilPhoto.class);
+
+        // SoilHor
+        this.soilHor = getArrayFromJSON(json, "tblSoilHor", SoilHor.class);
     }
 
     @Override

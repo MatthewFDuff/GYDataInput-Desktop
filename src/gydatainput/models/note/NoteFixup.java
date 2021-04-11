@@ -7,4 +7,8 @@ public class NoteFixup extends Table {
 
     public NoteFixup() {
     }
+
+    public NoteFixup(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

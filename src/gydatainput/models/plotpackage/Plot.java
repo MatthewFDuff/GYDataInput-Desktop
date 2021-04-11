@@ -12,6 +12,7 @@ import gydatainput.models.plotmapping.PlotMapGrowthPlot;
 import gydatainput.models.plotmapping.PlotMapMort;
 import gydatainput.models.sitepermissions.SitePermPlot;
 import gydatainput.models.sitepermissions.SitePermRest;
+import gydatainput.models.soilsample.SoilPhoto;
 import gydatainput.models.soilsample.SoilSample;
 import gydatainput.models.soilsitemacromesomicro.SoilGrowthPlot;
 import gydatainput.models.soilsitemacromesomicro.SoilPlot;
@@ -23,6 +24,7 @@ import org.json.simple.JSONObject;
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Plot extends Table {
     // Note
@@ -66,7 +68,53 @@ public class Plot extends Table {
         JSONArray fields = (JSONArray) json.get("fields");
         this.setFields(fields);
 
-        // TODO  Sub plot information here
+        // Note
+        this.note = getArrayFromJSON(json, "tblNote", Note.class);
+
+        // Note Fixup
+        this.noteFixup = getArrayFromJSON(json, "tblNoteFixup", NoteFixup.class);
+
+        // Note Plot
+        this.notePlot = getObjectFromJSON(json, "tblNotePlot", NotePlot.class);
+
+        // SitePermRest
+        this.sitePermRest = getObjectFromJSON(json, "tblSitePermRest", SitePermRest.class);
+
+        // SitePermPlot
+        this.sitePermPlot = getObjectFromJSON(json, "tblSitePermPlot", SitePermPlot.class);
+
+        // LocPlot
+        this.locPlot = getObjectFromJSON(json, "tblLocPlot", LocPlot.class);
+
+        // StandInfoPlot
+        this.standInfoPlot = getObjectFromJSON(json, "tblStandInfoPlot", StandInfoPlot.class);
+
+        // StandInfoDistb
+        this.standInfoDistb = getArrayFromJSON(json, "tblStandInfoDistb", StandInfoDistb.class);
+
+        // StandInfoTreat
+        this.standInfoTreat = getArrayFromJSON(json, "tblStandInfoTreat", StandInfoTreat.class);
+
+        // StandInfoCompr
+        this.standInfoCompr = getArrayFromJSON(json, "tblStandInfoCompr", StandInfoCompr.class);
+
+        // PlotMapMort
+        this.plotMapMort = getObjectFromJSON(json, "tblPlotMapMort", PlotMapMort.class);
+
+        // PlotMapGrowthPlot
+        this.plotMapGrowthPlot = getArrayFromJSON(json, "tblPlotMapGrowthPlot", PlotMapGrowthPlot.class);
+
+        // SoilSample
+        this.soilSample = getArrayFromJSON(json, "tblSoilSample", SoilSample.class);
+
+        // SoilPlot
+        this.soilPlot = getObjectFromJSON(json, "tblSoilPlot", SoilPlot.class);
+
+        // SoilGrowthPlot
+        this.soilGrowthPlot = getArrayFromJSON(json, "tblSoilGrowthPlot", SoilGrowthPlot.class);
+
+        // SpecAssoc
+        this.specAssoc = getArrayFromJSON(json, "tblSpecAssoc", SpecAssoc.class);
     }
 
     public void retrieveData() throws SQLException {

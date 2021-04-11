@@ -2,6 +2,7 @@ package gydatainput.models.age;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -16,6 +17,13 @@ public class AgeTree extends Table {
      *
      */
     public AgeTree() {
+    }
+
+    public AgeTree(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // Age Sample
+        this.ageSample = getArrayFromJSON(json, "tblAgeSample", AgeSample.class);
     }
 
     @Override

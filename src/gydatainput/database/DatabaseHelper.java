@@ -208,7 +208,7 @@ public class DatabaseHelper {
                 String fieldKey = meta.getColumnName(column);
                 Object fieldValue = results.getObject(column);
 
-                // If it's the first column, we pull the keyname.
+                // If it's the first column, we pull the key name.
                 if (column == 1) {
                     newKeyName = fieldKey;
                 }

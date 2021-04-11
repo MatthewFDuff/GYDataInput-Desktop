@@ -7,4 +7,8 @@ public class SoilGrowthPlot extends Table {
 
     public SoilGrowthPlot() {
     }
+
+    public SoilGrowthPlot(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

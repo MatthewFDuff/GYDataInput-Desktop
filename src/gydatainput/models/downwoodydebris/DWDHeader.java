@@ -2,6 +2,7 @@ package gydatainput.models.downwoodydebris;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -14,6 +15,16 @@ public class DWDHeader extends Table {
     private ArrayList<DWD> dwd;
 
     public DWDHeader() {}
+
+    public DWDHeader(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // DWD Line
+        this.dwdLine = getArrayFromJSON(json, "tblDWDLine", DWDLine.class);
+
+        // DWD
+        this.dwd = getArrayFromJSON(json, "tblDWD", DWD.class);
+    }
 
     @Override
     public void fetchData() throws SQLException {

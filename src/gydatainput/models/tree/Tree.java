@@ -18,4 +18,8 @@ public class Tree extends Table {
 
     public Tree() {
     }
+
+    public Tree(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

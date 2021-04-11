@@ -8,4 +8,7 @@ public class SelfQAHt extends Table {
     public SelfQAHt() {
     }
 
+    public SelfQAHt(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

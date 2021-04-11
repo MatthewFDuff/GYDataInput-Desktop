@@ -7,4 +7,8 @@ public class SelfQADeform extends Table {
 
     public SelfQADeform() {
     }
+
+    public SelfQADeform(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

@@ -2,6 +2,7 @@ package gydatainput.models.selfqa;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -14,6 +15,16 @@ public class SelfQAHeader extends Table {
     private ArrayList<SelfQATree> selfQATree;
 
     public SelfQAHeader() {
+    }
+
+    public SelfQAHeader(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // Self QA Ht
+        this.selfQAHt = getArrayFromJSON(json, "tblSelfQAHt", SelfQAHt.class);
+
+        // Self QA Tree
+        this.selfQATree = getArrayFromJSON(json, "tblSelfQATree", SelfQATree.class);
     }
 
     @Override

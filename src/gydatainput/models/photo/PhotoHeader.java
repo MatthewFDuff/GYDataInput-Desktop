@@ -2,6 +2,7 @@ package gydatainput.models.photo;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -14,6 +15,16 @@ public class PhotoHeader extends Table {
     private ArrayList<PhotoFeature> photoFeature;
 
     public PhotoHeader() {
+    }
+
+    public PhotoHeader(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // PhotoRequired
+        this.photoRequired = getArrayFromJSON(json, "tblPhotoRequired", PhotoRequired.class);
+
+        // PhotoFeature
+        this.photoFeature = getArrayFromJSON(json, "tblPhotoFeature", PhotoFeature.class);
     }
 
     @Override

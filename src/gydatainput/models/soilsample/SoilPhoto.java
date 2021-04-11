@@ -11,4 +11,8 @@ public class SoilPhoto extends Table {
 
     public SoilPhoto() {
     }
+
+    public SoilPhoto(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

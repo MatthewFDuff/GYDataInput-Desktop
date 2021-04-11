@@ -8,4 +8,7 @@ public class SpecGYHeader extends Table {
     public SpecGYHeader() {
     }
 
+    public SpecGYHeader(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

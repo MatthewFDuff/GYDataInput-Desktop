@@ -8,4 +8,7 @@ public class PlotMapMort extends Table {
     public PlotMapMort() {
     }
 
+    public PlotMapMort(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

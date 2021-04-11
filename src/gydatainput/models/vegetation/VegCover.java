@@ -9,4 +9,7 @@ public class VegCover extends Table {
     public VegCover() {
     }
 
+    public VegCover(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

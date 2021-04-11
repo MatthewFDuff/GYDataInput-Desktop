@@ -2,6 +2,7 @@ package gydatainput.models.soilsitetemporal;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import gydatainput.models.soilsitemacromesomicro.SoilGrowthPlot;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,6 +16,16 @@ public class SoilHeader extends Table {
     private ArrayList<SoilGroundCover> soilGroundCover;
 
     public SoilHeader() {
+    }
+
+    public SoilHeader(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // SoilForestFloor
+        this.soilForestFloor = getArrayFromJSON(json, "tblSoilForestFloor", SoilForestFloor.class);
+
+        // SoilGroundCover
+        this.soilGroundCover = getArrayFromJSON(json, "tblSoilGroundCover", SoilGroundCover.class);
     }
 
     @Override

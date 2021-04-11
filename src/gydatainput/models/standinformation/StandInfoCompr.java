@@ -8,4 +8,7 @@ public class StandInfoCompr extends Table {
     public StandInfoCompr() {
     }
 
+    public StandInfoCompr(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

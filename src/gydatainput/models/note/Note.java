@@ -7,4 +7,8 @@ public class Note extends Table {
 
     public Note() {
     }
+
+    public Note(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

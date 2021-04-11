@@ -2,6 +2,7 @@ package gydatainput.models.downwoodydebris;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,6 +14,13 @@ public class DWD extends Table {
     private ArrayList<DWDIntersect> dwdIntersect;
 
     public DWD() {
+    }
+
+    public DWD(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // DWD Intersect
+        this.dwdIntersect = getArrayFromJSON(json, "tblDWDIntersect", DWDIntersect.class);
     }
 
     @Override

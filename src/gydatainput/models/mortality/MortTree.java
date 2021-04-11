@@ -7,4 +7,8 @@ public class MortTree extends Table {
 
     public MortTree() {
     }
+
+    public MortTree(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

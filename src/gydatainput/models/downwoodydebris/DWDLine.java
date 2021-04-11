@@ -2,6 +2,7 @@ package gydatainput.models.downwoodydebris;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -14,6 +15,21 @@ public class DWDLine extends Table {
     private ArrayList<DWDAccum> dwdAccum;
 
     public DWDLine() {
+    }
+
+    public DWDLine(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+//         DWD Intersect
+        this.dwdIntersect = getArrayFromJSON(json, "tblDWDIntersect", DWDIntersect.class);
+
+        // DWD Stump
+        this.dwdStump = getArrayFromJSON(json, "tblDWDStump", DWDStump.class);
+
+
+        // DWD Accum
+        this.dwdAccum = getArrayFromJSON(json, "tblDWDAccum", DWDAccum.class);
+
     }
 
     @Override

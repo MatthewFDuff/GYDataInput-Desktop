@@ -2,6 +2,7 @@ package gydatainput.models.vegetation;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -16,6 +17,22 @@ public class VegPlot extends Table {
     private ArrayList<VegShrubSpec> vegShrubSpec;
 
     public VegPlot() {
+    }
+
+    public VegPlot(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // VegCover
+        this.vegCover = getArrayFromJSON(json, "tblVegCover", VegCover.class);
+
+        // VegRegen
+        this.vegRegen = getArrayFromJSON(json, "tblVegRegen", VegRegen.class);
+
+        // VegSpecPres
+        this.vegSpecPres = getArrayFromJSON(json, "tblVegSpecPres", VegSpecPres.class);
+
+        // VegShrubSpec
+        this.vegShrubSpec = getArrayFromJSON(json, "tblVegShrubSpec", VegShrubSpec.class);
     }
 
     @Override

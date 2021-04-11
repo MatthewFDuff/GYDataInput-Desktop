@@ -7,4 +7,8 @@ public class SitePermPlot extends Table {
 
     public SitePermPlot() {
     }
+
+    public SitePermPlot(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

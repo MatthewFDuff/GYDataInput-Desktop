@@ -2,6 +2,7 @@ package gydatainput.models.tree;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,6 +14,13 @@ public class TreeGrowthPlot extends Table {
     private ArrayList<TreeMsr> treeMsr;
 
     public TreeGrowthPlot(){
+    }
+
+    public TreeGrowthPlot(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // TreeMsr
+        this.treeMsr = getArrayFromJSON(json, "tblTreeMsr", TreeMsr.class);
     }
 
     @Override

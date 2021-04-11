@@ -8,4 +8,7 @@ public class NotePlot extends Table {
     public NotePlot() {
     }
 
+    public NotePlot(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

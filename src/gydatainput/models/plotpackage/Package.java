@@ -30,31 +30,16 @@ public class Package extends Table {
     public Package(JSONObject json, boolean isImport) {
         super(json, isImport);
 
-        this.importJSON = json;
-
-//        JSONArray fields = (JSONArray) json.get("fields");
-//        this.setFields(fields);
+        this.importJSON = json; // TODO Remove when json mapping is complete.
 
         // Plot
-        // Get the plot from the plot package JSON
-        JSONObject plot = (JSONObject) json.get("tblPlot");
-        // Get the plot fields from the plot package JSON
-        JSONArray plotFields = (JSONArray) plot.get("fields");
-//        System.out.println(plot);
-//        System.out.println(plotFields);
-        this.plot = new Plot(plot, true); // Create the new Plot instance
-        //this.plot.setFields(plotFields); // Set the Plot fields variable.
+        this.plot = getObjectFromJSON(json, "tblPlot", Plot.class);
 
         // Visits
-        ArrayList<Visit> visits = new ArrayList<>();
-        JSONArray visitsJSON = (JSONArray) json.get("tblVisit");
-        Iterator<JSONObject> iterator = visitsJSON.iterator();
-        while (iterator.hasNext()) {
-            JSONObject visitJSON = iterator.next();
-            Visit visit = new Visit(visitJSON, true);
-            visits.add(visit);
-        }
-        this.visit = visits;
+        this.visit = getArrayFromJSON(json, "tblVisit", Visit.class);
+
+        // SpecGYHeader
+        this.specGYHeader = getObjectFromJSON(json, "tblSpecGYHeader", SpecGYHeader.class);
     }
 
     public Package(JSONArray fields) {

@@ -7,4 +7,8 @@ public class SoilEcosite extends Table {
 
     public SoilEcosite() {
     }
+
+    public SoilEcosite(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

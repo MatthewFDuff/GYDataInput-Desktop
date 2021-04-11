@@ -8,4 +8,7 @@ public class SoilForestFloor extends Table {
     public SoilForestFloor() {
     }
 
+    public SoilForestFloor(JSONObject json, boolean isImport) {
+        super(json, isImport);
+    }
 }

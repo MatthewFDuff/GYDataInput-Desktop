@@ -13,6 +13,7 @@ import gydatainput.models.selfqa.SelfQAHeader;
 import gydatainput.models.soilsitetemporal.SoilEcositeHeader;
 import gydatainput.models.soilsitetemporal.SoilHeader;
 import gydatainput.models.standinformation.StandInfoHeader;
+import gydatainput.models.stocking.Stkg;
 import gydatainput.models.stocking.StkgHeader;
 import gydatainput.models.tree.TreeHeader;
 import gydatainput.models.vegetation.VegHeader;
@@ -40,6 +41,45 @@ public class Visit extends Table {
 
     public Visit(JSONObject json, boolean isImport) {
         super(json, isImport);
+
+        // StandInfoHeader
+        this.standInfoHeader = getObjectFromJSON(json, "tblStandInfoHeader", StandInfoHeader.class);
+
+        // PhotoHeader
+        this.photoHeader = getObjectFromJSON(json, "tblPhotoHeader", PhotoHeader.class);
+
+        // VegHeader
+        this.vegHeader = getObjectFromJSON(json, "tblVegHeader", VegHeader.class);
+
+        // TreeHeader
+        this.treeHeader = getObjectFromJSON(json, "tblTreeHeader", TreeHeader.class);
+
+        // HtHeader
+        this.htHeader = getObjectFromJSON(json, "tblHtHeader", HtHeader.class);
+
+        // DWDHeader
+        this.dwdHeader = getObjectFromJSON(json, "tblDWDHeader", DWDHeader.class);
+
+        // PlotMapHeader
+        this.plotMapHeader = getObjectFromJSON(json, "tblPlotMapHeader", PlotMapHeader.class);
+
+        // StkgHeader
+        this.stkgHeader = getObjectFromJSON(json, "tblStkgHeader", StkgHeader.class);
+
+        // MortHeader
+        this.mortHeader = getObjectFromJSON(json, "tblMortHeader", MortHeader.class);
+
+        // AgeHeader
+        this.ageHeader = getObjectFromJSON(json, "AgeHeader", AgeHeader.class);
+
+        // SoilEcositeHeader
+        this.soilEcositeHeader = getObjectFromJSON(json, "tblSoilEcositeHeader", SoilEcositeHeader.class);
+
+        // SoilHeader
+        this.soilHeader = getObjectFromJSON(json, "tblSoilHeader", SoilHeader.class);
+
+        // SelfQAHeader
+        this.selfQAHeader = getObjectFromJSON(json, "tblSelfQAHeader", SelfQAHeader.class);
     }
 
     public void retrieveData() {

@@ -2,6 +2,7 @@ package gydatainput.models.soilsitetemporal;
 
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
+import gydatainput.models.plotpackage.Visit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,6 +14,13 @@ public class SoilEcositeHeader extends Table {
     private ArrayList<SoilEcosite> soilEcosite;
 
     public SoilEcositeHeader(){
+    }
+
+    public SoilEcositeHeader(JSONObject json, boolean isImport) {
+        super(json, isImport);
+
+        // SoilEcosite
+        this.soilEcosite = getArrayFromJSON(json, "tblSoilEcosite", SoilEcosite.class);
     }
 
     @Override
