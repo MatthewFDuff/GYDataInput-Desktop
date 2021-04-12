@@ -28,6 +28,14 @@ public class PhotoHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(photoRequired);
+        uploadArray(photoFeature);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.photoRequired = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblPhotoRequired", PhotoRequired.class);
         this.photoFeature = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblPhotoFeature", PhotoFeature.class);

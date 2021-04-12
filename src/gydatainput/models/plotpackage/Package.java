@@ -1,5 +1,6 @@
 package gydatainput.models.plotpackage;
 
+import gydatainput.database.DatabaseController;
 import gydatainput.database.DatabaseHelper;
 import gydatainput.models.Table;
 import gydatainput.models.specialist.SpecGYHeader;
@@ -8,6 +9,7 @@ import org.json.simple.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,9 +17,9 @@ import java.util.Iterator;
 public class Package extends Table {
     private Plot plot;
     private ArrayList<Visit> visit;
-    private JSONObject importJSON; // Only gets used for imported files.
-
     private SpecGYHeader specGYHeader;
+
+    private JSONObject importJSON; // Only gets used for imported files.
 
     // TODO: Remove when all uploading code is placed in database helper
     public JSONObject getImportJSON() {
@@ -57,6 +59,25 @@ public class Package extends Table {
         }
     }
 
+    @Override
+    public void upload() throws SQLException {
+        Savepoint save = DatabaseController.getConnection().setSavepoint();
+        System.out.println("Begin transaction.");
+        try {
+            super.upload();
+
+            uploadObject(plot);
+            uploadArray(visit);
+            uploadObject(specGYHeader);
+
+            // Successfully uploaded plot package.
+            DatabaseController.getConnection().commit();
+            System.out.println("End Transaction: Commit");
+        } catch (SQLException e) {
+            DatabaseController.getConnection().rollback(save);
+            System.out.println("End Transaction: Rollback");
+        }
+    }
 
     /**
      * Gets all plot package data from the database for the plot package.

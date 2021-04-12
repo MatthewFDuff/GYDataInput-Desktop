@@ -27,6 +27,14 @@ public class VegHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(vegVType);
+        uploadArray(vegPlot);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.vegVType = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegVType", VegVType.class);
         this.vegPlot = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegPlot", VegPlot.class);

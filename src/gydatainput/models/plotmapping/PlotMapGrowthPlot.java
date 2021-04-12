@@ -24,6 +24,13 @@ public class PlotMapGrowthPlot extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(tree);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.tree = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblTree", Tree.class);
     }

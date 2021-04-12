@@ -24,6 +24,13 @@ public class SoilEcositeHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(soilEcosite);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.soilEcosite = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilEcosite", SoilEcosite.class);
     }

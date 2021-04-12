@@ -24,6 +24,13 @@ public class TreeHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(treeGrowthPlot);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.treeGrowthPlot = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblTreeGrowthPlot", TreeGrowthPlot.class);
     }

@@ -26,10 +26,17 @@ public class DWDLine extends Table {
         // DWD Stump
         this.dwdStump = getArrayFromJSON(json, "tblDWDStump", DWDStump.class);
 
-
         // DWD Accum
         this.dwdAccum = getArrayFromJSON(json, "tblDWDAccum", DWDAccum.class);
+    }
 
+    @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(dwdIntersect);
+        uploadArray(dwdStump);
+        uploadArray(dwdAccum);
     }
 
     @Override

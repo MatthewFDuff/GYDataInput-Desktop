@@ -27,6 +27,13 @@ public class AgeTree extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(ageSample);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.ageSample = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblAgeSample", AgeSample.class);
     }

@@ -27,6 +27,14 @@ public class DWDHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(dwdLine);
+        uploadArray(dwd);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.dwdLine = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWDLine", DWDLine.class);
         this.dwd = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWD", DWD.class);

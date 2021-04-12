@@ -23,6 +23,13 @@ public class HtHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(ht);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.ht = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblHt", Ht.class);
 

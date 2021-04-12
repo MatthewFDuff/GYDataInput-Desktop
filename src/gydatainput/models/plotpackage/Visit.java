@@ -82,6 +82,25 @@ public class Visit extends Table {
         this.selfQAHeader = getObjectFromJSON(json, "tblSelfQAHeader", SelfQAHeader.class);
     }
 
+    @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadObject(standInfoHeader);
+        uploadObject(photoHeader);
+        uploadObject(vegHeader);
+        uploadObject(treeHeader);
+        uploadObject(htHeader);
+        uploadObject(dwdHeader);
+        uploadObject(plotMapHeader);
+        uploadObject(stkgHeader);
+        uploadObject(mortHeader);
+        uploadObject(ageHeader);
+        uploadObject(soilEcositeHeader);
+        uploadObject(soilHeader);
+        uploadObject(selfQAHeader);
+    }
+
     public void retrieveData() {
         try {
             this.standInfoHeader = DatabaseHelper.getData(getKey(), getKeyName(), "tblStandInfoHeader", StandInfoHeader.class);

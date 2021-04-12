@@ -23,6 +23,13 @@ public class StkgLine extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(stkg);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.stkg = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblStkg", Stkg.class);
     }

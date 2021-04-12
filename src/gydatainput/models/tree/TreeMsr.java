@@ -38,6 +38,16 @@ public class TreeMsr extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadObject(treeMissed);
+        uploadArray(treeDefm);
+        uploadArray(treeCav);
+        // Ht does not need to be uploaded because it's already uploaded in another class // TODO which class? Ht header?.
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.treeMissed = DatabaseHelper.getData(getKey(), getKeyName(), "tblTreeMissed", TreeMissed.class);
         this.treeDefm = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblTreeDefm", TreeDefm.class);

@@ -24,6 +24,13 @@ public class DWD extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(dwdIntersect);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.dwdIntersect = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblDWDIntersect", DWDIntersect.class);
     }

@@ -63,6 +63,7 @@ public class DatabaseController {
             Properties props = new Properties();
             // TODO src/gydatainput/database/ needs to be removed for production
             FileInputStream in = new FileInputStream("src/gydatainput/database/config.properties");
+
             props.load(in);
             in.close();
 
@@ -81,6 +82,7 @@ public class DatabaseController {
                     + ";loginTimeout=" + props.getProperty("jdbc.loginTimeout") + ";";
 
             connection = DriverManager.getConnection(url);
+            connection.setAutoCommit(false); // We never want to commit changes to the database automatically.
 
             System.out.println("Connected to Growth & Yield Database");
         } catch (SQLException e) {

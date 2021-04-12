@@ -65,8 +65,7 @@ public class Plot extends Table {
     }
 
     public Plot(JSONObject json, boolean isImport) {
-        JSONArray fields = (JSONArray) json.get("fields");
-        this.setFields(fields);
+        super(json, isImport);
 
         // Note
         this.note = getArrayFromJSON(json, "tblNote", Note.class);
@@ -115,6 +114,30 @@ public class Plot extends Table {
 
         // SpecAssoc
         this.specAssoc = getArrayFromJSON(json, "tblSpecAssoc", SpecAssoc.class);
+    }
+
+    @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(note);
+        uploadArray(noteFixup);
+        uploadObject(notePlot);
+        uploadObject(sitePermRest);
+        uploadObject(sitePermPlot);
+        uploadObject(locPlot);
+        uploadArray(plotAccess);
+        uploadArray(locCoord);
+        uploadObject(standInfoPlot);
+        uploadArray(standInfoDistb);
+        uploadArray(standInfoTreat);
+        uploadArray(standInfoCompr);
+        uploadObject(plotMapMort);
+        uploadArray(plotMapGrowthPlot);
+        uploadArray(soilSample);
+        uploadObject(soilPlot);
+        uploadArray(soilGrowthPlot);
+        uploadArray(specAssoc);
     }
 
     public void retrieveData() throws SQLException {

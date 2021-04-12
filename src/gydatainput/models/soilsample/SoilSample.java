@@ -32,6 +32,15 @@ public class SoilSample extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(soilDepMode);
+        uploadArray(soilPhoto);
+        uploadArray(soilHor);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.soilDepMode = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilDepMode", SoilDepMode.class);
         this.soilPhoto = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilPhoto", SoilPhoto.class);

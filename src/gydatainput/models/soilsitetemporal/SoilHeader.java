@@ -29,6 +29,14 @@ public class SoilHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(soilForestFloor);
+        uploadArray(soilGroundCover);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.soilForestFloor = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilForestFloor", SoilForestFloor.class);
         this.soilGroundCover = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSoilGroundCover", SoilGroundCover.class);

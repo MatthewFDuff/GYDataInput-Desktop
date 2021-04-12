@@ -23,6 +23,13 @@ public class SelfQATree extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(selfQADeform);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.selfQADeform = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSelfQADeform", SelfQADeform.class);
     }

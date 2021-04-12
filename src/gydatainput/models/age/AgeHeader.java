@@ -24,6 +24,13 @@ public class AgeHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(ageTree);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.ageTree = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblAgeTree", AgeTree.class);
     }

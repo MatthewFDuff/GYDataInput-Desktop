@@ -28,6 +28,14 @@ public class SelfQAHeader extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(selfQAHt);
+        uploadArray(selfQATree);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.selfQAHt = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSelfQAHt", SelfQAHt.class);
         this.selfQATree = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblSelfQATree", SelfQATree.class);

@@ -23,6 +23,13 @@ public class MortTreeMsr extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadObject(mortTree);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.mortTree = DatabaseHelper.getData(getKey(), getKeyName(), "tblMortTree", MortTree.class);
     }

@@ -87,6 +87,12 @@ public class Table {
     public Table(JSONObject json, boolean isImport) {
         JSONArray fields = (JSONArray) json.get("fields");
         this.setFields(fields);
+
+        Iterator<JSONObject> fieldKey = fields.iterator();
+        Iterator<String> valueKey = fieldKey.next().keySet().iterator();
+        this.keyName = valueKey.next();
+        Long val = (Long) getFromFields(keyName);
+        this.key = val.intValue();
     }
 
     // Supply the name of a field and this will grab it from the JSONArray of fields if it exists.
@@ -112,11 +118,18 @@ public class Table {
         return;
     }
 
+    public void upload() throws SQLException {
+        // TODO: Tablename is "created" by removing the word "Key" from the keyName... Not future-proof.
+        //System.out.println("Key: " + key + ", KeyName: " + keyName + ", TableName: " + keyName.substring(0, keyName.length() - 3) + ", Fields: " + fields); // TODO SOUT
+        boolean success = DatabaseHelper.uploadData(key, keyName, keyName.substring(0, keyName.length() - 3), fields);
+        if (!success) {
+            throw new SQLException();
+        }
+    }
+
     protected JSONArray getFields() {
         return fields;
     }
-
-
 
     public static <T extends Table> JSONArray getChildFieldArray(ArrayList<T> children) {
         if (!children.isEmpty()) {
@@ -160,127 +173,127 @@ public class Table {
                     case "class gydatainput.models.plotpackage.Plot":
                         list.add((T) new Plot(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.AgeTree":
+                    case "class gydatainput.models.age.AgeTree":
                         list.add((T) new AgeTree(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.AgeSample":
+                    case "class gydatainput.models.age.AgeSample":
                         list.add((T) new AgeSample(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.DWDIntersect":
+                    case "class gydatainput.models.downwoodydebris.DWDIntersect":
                         list.add((T) new DWDIntersect(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.DWDLine":
+                    case "class gydatainput.models.downwoodydebris.DWDLine":
                         list.add((T) new DWDLine(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.DWD":
+                    case "class gydatainput.models.downwoodydebris.DWD":
                         list.add((T) new DWD(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.DWDStump":
+                    case "class gydatainput.models.downwoodydebris.DWDStump":
                         list.add((T) new DWDStump(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.DWDAccum":
+                    case "class gydatainput.models.downwoodydebris.DWDAccum":
                         list.add((T) new DWDAccum(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.Ht":
+                    case "class gydatainput.models.height.Ht":
                         list.add((T) new Ht(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.MortTreeMsr":
+                    case "class gydatainput.models.mortality.MortTreeMsr":
                         list.add((T) new MortTreeMsr(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.PhotoRequired":
+                    case "class gydatainput.models.photo.PhotoRequired":
                         list.add((T) new PhotoRequired(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.PhotoFeature":
+                    case "class gydatainput.models.photo.PhotoFeature":
                         list.add((T) new PhotoFeature(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.Tree":
+                    case "class gydatainput.models.tree.Tree":
                         list.add((T) new Tree(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.Note":
+                    case "class gydatainput.models.note.Note":
                         list.add((T) new Note(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.NoteFixup":
+                    case "class gydatainput.models.note.NoteFixup":
                         list.add((T) new NoteFixup(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.StandInfoDistb":
+                    case "class gydatainput.models.standinformation.StandInfoDistb":
                         list.add((T) new StandInfoDistb(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.StandInfoTreat":
+                    case "class gydatainput.models.standinformation.StandInfoTreat":
                         list.add((T) new StandInfoTreat(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.StandInfoCompr":
+                    case "class gydatainput.models.standinformation.StandInfoCompr":
                         list.add((T) new StandInfoCompr(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.PlotMapGrowthPlot":
+                    case "class gydatainput.models.plotmapping.PlotMapGrowthPlot":
                         list.add((T) new PlotMapGrowthPlot(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilSample":
+                    case "class gydatainput.models.soilsample.SoilSample":
                         list.add((T) new SoilSample(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilGrowthPlot":
+                    case "class gydatainput.models.soilsitemacromesomicro.SoilGrowthPlot":
                         list.add((T) new SoilGrowthPlot(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SpecAssoc":
+                    case "class gydatainput.models.specialist.SpecAssoc":
                         list.add((T) new SpecAssoc(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SelfQAHt":
+                    case "class gydatainput.models.selfqa.SelfQAHt":
                         list.add((T) new SelfQAHt(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SelfQATree":
+                    case "class gydatainput.models.selfqa.SelfQATree":
                         list.add((T) new SelfQATree(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SelfQADeform":
+                    case "class gydatainput.models.selfqa.SelfQADeform":
                         list.add((T) new SelfQADeform(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilDepMode":
+                    case "class gydatainput.models.soilsample.SoilDepMode":
                         list.add((T) new SoilDepMode(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilPhoto":
+                    case "class gydatainput.models.soilsample.SoilPhoto":
                         list.add((T) new SoilPhoto(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilHor":
+                    case "class gydatainput.models.soilhorizon.SoilHor":
                         list.add((T) new SoilHor(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilEcosite":
+                    case "class gydatainput.models.soilsitetemporal.SoilEcosite":
                         list.add((T) new SoilEcosite(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilForestFloor":
+                    case "class gydatainput.models.soilsitetemporal.SoilForestFloor":
                         list.add((T) new SoilForestFloor(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.SoilGroundCover":
+                    case "class gydatainput.models.soilsitetemporal.SoilGroundCover":
                         list.add((T) new SoilGroundCover(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.StkgLine":
+                    case "class gydatainput.models.stocking.StkgLine":
                         list.add((T) new Stkg(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.TreeMsr":
+                    case "class gydatainput.models.tree.TreeMsr":
                         list.add((T) new TreeMsr(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.TreeGrowthPlot":
+                    case "class gydatainput.models.tree.TreeGrowthPlot":
                         list.add((T) new TreeGrowthPlot(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.TreeDefm":
+                    case "class gydatainput.models.deformity.TreeDefm":
                         list.add((T) new TreeDefm(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.TreeCav":
+                    case "class gydatainput.models.cavity.TreeCav":
                         list.add((T) new TreeCav(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.VegVType":
+                    case "class gydatainput.models.vegetation.VegVType":
                         list.add((T) new VegVType(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.VegPlot":
+                    case "class gydatainput.models.vegetation.VegPlot":
                         list.add((T) new VegPlot(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.VegCover":
+                    case "class gydatainput.models.vegetation.VegCover":
                         list.add((T) new VegCover(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.VegRegen":
+                    case "class gydatainput.models.vegetation.VegRegen":
                         list.add((T) new VegRegen(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.VegSpecPres":
+                    case "class gydatainput.models.vegetation.VegSpecPres":
                         list.add((T) new VegSpecPres(jsonObject, true));
                         break;
-                    case "class gydatainput.models.plotpackage.VegShrubSpec":
+                    case "class gydatainput.models.vegetation.VegShrubSpec":
                         list.add((T) new VegShrubSpec(jsonObject, true));
                         break;
                 }
@@ -296,54 +309,71 @@ public class Table {
             switch (classType.toString()) {
                 case "class gydatainput.models.plotpackage.Plot":
                     return (T) new Plot(objectJSON, true);
-                case "class gydatainput.models.plotpackage.SpecGYHeader":
+                case "class gydatainput.models.specialist.SpecGYHeader":
                     return (T) new SpecGYHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.NotePlot":
+                case "class gydatainput.models.note.NotePlot":
                     return (T) new NotePlot(objectJSON, true);
-                case "class gydatainput.models.plotpackage.SitePermRest":
+                case "class gydatainput.models.sitepermissions.SitePermRest":
                     return (T) new SitePermRest(objectJSON, true);
-                case "class gydatainput.models.plotpackage.SitePermPlot":
+                case "class gydatainput.models.sitepermissions.SitePermPlot":
                     return (T) new SitePermPlot(objectJSON, true);
-                case "class gydatainput.models.plotpackage.LocPlot":
+                case "class gydatainput.models.location.LocPlot":
                     return (T) new LocPlot(objectJSON, true);
-                case "class gydatainput.models.plotpackage.StandInfoPlot":
+                case "class gydatainput.models.standinformation.StandInfoPlot":
                     return (T) new StandInfoPlot(objectJSON, true);
-                case "class gydatainput.models.plotpackage.PlotMapMort":
+                case "class gydatainput.models.plotmapping.PlotMapMort":
                     return (T) new PlotMapMort(objectJSON, true);
-                case "class gydatainput.models.plotpackage.SoilPlot":
+                case "class gydatainput.models.soilsitemacromesomicro.SoilPlot":
                     return (T) new SoilPlot(objectJSON, true);
-                case "class gydatainput.models.plotpackage.StandInfoHeader":
+                case "class gydatainput.models.standinformation.StandInfoHeader":
                     return (T) new StandInfoHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.PhotoHeader":
+                case "class gydatainput.models.photo.PhotoHeader":
                     return (T) new PhotoHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.VegHeader":
+                case "class gydatainput.models.vegetation.VegHeader":
                     return (T) new VegHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.TreeHeader":
+                case "class gydatainput.models.tree.TreeHeader":
                     return (T) new TreeHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.HtHeader":
+                case "class gydatainput.models.height.HtHeader":
                     return (T) new HtHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.DWDHeader":
+                case "class gydatainput.models.downwoodydebris.DWDHeader":
                     return (T) new DWDHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.PlotMapHeader":
+                case "class gydatainput.models.plotmapping.PlotMapHeader":
                     return (T) new PlotMapHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.StkgHeader":
+                case "class gydatainput.models.stocking.StkgHeader":
                     return (T) new StkgHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.MortHeader":
+                case "class gydatainput.models.mortality.MortHeader":
                     return (T) new MortHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.AgeHeader":
+                case "class gydatainput.models.age.AgeHeader":
                     return (T) new AgeHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.SoilEcositeHeader":
+                case "class gydatainput.models.soilsitetemporal.SoilEcositeHeader":
                     return (T) new SoilEcositeHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.SoilHeader":
+                case "class gydatainput.models.soilsitetemporal.SoilHeader":
                     return (T) new SoilHeader(objectJSON, true);
-                case "class gydatainput.models.plotpackage.TreeMissed":
+                case "class gydatainput.models.tree.TreeMissed":
                     return (T) new TreeMissed(objectJSON, true);
-                case "class gydatainput.models.plotpackage.Ht":
+                case "class gydatainput.models.height.Ht":
                     return (T) new Ht(objectJSON, true);
             }
         }
 
         return null;
+    }
+
+    public static <T extends Table> void uploadArray(ArrayList<T> list) {
+        if (list != null && !list.isEmpty()) {
+            list.forEach((item) -> {
+                try {
+                    item.upload();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+    }
+
+    public static <T extends Table> void uploadObject(T obj) throws SQLException {
+        if (obj != null)
+            obj.upload();
     }
 
     public Object getJSON() {

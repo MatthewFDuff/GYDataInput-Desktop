@@ -36,6 +36,16 @@ public class VegPlot extends Table {
     }
 
     @Override
+    public void upload() throws SQLException {
+        super.upload();
+
+        uploadArray(vegCover);
+        uploadArray(vegRegen);
+        uploadArray(vegSpecPres);
+        uploadArray(vegShrubSpec);
+    }
+
+    @Override
     public void fetchData() throws SQLException {
         this.vegCover = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegCover", VegCover.class);
         this.vegRegen = DatabaseHelper.getObjects(getKey(), getKeyName(), "tblVegRegen", VegRegen.class);
